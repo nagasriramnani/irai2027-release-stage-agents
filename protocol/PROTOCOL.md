@@ -1,10 +1,11 @@
-# Study Protocol and Pre-Registration (v1.3a, signed 31 Oct 2026)
+# Study Protocol and Pre-Registration (v1.4, amended 31 Oct 2026 before any confirmatory LLM run; v1.3a signed 31 Oct 2026)
 
 **Project:** Release-Stage Configuration Effects on AI Agent Answer Reliability Across Business Role Profiles
 **Target venue:** IEEE IRAI 2027 (6 pages incl. references, IEEE two-column, single-blind; deadline 30 Jun 2027)
 **Authors:** Ram Kochetti; Prof. Hussain Tazar (affiliations to be confirmed)
-**Protocol date:** 30 Oct 2026 (v1.1 after the design review; v1.2-v1.3 after the pilot-artifact audit and two checks of the fixes, same day; v1.3a on 31 Oct 2026 after the pilot-results audit). **Status:** SIGNED by both authors on 31 Oct 2026, before any confirmatory run (signed text: commit 1524c9f,
-SHA-256 e5790ba727df5a54e300a5ed537953dfb00883c6cb4afc082148a379b9321825). Later changes are logged in §10 with date and reason.
+**Protocol date:** 30 Oct 2026 (v1.1 after the design review; v1.2-v1.3 after the pilot-artifact audit and two checks of the fixes, same day; v1.3a on 31 Oct 2026 after the pilot-results audit; v1.4 on 31 Oct 2026, before any confirmatory LLM run: sample size, H6
+and analysis additions, §10). **Status:** SIGNED by both authors on 31 Oct 2026, before any confirmatory run (signed text: commit 1524c9f,
+SHA-256 e5790ba727df5a54e300a5ed537953dfb00883c6cb4afc082148a379b9321825). v1.4 adopted 31 Oct 2026 (§10, §11). Later changes are logged in §10 with date and reason.
 
 ## 1. Objective
 Measure how versioned agent-and-data release configurations ("stage packages") affect evidence-grounded, policy-compliant
@@ -64,6 +65,27 @@ DiD are secondary.
   disagreement), and P(one driven by SuAR) and by ABCR). By construction no confounder implies the gold answer, so (a) can only
   arise from tolerance or chance; the claim is limited to the component that actually drives disagreements.
 
+* **H6 (v1.4; pilot-derived, outside the Holm family, tested only on confirmatory data):** on the `drift_perm` scenarios of
+  every block (12 per block, fixed by the generator: 72), in prompt-only runs, the agent reads its scenario's own re-classified
+  dataset (any version) more often when the post-release deny list names it by identifier while its index label still shows
+  the old class (post-release as frozen) than when the same deny list comes with labels that show the new class (the
+  **labels-synced arm**, stage `postrelease~labels`: identical system prompt, deny list, corpus, search results, gold and seeds;
+  only the classification and owner shown for re-classified sources (all of them, not only the scenario's own), and the
+  class-rule lookup, change; asserted by the
+  self-check on every block). d_i = read rate (lagging) − read rate (synced), pooled over repetitions; estimate = mean d_i;
+  scenario bootstrap stratified by block, two-sided p, directional verdict at .05 (supported if p < .05 and d > 0), sign-flip
+  test as a robustness check, SESOI class. Expected positive. Pilot basis (dev split, exploratory): Qwen3 read its own
+  re-classified dataset in 11/12 prompt-only post-release runs (Llama 4/6), but also read restricted records that the question
+  targets, denied through their label, in 8/12 production prompt-only runs. A two-sample comparison with other production
+  exposures was rejected because it confounds the deny route with how relevant the denied source is; the paired arm holds the
+  scenario, the deny list and the target fixed. A null H6 is read as: the agent reads the record a question targets whichever
+  channel denies it. H6 and H2c share the post-release own-drift runs and are not independent evidence. The pre-production
+  erroneous deny (an intended-permitted source) is reported descriptively only, in the route table (§7).
+* **SESOI classes (v1.4; the 9 contrasts and H6):** each verdict is also read against the 10-point smallest effect of interest
+  with its 95% CI: supported and compatible with ≥ SESOI; supported but smaller than SESOI; null and smaller than SESOI (the
+  CI excludes a 10-point effect in the expected direction); null and inconclusive; contrary; for H3b, cost below SESOI if the
+  CI lies within ±.10, otherwise inconclusive.
+
 Null or contrary results are reported as observed. Hypotheses are not revised after results are seen.
 
 ## 4. Design
@@ -88,18 +110,36 @@ Null or contrary results are reported as observed. Hypotheses are not revised af
   but with 4 answerable scenarios per profile its fault prevalence is 25% per package (confirmatory 12.5–19%); pilot estimates
   are therefore not scaled-down confirmatory estimates, and the power analysis uses confirmatory eligible counts. The confirmatory split is frozen by SHA-256 hashes,
   verified by the harness before every run; it is never used for tuning.
-* **Primary design:** stage package (5) × enforcement mode (2) × repetition (3) = 3,600 runs. Run order randomized; decoding
-  seed = SHA-256(item, repetition), so paired cells share random numbers.
+* **Confirmatory blocks (v1.4):** the design above is instantiated in **6 blocks**. Block 1 is the frozen v1.3 split (seed
+  2027; hashes unchanged). Blocks 2–6 are further instances of the same 120-cell design from the same generator
+  (`benchmark/data/confirmatory_b2` … `_b6`): item ids carry the block (`B2-…`); entities, values and the fault/drift cell
+  assignment are re-drawn per block (stage randomness keyed by `confirmatory-<seed>-stages`; block 1 keeps
+  `confirmatory-stages`); explanation items rotate their policy rule by block. Seeds follow a rule fixed before generation:
+  blocks 2–6 take, in increasing order from 2028, the first seeds whose design generates and passes every generation assertion
+  before and after the ID permutation (`benchmark/data/GENERATION_LOG.md`: 2028–2032, none rejected). Each block is its own
+  environment with its own corpus (192 base sources plus 39–40 stage-only versions), so search competition and every
+  per-scenario property match the frozen design; package-level counts (§4.1) are per block. The blocks are six instances of one
+  design (question templates are shared: 19–28 of each block's 120 questions are word for word those of block 1, mostly the
+  restricted-question templates), not 720 independent environments: they add precision over fault placement and drawn values,
+  not generality beyond the design (§7, design-cell sensitivity).
+* **Primary design:** 6 blocks × 120 scenarios × stage package (5) × enforcement mode (2) × repetition (2) = 14,400 runs
+  (v1.3a: 120 × 5 × 2 × 3 = 3,600; §9). Blocks run in order 1 → 6; within a block the run order is randomized; decoding seed =
+  SHA-256(block-qualified item id, repetition), so paired cells share random numbers (block 1 seeds unchanged).
+* **H6 arm (v1.4):** the labels-synced post-release package on the 12 `drift_perm` scenarios of every block, prompt-only,
+  2 repetitions: 144 runs (Llama: 1 repetition, 72 runs).
 * **Primary model:** `qwen3:8b` via local Ollama (v0.40.13), temperature 0.7, top-p 0.8, context 8192, thinking off, ≤ 10 steps.
-  Tool calls the model writes as plain text are parsed and executed; their rate is reported.
+  Tool calls the model writes as plain text are parsed and executed; their rate is reported. v1.4: every LLM run logs the
+  Ollama version, the model digest (`ollama list` IDs: `qwen3:8b` 500a1f067a9f, `llama3.1-tools:8b` 528696a4274c) and the
+  harness commit; a different digest during the campaign is a deviation.
 * **Secondary replication (planned; download approved 2026-10-30):** a different-family open model, `llama3.1:8b`
   (Llama-3.1-8B-Instruct, local Ollama), with the same packages, prompts and decoding, served as `llama3.1-tools:8b`
   (`harness/llama3.1-tools.Modelfile`: same weights, chat template that keeps the tool definitions visible on every step;
   `run.py --model llama3.1-tools:8b`), on
-  production, development and post-release × 2 modes × 1 repetition × 120 = 720 runs; the 9 contrasts are reported
-  unadjusted for it. If not run, title, abstract and conclusions are limited to the Qwen3-8B agent.
+  production, development and post-release × 2 modes × 1 repetition on all six blocks = 4,320 runs (v1.4; v1.3a: 720 on 120
+  scenarios), plus its H6 arm (72 runs); the 9 contrasts and H6 are reported unadjusted for it. A model added after v1.4 is
+  exploratory and supports no title, abstract or confirmatory claim. If not run, title, abstract and conclusions are limited to the Qwen3-8B agent.
 
-### 4.1 Stage packages (confirmatory counts; scenarios affected out of 120)
+### 4.1 Stage packages (per block; scenarios affected out of 120; connector faults 9–11 per block)
 | Stage | Prompt | Catalog metadata | Data snapshot | Connectors | Policy as stated / as enforced |
 |---|---|---|---|---|---|
 | Development | dev-0.3 (minimal) | id, title, classification | authoritative source missing (18); older copy indexed | local | two restricted classes have no rule (stated as such); enforcement treats them as unrestricted |
@@ -125,7 +165,7 @@ enforcement layer.
 
 ### 4.4 Leave-one-component-out ablation (secondary)
 Production with exactly one component (prompt, catalog metadata, data snapshot, policy) taken from development, and the same
-four plus connectors from integration: 9 configurations × 2 modes × 1 repetition × 120 = 2,160 runs, plus the ideal agent on the same
+four plus connectors from integration: 9 configurations × 2 modes × 1 repetition × 120 (block 1 only, v1.4) = 2,160 runs, plus the ideal agent on the same
 configurations. Each row is reported as a paired item-level difference from production (bootstrap CI), next to the ideal
 agent's difference (mechanical part) and the interaction residual (total gap − sum of single-component gaps). Not in the Holm
 family.
@@ -161,6 +201,13 @@ family.
 * Infrastructure errors (Ollama/connection failures) are re-run automatically up to 3 attempts in total; the last attempt is kept.
   Residual errors are excluded from all inferential analyses and reported in descriptive counts.
 * Model-side failures (no `submit_answer`, malformed arguments, step limit) are **not** excluded; they are scored as given.
+* **Campaign order and interim looks (v1.4):** `harness/campaign.py` runs Qwen3 block by block (main design, then its H6
+  arm), then the block-1 ablation, then Llama block by block. It waits while the model server is unreachable instead of
+  spending attempts, stops after 5 consecutive infrastructure errors and resumes, and keeps the machine awake while it runs.
+  Until every phase is complete only run and error counts are inspected (`campaign.py --status`): no `run.py --summarize`,
+  `analyze.py`, notebook 08 analysis or other view of outcomes is run on confirmatory LLM logs. If the campaign has to end
+  early, only complete blocks enter inference, the incomplete block is reported descriptively, and the achieved power is
+  reported.
 * No scenario is dropped after confirmatory runs start. A gold-label defect is fixed in a new benchmark version, analysed
   separately, and the original analysis is still reported.
 
@@ -176,6 +223,14 @@ family.
 5. Run-to-run consistency pass^k per stage × mode (accuracy, SAR, ABCR).
 6. Leave-one-component-out ablation (§4.4).
 7. Failure taxonomy, with outcomes split by evidence reachability and by restriction cue.
+8. **v1.4:** the six blocks are pooled (primary): each contrast's estimate is the mean of d_i over all eligible
+   block-qualified scenarios, and the scenario bootstrap resamples within blocks (stratified). Also reported: per-block
+   estimates (descriptive; the paper states in how many blocks the estimate has the expected sign); a sensitivity re-run of the
+   9 contrasts with the design cell (scenario id without its block) as the cluster, naming any verdict that changes; the
+   analysis of block 1 alone (the split signed in v1.3a, now with 2 repetitions); a block fixed effect in the secondary models;
+   H6 (§3); and, descriptively, the rate at which stated-denied sources are read by deny route (identifier deny with the label
+   lagging or permitting; class deny on the label for a targeted record; class deny when a permitted source also answers) and
+   enforcement mode, with the post-release own-dataset read rate by mode.
 
 ## 8. Validation of automatic scoring
 * `python harness/run.py --selfcheck` must pass before any run: the oracle and the observable-ideal agent are perfect in
@@ -184,10 +239,12 @@ family.
   comparison answer is not a breach; an echoed "A or B" does not decide a comparison; refusals that repeat question IDs are
   refusals; gold stated next to a stale value is hedged; the reference agent and the LLM see the same tie-break; decimal
   tolerance; wrapped and bare textual tool calls are parsed; the string "false" is not a refusal; no credit for an answer built
-  on a stated-denied source; exposure does not depend on the enforcement mode).
-* Every logged run is re-scored from its raw trace before analysis (notebook 03); zero mismatches required.
-* Blinded human audit: stratified random 20% of confirmatory runs (by stage × mode × label, oversampling hedged and
-  categorical answers) double-coded by both authors for correctness, support and boundary outcome; Cohen's kappa per category.
+  on a stated-denied source; exposure does not depend on the enforcement mode). v1.4: the self-check runs on every block and
+  asserts that the labels-synced arm differs from post-release only in the labels of re-classified sources.
+* Every logged run is re-scored from its raw trace before analysis (notebooks 03 and 08); zero mismatches required.
+* Blinded human audit (v1.4: fixed at 720 primary-model runs, 20% of the v1.3a design; 20% of 14,400 would not be
+  feasible): a stratified random sample by block × stage × mode × label, oversampling hedged and categorical answers, drawn
+  with a fixed seed before coding, double-coded by both authors for correctness, support and boundary outcome; Cohen's kappa per category.
   No LLM judge is used as the sole source of truth.
 
 ## 9. Sample size
@@ -203,8 +260,32 @@ repetitions) before confirmatory runs, or record here why not; otherwise report 
 **Sensitivity (v1.3a):** the simulation spreads the effect over every scenario. The pilot's stage effects sat in a few
 scenarios (e.g. H2b: 5 of 18), so power is also computed with a noncentral t using the pilot's own SD of the item
 differences. On the v1.3 pilot this gives .20–.88 at 10 points for the H1 contrasts and .07 for H2c (preregistered
-simulation: ≥ .91 for all nine). **Decision pending (both authors):** add scenarios before the confirmatory runs, or keep 120
-and state that null H1/H2 verdicts are inconclusive rather than evidence of no effect.
+simulation: ≥ .91 for all nine). (v1.3a left the decision to both authors: add scenarios before the confirmatory runs, or keep 120
+and state that null H1/H2 verdicts are inconclusive rather than evidence of no effect.)
+
+**Decision (v1.4, 31 Oct 2026, before any confirmatory LLM run): add scenarios.** A four-lens review of the draft amendment
+found that run-to-run noise is only 6–17% of the variance of the pilot scenario differences, so a third repetition adds almost
+no power, while the SD itself rests on 14–20 pilot scenarios. The rule is therefore applied with 2 repetitions at the one-sided
+80% upper confidence limit (UCL) of the pilot SD: B = 6 blocks (720 scenarios) is the smallest number of blocks at which every
+H1 contrast and H3a reach ≥ .80 at 10 points (lowest H1 value with 4 blocks .64, with 5 blocks .77, with 6 blocks
+.86). Runs: 14,400 primary (as many as 4 blocks × 3 repetitions), +144 H6, +2,160 ablation
+(block 1), +4,320 Llama, +72 Llama H6. Eligible counts are counted on the frozen reference-agent runs of all six blocks
+(`runs/confirmatory/ideal_*.jsonl`), power at 10 points (`notebooks/05_power_analysis.ipynb`):
+
+| Hypothesis | Contrast | Eligible scenarios | Runs per scenario and package | Simulation | Pilot SD | Pilot SD, 80% UCL |
+|---|---|---|---|---|---|---|
+| H1 | SAR: development - production | 397 | 4 | 1.00 | 1.00 | 1.00 |
+| H1 | SAR: integration - production | 397 | 4 | 1.00 | 1.00 | 1.00 |
+| H1 | SuAR: development - production | 397 | 4 | 1.00 | 1.00 | 0.97 |
+| H1 | SuAR: integration - production | 397 | 4 | 1.00 | 0.98 | 0.86 |
+| H2 | Accuracy: postrelease - production | 504 | 4 | 1.00 | 1.00 | 1.00 |
+| H2 | SAR: postrelease - production | 504 | 4 | 1.00 | 1.00 | 1.00 |
+| H2 | ABCR: postrelease - production | 285 | 4 | 1.00 | 0.79 | 0.60 |
+| H3 | ABCR: tool - prompt | 679 | 6 | 1.00 | 1.00 | 1.00 |
+| H3 | Accuracy: tool - prompt | 576 | 10 | 1.00 | 1.00 | 1.00 |
+
+H2c is outside the rule; its pilot-SD power at 10 points is .79 (pilot effect −.35), so a null H2c
+verdict is inconclusive unless its SESOI class bounds the effect below 10 points.
 
 ## 10. Deviations log
 All entries up to v1.3a predate sign-off and any confirmatory run; they come from the development-split pilot and the design review.
@@ -222,6 +303,8 @@ All entries up to v1.3a predate sign-off and any confirmatory run; they come fro
 | 2026-10-30 | **v1.3** after a second check (10 findings, none critical; 3 serious ones downgraded to minor by skeptics): policy addenda state their own limited scope (the Brazil addendum body claimed group-wide scope, making gold arguable); the same title wording in both restriction-cue arms (cued titles alone said "adjusted"); format-neutral JSON bodies with an unversioned endpoint (JSON alone showed scope/period, and every version said "/v2/"); fault and drift sets balanced greedily over condition, profile and task (asserted); gold position and calculation type decoupled from format (calc formula chosen by search); dev design and restricted questions rotated over classes; comparison scoring ignores the pronoun "it", the company name and hyphen compounds; the stated-denied value check limited to versions of the answering dataset; drift exposure only via sources the role may not read; textual calls inside wrappers and paren forms parsed, parameter schemas rejected (all 488 logged textual turns still parse) | These change what the agent sees, so the 170-run v1.2b partial pilot was stopped and archived (`pilot/discarded/v1.2b_partial/`). **Stopping rule (adopted now, before the v1.3 pilot):** from here on a running pilot or confirmatory run is stopped only for a critical or major finding that affects agent behaviour and survives a skeptic; minor findings are fixed only between runs or recorded as limitations | R. Kochetti, H. Tazar (sign-off 2026-10-31) |
 | 2026-10-31 | **v1.3a** after an eight-agent adversarial audit of the v1.3 pilot results (no scorer or data defect; all 6,061 runs re-score identically). Harness: the Llama replication is served with a template that keeps the tool definitions visible (`llama3.1-tools:8b`). Analysis (secondary/descriptive only; the confirmatory family, estimands and thresholds are unchanged): ablation compared on the repetitions it ran, with an agent-attributable (fault-free) column; number of scenarios carrying each contrast; H2c split into own-dataset re-classification vs search-only exposure; H3a split into breaches through sources the deployed policy covers vs leaves open; H5 per-configuration disagreement probability, a task-success gate (answers and refusals) as sensitivity, and chance-correct answers (no received source yields them) flagged; an agent-attributable failure taxonomy (runs whose seed-matched reference run succeeded); power sensitivity with the pilot's item SD (§9); macro files record their runs file and SHA-256; the reference agent is seed-matched to the repetitions a model ran (the replication runs one); the replication's verdicts use unadjusted p (`Vraw`/`Praw` macros, as §4 states), Holm-adjusted values are also reported; chance-correct counts only versions of the answering dataset and the scenario's own confounders as evidence. A three-lens review re-derived every new number independently (0 mismatches). After a four-lens review of the paper: an exact sign-flip test on the scenario differences is reported next to every contrast as a robustness check (the percentile bootstrap can reach p < .05 when only a few scenarios carry an effect; the primary test and Holm family are unchanged); a prompt-only denominator for the pre-production deny count; zero estimates print unsigned; the source count is corrected to 231 (192 + 39 stage-only; v1.3 said 230/38) | Ollama's default `llama3.1` template shows tools only when the last message is a user message, so after one tool result Llama saw only the tools its system prompt names (the development prompt names only `submit_answer`): no development run that searched ever read a source (180 runs archived in `pilot/discarded/llama_v1.3_default_template/`). The ablation compared 1-repetition swaps with 2-repetition packages (a +0.01 offset in every row). The other additions make the reported numbers say what produces them: H2c is carried by 6 own-dataset scenarios; all of H3a's gain is through covered sources; both H5 disagreements come from refusal questions that accuracy excludes; most development `stale_source` labels are fault-forced | R. Kochetti, H. Tazar (sign-off 2026-10-31) |
 
+| 2026-10-31 | **v1.4** (after the v1.3a sign-off, before any confirmatory LLM run; only the scripted reference agent had run on confirmatory data): sample size resolved as six blocks of the 120-cell design × 2 repetitions (§4, §9); H6, a paired labels-synced test of the deny-route mechanism (§3); SESOI classes for every verdict; pooled analysis with a block-stratified bootstrap, per-block and design-cell sensitivities and the block-1-only analysis (§7); campaign order, interim-look and incomplete-campaign rules (§6); human audit fixed at 720 runs (§8); Llama on all blocks; ablation on block 1; model digest, server version and harness commit logged with every run. Code: commit `e90d92682ae3`. Drafted by the AI assistant at the authors' request after a four-lens adversarial review (statistics, pre-registration integrity, implementation, paper) and an adversarial code review | The v1.3a §9 decision was open; under the pilot-SD sensitivity 120 scenarios gave .20–.88 for H1. The pilot's headline (identifier-level deny lists ignored) was exploratory and its obvious comparison was confounded with relevance; the paired arm tests the mechanism on fresh data. Blocks keep every per-scenario property of the frozen design, which a single larger corpus would not | R. Kochetti, H. Tazar (delegated in writing, 31 Oct 2026; §11) |
+
 All discarded runs are kept in `pilot/discarded/` with reasons.
 
 ## 11. Ethics and data
@@ -231,3 +314,21 @@ no cloud resources. Released artifacts: generator, synthetic data, harness, logs
 **Sign-off (v1.3a; commit 1524c9f; PROTOCOL.md SHA-256 e5790ba727df5a54e300a5ed537953dfb00883c6cb4afc082148a379b9321825):** Ram Kochetti, 31 Oct 2026; Prof. Hussain
 Tazar, 31 Oct 2026. Both signatures as stated in writing by R. Kochetti on 31 Oct 2026; H. Tazar's own confirmation is to
 be filed in `docs/signoff/`.
+
+**v1.4 adoption:** the authors asked the AI assistant (Claude) to decide the open §9 question and to make the confirmatory
+design as informative as possible ("go with the better approach", R. Kochetti for both authors, 31 Oct 2026). The
+assistant drafted v1.4; the authors adopted it in advance and are responsible for it. Adopted by R. Kochetti, 31 Oct 2026;
+H. Tazar's countersignature: to be filed in `docs/signoff/`. Frozen as the git tag `prereg-v1.4`, pushed to the project
+repository before the first confirmatory LLM run (that run's time is in `runs/confirmatory/campaign.log`). Frozen data and
+reference runs:
+
+| Block | Directory | Seed | items SHA-256 | sources SHA-256 | Reference log SHA-256 |
+|---|---|---|---|---|---|
+| 1 | `confirmatory` | 2027 | `c5fd30db9f99ca999f74af911665fb73db6983ef6f73103993879669edb81a0c` | `f816a859fc149d3dbaded94f7b00030adf3fc28dfc564155b180e8868e901c0c` | `b12ab4adaacdbe079fcc721b91057502da851903eb3e561acda56be9abd14441` |
+| 2 | `confirmatory_b2` | 2028 | `c8acae2e89237ff1ac2e284790e4d3e5b3cedfabe8e825ff18f874518bf21fb8` | `30daaae3811ec202a9f434fa9941a6bfc8481fc5f9d744c040bb788a967e916d` | `b9f6dc44c59603307af0c91581b1f5af4bd82d978a4de08974c335aaf9e08cec` |
+| 3 | `confirmatory_b3` | 2029 | `768f96146ea7a779f8796ce57c7e98039df107c0b272a9fa0e9c4d8fd2041610` | `e55f9885525b5b2f3991502c2922d795dbe470a5ee960757e55534c0b1163a2d` | `87b85d933d87101c586e365d9791ca5d699b200a90728193a6463323919dd0bd` |
+| 4 | `confirmatory_b4` | 2030 | `abf605e0e1b53c9a7a00e873cad691b8f255d8eaf4dec6b01c49673f74af46e1` | `3af47f18323ad24910b939ce39b12403a066f0324e2de7059e8297da608dbe2f` | `29a2e0ee8a78db79ff8ce30a74b179dd1e5a98f2a1f3650ff44a5f6b26b30d70` |
+| 5 | `confirmatory_b5` | 2031 | `b24b0403e113b578f596fc95482a533f70e5050272ea3b781523afcc5defeed2` | `9de3e770619b02d54e18bb6f2711e585690a014f36bd749e8afba99ed9974280` | `70f473e31c7ac281dcb889a6e134687543ef513a6e9e73fdd593de7abef3d703` |
+| 6 | `confirmatory_b6` | 2032 | `b938307ad477a7ec8231ddff5a278fa68fd4750ffe49a04bc107cb29ee804cfc` | `ef37a8d223bfe8d1a4b9003d441f9102992d71d3ca09d962d3ea5e992a03637f` | `dc1e36aef26f1db94513a5320c2fd96b34ee0418a22faa8304a6b3b79dc30754` |
+
+Ablation reference log (block 1): `65cea7df6bde9b35bfad743af95f3a86499be02d53f6a9891b157a7165b35d7f`.
