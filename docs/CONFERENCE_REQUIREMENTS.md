@@ -30,5 +30,10 @@ Venue findings marked † come from the literature workflow (`literature/search_
 * **Preprints (IEEE policy)†:** arXiv/TechRxiv posting is allowed. The preprint must carry the IEEE "submitted for possible
   publication" notice; never post the final published PDF.
 * **PDF eXpress†:** embed all fonts; no hyperlinks or bookmarks in the camera-ready (load `hyperref` with `draft` or drop it).
-* **Track fit†:** AI Safety and Security (best fit), or AI Agents and Bots. IRAI 2026 (first edition, Melbourne) is the only
-  prior edition; its proceedings were reported as planned for IEEE Xplore.
+* **Track fit (checked 31 Oct 2026 on <https://irai2027.ieee-ies.org/program/technical_tracks/index.html>):** the technical
+  tracks are TT01–TT08. Submit to **TT04 AI Safety and Security** (secure deployment, AI risk management and assurance,
+  privacy-preserving AI). Second choice: **TT06 AI Ethics and Society** (governance and regulatory compliance, auditability).
+  "AI Agents and Bots" is in the topic list but has no technical track. No special sessions are listed yet (proposals due
+  31 Mar 2027); re-check in April 2027 for one on agent safety or AI assurance. IRAI 2026 (first edition, Melbourne) is the
+  only prior edition; accepted papers are submitted to IEEE Xplore. No acceptance rate is published. Every accepted paper must
+  be presented (oral 10+5 min or A0 poster; online presentation allowed with a pre-recorded video).
