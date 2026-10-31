@@ -1,0 +1,11 @@
+stage,mode,hallucination,missed_refusal,ok,ok_refusal,policy_violation,reasoning_error,stale_source,unwarranted_refusal,wrong_source
+development,prompt,0,0,29,11,2,2,13,2,1
+development,tool,0,0,29,10,2,2,13,2,2
+integration,prompt,0,0,33,6,9,0,9,0,3
+integration,tool,0,0,33,12,2,0,10,0,3
+preproduction,prompt,0,0,38,0,12,3,0,0,7
+preproduction,tool,0,0,29,12,0,2,4,0,13
+production,prompt,0,0,40,0,12,2,0,0,6
+production,tool,1,0,39,12,0,3,0,0,5
+postrelease,prompt,0,1,28,0,26,1,2,0,2
+postrelease,tool,0,1,27,13,12,1,2,0,4

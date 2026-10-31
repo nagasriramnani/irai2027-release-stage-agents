@@ -1,0 +1,33 @@
+% related_work_table.tex -- single-column comparison table (IEEEtran conference).
+% Requires \usepackage{booktabs} and \usepackage{amssymb} (for \checkmark).
+% Ratings follow literature/related_work_matrix.csv.
+\begin{table}[t]
+\centering
+\caption{Comparison with related benchmarks}
+\label{tab:related}
+\scriptsize
+\setlength{\tabcolsep}{2.2pt}
+\begin{tabular}{@{}lccccccc@{}}
+\toprule
+Benchmark & Roles & Perm. & Src-App. & Support & Drift & Stages & Enf.-Abl. \\
+\midrule
+EnterpriseBench~\cite{vishwakarma2025enterprisebench}        & $\checkmark$ & $\checkmark$ & --      & --           & --      & -- & -- \\
+CRMArena-Pro~\cite{huang2026crmarenapro}                     & $\circ$      & $\circ$      & --      & --           & --      & -- & -- \\
+ACCESS DENIED INC~\cite{fazlija2025accessdenied}             & $\checkmark$ & $\checkmark$ & --      & --           & --      & -- & -- \\
+OrgAccess~\cite{sanyal2026orgaccess}                         & $\checkmark$ & $\checkmark$ & --      & --           & --      & -- & -- \\
+WorkSurface-Bench~\cite{liang2026worksurfacebench}           & $\circ$      & --           & $\circ$ & $\circ$      & --      & -- & -- \\
+LayerRAG-Bench~\cite{shams2026layerrag}                      & --           & $\circ$      & $\circ$ & $\checkmark$ & $\circ$ & -- & -- \\
+GaRAGe~\cite{sorodoc2025garage}                              & --           & --           & $\circ$ & $\checkmark$ & $\circ$ & -- & -- \\
+Prompts Don't Protect~\cite{uppala2026promptsdontprotect}    & $\circ$      & $\checkmark$ & --      & --           & --      & -- & $\checkmark$ \\
+\midrule
+Ours                                                         & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark^{a}$ & $\checkmark$ \\
+\bottomrule
+\end{tabular}
+
+\vspace{2pt}
+\parbox{\columnwidth}{\scriptsize $\checkmark$ present; $\circ$ partial; -- absent.
+Roles: role/persona profiles. Perm.: permission boundaries scored. Src-App.: authoritative-source selection scored.
+Support: claim-level evidence support. Drift: stale/drifted documents or permissions. Stages: release-stage
+configurations compared. Enf.-Abl.: prompt-only vs.\ enforced permissions.
+$^{a}$Simulated stage-modelled configuration packages, not live deployments.}
+\end{table}

@@ -1,0 +1,65 @@
+10/480 runs, 12.0s/run, ETA 94 min
+20/480 runs, 11.5s/run, ETA 89 min
+30/480 runs, 12.1s/run, ETA 91 min
+40/480 runs, 12.1s/run, ETA 89 min
+50/480 runs, 11.8s/run, ETA 85 min
+60/480 runs, 12.0s/run, ETA 84 min
+70/480 runs, 12.1s/run, ETA 82 min
+80/480 runs, 11.9s/run, ETA 79 min
+90/480 runs, 12.0s/run, ETA 78 min
+100/480 runs, 11.8s/run, ETA 75 min
+110/480 runs, 11.7s/run, ETA 72 min
+120/480 runs, 11.7s/run, ETA 70 min
+130/480 runs, 11.6s/run, ETA 68 min
+140/480 runs, 11.7s/run, ETA 66 min
+150/480 runs, 11.6s/run, ETA 64 min
+160/480 runs, 11.7s/run, ETA 62 min
+170/480 runs, 11.6s/run, ETA 60 min
+180/480 runs, 11.6s/run, ETA 58 min
+190/480 runs, 11.6s/run, ETA 56 min
+200/480 runs, 11.7s/run, ETA 55 min
+210/480 runs, 11.8s/run, ETA 53 min
+220/480 runs, 11.7s/run, ETA 51 min
+230/480 runs, 11.7s/run, ETA 49 min
+240/480 runs, 11.6s/run, ETA 46 min
+250/480 runs, 11.5s/run, ETA 44 min
+260/480 runs, 11.5s/run, ETA 42 min
+270/480 runs, 11.5s/run, ETA 40 min
+280/480 runs, 11.5s/run, ETA 38 min
+290/480 runs, 11.5s/run, ETA 36 min
+300/480 runs, 11.5s/run, ETA 34 min
+310/480 runs, 11.5s/run, ETA 33 min
+320/480 runs, 11.6s/run, ETA 31 min
+330/480 runs, 11.6s/run, ETA 29 min
+340/480 runs, 11.5s/run, ETA 27 min
+350/480 runs, 11.5s/run, ETA 25 min
+360/480 runs, 11.6s/run, ETA 23 min
+370/480 runs, 11.6s/run, ETA 21 min
+380/480 runs, 11.6s/run, ETA 19 min
+390/480 runs, 11.5s/run, ETA 17 min
+400/480 runs, 11.6s/run, ETA 15 min
+410/480 runs, 11.6s/run, ETA 14 min
+420/480 runs, 11.6s/run, ETA 12 min
+430/480 runs, 11.6s/run, ETA 10 min
+440/480 runs, 11.6s/run, ETA 8 min
+450/480 runs, 11.6s/run, ETA 6 min
+460/480 runs, 11.7s/run, ETA 4 min
+470/480 runs, 11.7s/run, ETA 2 min
+480/480 runs, 11.7s/run, ETA 0 min
+        stage |          mode |   n |              sar |        supported |             abcr |      correct_ans |     refusal_corr |     over_restric | blocked
+production~metadata@development |        prompt |  30 |     0.75 (18/24) |     0.75 (18/24) |     0.93 (28/30) |     0.75 (18/24) |       0.83 (5/6) |      0.00 (0/24) | 0
+production~metadata@development |          tool |  30 |     0.79 (19/24) |     0.75 (18/24) |     1.00 (30/30) |     0.79 (19/24) |       1.00 (6/6) |      0.00 (0/24) | 0
+production~metadata@integration |        prompt |  30 |     0.79 (19/24) |     0.79 (19/24) |     0.80 (24/30) |     0.79 (19/24) |       0.00 (0/6) |      0.00 (0/24) | 0
+production~metadata@integration |          tool |  30 |     0.83 (20/24) |     0.79 (19/24) |     1.00 (30/30) |     0.79 (19/24) |       1.00 (6/6) |      0.00 (0/24) | 0
+production~policy@development |        prompt |  30 |     0.83 (20/24) |     0.79 (19/24) |     0.83 (25/30) |     0.79 (19/24) |       0.17 (1/6) |      0.00 (0/24) | 0
+production~policy@development |          tool |  30 |     0.83 (20/24) |     0.79 (19/24) |     0.97 (29/30) |     0.79 (19/24) |       0.83 (5/6) |      0.00 (0/24) | 0
+production~policy@integration |        prompt |  30 |     0.83 (20/24) |     0.79 (19/24) |     0.80 (24/30) |     0.79 (19/24) |       0.00 (0/6) |      0.00 (0/24) | 0
+production~policy@integration |          tool |  30 |     0.83 (20/24) |     0.79 (19/24) |     1.00 (30/30) |     0.79 (19/24) |       1.00 (6/6) |      0.00 (0/24) | 0
+production~prompt@development |        prompt |  30 |     0.92 (22/24) |     0.88 (21/24) |     0.83 (25/30) |     0.92 (22/24) |       0.17 (1/6) |      0.00 (0/24) | 0
+production~prompt@development |          tool |  30 |     0.88 (21/24) |     0.83 (20/24) |     1.00 (30/30) |     0.83 (20/24) |       1.00 (6/6) |      0.00 (0/24) | 0
+production~prompt@integration |        prompt |  30 |     0.92 (22/24) |     0.88 (21/24) |     0.90 (27/30) |     0.88 (21/24) |       0.50 (3/6) |      0.00 (0/24) | 0
+production~prompt@integration |          tool |  30 |     0.92 (22/24) |     0.88 (21/24) |     1.00 (30/30) |     0.88 (21/24) |       1.00 (6/6) |      0.00 (0/24) | 0
+production~snapshot@development |        prompt |  30 |     0.58 (14/24) |     0.58 (14/24) |     0.70 (21/30) |     0.62 (15/24) |       0.00 (0/6) |      0.00 (0/18) | 0
+production~snapshot@development |          tool |  30 |     0.62 (15/24) |     0.62 (15/24) |     1.00 (30/30) |     0.67 (16/24) |       1.00 (6/6) |      0.00 (0/18) | 0
+production~snapshot@integration |        prompt |  30 |     0.67 (16/24) |     0.67 (16/24) |     0.80 (24/30) |     0.71 (17/24) |       0.00 (0/6) |      0.00 (0/18) | 0
+production~snapshot@integration |          tool |  30 |     0.67 (16/24) |     0.67 (16/24) |     1.00 (30/30) |     0.71 (17/24) |       1.00 (6/6) |      0.00 (0/18) | 0

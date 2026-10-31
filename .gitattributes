@@ -1,0 +1,3 @@
+# Store every file byte for byte (no CRLF/LF conversion): the macro files record the SHA-256 of the run logs' raw bytes,
+# and notebook 07 checks it.
+* -text

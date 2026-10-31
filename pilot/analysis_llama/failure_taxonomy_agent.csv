@@ -1,0 +1,7 @@
+stage,mode,hallucination,incomplete,missed_refusal,ok,ok_refusal,policy_violation,reasoning_error,stale_source,wrong_source
+development,prompt,2,1,1,7,2,4,3,0,2
+development,tool,2,0,1,8,2,4,3,2,0
+production,prompt,0,0,0,16,4,2,5,0,3
+production,tool,0,0,1,16,5,0,5,0,3
+postrelease,prompt,0,0,2,13,3,8,2,1,1
+postrelease,tool,0,2,1,14,4,5,1,1,2

@@ -1,0 +1,24 @@
+family,hyp,outcome,factor,a,b,restrict,method,expected,diff,lo,hi,p,items,p_holm,verdict
+confirmatory,H1,sar,stage,production,development,all,faultfree,-1,-0.6071428571428571,-0.8214285714285714,-0.39285714285714285,0.0004998750312421895,14,0.004498875281179706,supported
+confirmatory,H1,sar,stage,production,integration,all,faultfree,-1,,,,1.0,0,1.0,not estimable
+confirmatory,H1,supported,stage,production,development,all,faultfree,-1,-0.35714285714285715,-0.5714285714285714,-0.14285714285714285,0.0004998750312421895,14,0.004498875281179706,supported
+confirmatory,H1,supported,stage,production,integration,all,faultfree,-1,,,,1.0,0,1.0,not estimable
+confirmatory,H2,correct_ans,stage,production,postrelease,all,faultfree,-1,-0.2222222222222222,-0.4166666666666667,-0.05555555555555555,0.015996000999750064,18,0.09597600599850038,null
+confirmatory,H2,sar,stage,production,postrelease,all,faultfree,-1,-0.3055555555555556,-0.5,-0.1388888888888889,0.0004998750312421895,18,0.004498875281179706,supported
+confirmatory,H2,abcr_exposed,stage,production,postrelease,all,drift,-1,-0.175,-0.35,-0.025,0.04598850287428143,20,0.22994251437140717,null
+confirmatory,H3,abcr_exposed,mode,prompt,tool,"development,integration,postrelease",raw,1,0.03571428571428571,-0.017857142857142856,0.10714285714285714,0.4068982754311422,28,1.0,null
+confirmatory,H3,correct_ans,mode,prompt,tool,all,raw,0,0.041666666666666664,-0.041666666666666664,0.13194444444444442,0.3709072731817046,24,1.0,null
+descriptive,did,sar,stage,production,development,all,did,-1,-0.3125,-0.5416666666666666,-0.08333333333333333,0.011497125718570358,24,,
+descriptive,did,supported,stage,production,development,all,did,-1,0.020833333333333332,-0.22916666666666666,0.2708333333333333,0.9732566858285429,24,,
+descriptive,did,correct_ans,stage,production,postrelease,all,did,-1,-0.2222222222222222,-0.4166666666666667,-0.05555555555555555,0.015996000999750064,18,,
+descriptive,did,sar,stage,production,postrelease,all,did,-1,-0.3055555555555556,-0.5,-0.1388888888888889,0.0004998750312421895,18,,
+descriptive,exposedall,abcr_exposed,stage,production,postrelease,all,exposed,-1,-0.14285714285714285,-0.2857142857142857,-0.017857142857142856,0.02799300174956261,28,,
+descriptive,costpkg,correct_ans,mode,prompt,tool,development,raw,0,0.0,0.0,0.0,1.0,24,,
+descriptive,costpkg,correct_ans,mode,prompt,tool,production,raw,0,0.08333333333333333,-0.125,0.2916666666666667,0.5393651587103224,24,,
+descriptive,costpkg,correct_ans,mode,prompt,tool,postrelease,raw,0,0.0,-0.2222222222222222,0.2222222222222222,1.0,18,,
+descriptive,total,sar,stage,production,development,all,raw,-1,-0.6875,-0.8541666666666666,-0.5208333333333334,0.0004998750312421895,24,,
+descriptive,total,supported,stage,production,development,all,raw,-1,-0.3541666666666667,-0.5208333333333334,-0.20833333333333334,0.0004998750312421895,24,,
+descriptive,total,correct_ans,stage,production,postrelease,all,raw,-1,-0.2222222222222222,-0.4166666666666667,-0.05555555555555555,0.015996000999750064,18,,
+descriptive,invariant,abcr_exposed,mode,prompt,tool,"production,preproduction",raw,1,0.07142857142857142,0.0,0.17857142857142858,0.24543864033991503,28,,
+descriptive,cost,sar,mode,prompt,tool,all,raw,0,2.3129646346357427e-18,-0.06944444444444443,0.0763888888888889,0.973756560859785,24,,
+descriptive,cost,over_restriction,mode,prompt,tool,all,raw,0,0.041666666666666664,-0.05555555555555556,0.15277777777777776,0.42889277680579857,24,,

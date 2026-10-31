@@ -1,0 +1,10 @@
+hyp,outcome,contrast,vs_ideal,pilot_items,confirm_items,pilot_effect,power_pilot_effect,power_half_effect
+H1,SAR,development - production,True,24,96,0.062,0.5585,0.0895
+H1,SAR,integration - production,True,24,96,0.083,0.61675,0.06125
+H1,SuAR,development - production,True,24,96,0.073,0.39725,0.036
+H1,SuAR,integration - production,True,24,96,0.135,0.94675,0.17725
+H2,Accuracy,postrelease - production,True,18,72,-0.014,0.00825,0.0035
+H2,SAR,postrelease - production,True,18,72,-0.042,0.02375,0.0065
+H2,ABCR,postrelease - production,True,12,48,-0.229,0.9335,0.11325
+H3,ABCR,tool - prompt,False,16,64,0.219,1.0,0.77175
+H3,Accuracy,tool - prompt,False,24,96,-0.049,0.999,0.398

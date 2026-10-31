@@ -1,0 +1,12 @@
+# Python 3.13.9 (Anaconda). Versions used to produce the results in this repository.
+numpy==2.3.5
+pandas==2.3.3
+scipy==1.16.3
+statsmodels==0.14.5
+matplotlib==3.10.6
+tabulate==0.9.0
+pypdf==6.14.2
+nbformat==5.10.4
+nbconvert==7.16.6
+ipykernel==6.31.0
+# Agent runs only (optional): Ollama 0.40.13 with model qwen3:8b  ->  `ollama pull qwen3:8b`

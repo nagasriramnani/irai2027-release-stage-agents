@@ -1,0 +1,174 @@
+% IRAI 2027 regular paper (<= 6 pages incl. references, IEEE two-column, single-blind).
+% Build: latexmk -pdf main.tex (or upload paper/ to Overleaf). Result numbers are macros from generated/results_macros.tex,
+% written by harness/analyze.py (notebook 04). Never type a result number by hand.
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+\usepackage[T1]{fontenc} % Times via Type 1 fonts under both pdfLaTeX and XeTeX (Tectonic)
+\usepackage{cite}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs,tabularx}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{xcolor}
+\input{generated/results_macros.tex}
+\IfFileExists{generated/results_macros_llama.tex}{\input{generated/results_macros_llama.tex}}{}
+% Red markers flag text that depends on PILOT data and must be rewritten after the confirmatory run.
+% Before submission: \renewcommand{\pilot}[1]{#1}, remove all markers, and run notebooks/07.
+\newcommand{\pilot}[1]{\textcolor{red}{#1}}
+\relpenalty=10000 \binoppenalty=10000 % no line breaks inside inline math
+\newcommand{\SAR}{SAR}
+\newcommand{\SuAR}{SuAR}
+\newcommand{\ABCR}{ABCR}
+
+\begin{document}
+\bstctlcite{IEEEexample:BSTcontrol}
+
+\title{Release-Stage Configurations and Permission Enforcement for an Enterprise LLM Agent}
+
+\author{\IEEEauthorblockN{Ram Kochetti}
+\IEEEauthorblockA{\textit{[Department, Institution]}\\{}
+[City, Country]\\{}
+[email]}
+\and
+\IEEEauthorblockN{Hussain Tazar}
+\IEEEauthorblockA{\textit{[Department, Institution]}\\{}
+[City, Country]\\{}
+[email]}}
+
+\maketitle
+
+\begin{abstract}
+Enterprise question-answering agents move through development, integration, acceptance-testing and production configurations, and then operate while documents and permissions change. A release gate that scores answer accuracy sees neither which source an answer came from nor whether the agent read records the user may not see. We report a controlled, fully synthetic study in which a tool-using Qwen3-8B agent answers questions for six business roles over tables, API responses and policy documents. Five stage-modelled configuration packages are crossed with prompt-only and tool-level permission enforcement, under counterbalanced stale, distractor and relevant-but-prohibited sources. From tool traces we score source appropriateness, supported answers and access-boundary compliance separately from accuracy and refusals. A scripted, policy-compliant reference agent marks the scenarios each package leaves solvable, so that package effects on the agent are estimated where no injected fault forces a failure. \pilot{In an exploratory pilot of \NRuns{} runs, the raw development gap in source appropriateness (\ConTotalSarDevelopmentAll) shrank to \ConHOneSarDevelopmentAll{} where no fault forced a failure. The clearest agent behaviour was ignoring source-level deny lists that contradicted the visible label: after a re-classification announced only by identifier, the agent read the re-classified datasets in \PostOwnBreach{} of \PostOwnN{} runs (Llama-3.1-8B: \LlamaPostOwnBreach{} of \LlamaPostOwnN), which tool-level enforcement, executing the lagging labels, could not stop. An accuracy-only gate promoted \GateDisagree{} configurations that a boundary-aware gate held, because accuracy ignores the questions an agent should refuse.}
+\end{abstract}
+
+\begin{IEEEkeywords}
+Access control, evaluation, LLM agents, release engineering, responsible AI, retrieval-augmented generation
+\end{IEEEkeywords}
+
+\section{Introduction}
+Organizations deploy language-model agents that answer employees' questions by retrieving records from finance ledgers, HR systems, CRM interfaces and policy libraries~\cite{vishwakarma2025enterprisebench,huang2026crmarenapro}. Such an agent is a configuration rather than a single artifact: a prompt version, a tool schema, an index snapshot, a set of connectors and a permission policy. That configuration is promoted as a package through development, integration, user-acceptance testing (UAT) and production, and is then monitored in operation~\cite{breck2017mltestscore,xia2024eddops}.
+
+Each package changes what the agent can see and how it is instructed. A development index may lack the current version of a table, an integration connector may serve a superseded extract, and a candidate policy may deny a role a source it needs. After release, documents are revised and datasets are re-classified while index labels lag. The resulting failures are not only wrong numbers: an agent can return a correct figure read from a stale extract, read a record the user is not cleared to see, or refuse a legitimate request. These are separate harms to reliability, accountability and confidentiality, and an accuracy-based release gate merges them. The NIST generative-AI profile notes that pre-deployment tests may not reflect deployment conditions~\cite{nist2024genai600}; how release configurations change what a permissioned agent reads, cites and discloses has not been tested under controlled conditions.
+
+Prior work covers parts of this problem (Section~\ref{sec:related}). Enterprise benchmarks fix the deployment configuration, access-control studies score permissions without source choice or evidence support, and attribution metrics accept any retrieved document as evidence, so an answer built on a stale or prohibited record counts as supported. What is missing is a controlled estimate of how each release package, and the enforcement layer, changes source choice, support and boundary compliance for the same agent and tasks, with injected faults separated from agent behaviour.
+
+We build a synthetic enterprise in which every gold answer is computed from generated data, so all outcomes are scored deterministically from tool traces. One agent runs through a factorial of five stage packages and two enforcement modes. Because packages inject faults by design, part of every stage gap would affect any agent; a scripted reference agent identifies the scenarios no fault makes unsolvable, and our stage hypotheses are tested on those. The contributions are:
+\begin{enumerate}
+\item A benchmark of 120 role-specific scenarios over six profiles, four task classes and restricted questions, with authoritative, stale, distractor, relevant-but-prohibited and no-permitted-source conditions counterbalanced against format, calculation type and restriction cue, and five hash-frozen packages that include post-release document and permission drift (Section~\ref{sec:design}).
+\item Trace-based measures that score access-boundary compliance (\ABCR)~\cite{baek2026leakage} separately from source appropriateness (\SAR), supported answers (\SuAR) and accuracy, separate correct refusals from over-restriction and give no credit for answers built on a source the stated policy denies, and an agent-attributable estimand defined on the scenarios a policy-compliant reference agent solves (Section~\ref{sec:measures}).
+\item A pre-specified analysis with scenario-clustered inference, a release-gate decision test and a component ablation, \pilot{applied here to an exploratory pilot on a separate scenario split} (Section~\ref{sec:results}), and an open release of all artifacts, including the protocol and its deviation log.
+\end{enumerate}
+
+\section{Related Work}
+\label{sec:related}
+\textbf{Enterprise agent benchmarks.} Benchmarks place agents in simulated companies~\cite{xu2025theagentcompany} and policy-constrained tool use, where repeated trials expose run-to-run variation~\cite{yao2025taubench} and policy-conditioned success falls below nominal success~\cite{levy2026stwebagentbench}. EnterpriseBench adds departmental personas and access hierarchies~\cite{vishwakarma2025enterprisebench}; CRMArena-Pro reports near-zero confidentiality awareness that prompting improves at a cost to task success~\cite{huang2026crmarenapro}; WorkSurface-Bench scores knowledge-surface routing separately from answer quality~\cite{liang2026worksurfacebench}; LayerRAG-Bench injects stale and denied evidence faults~\cite{shams2026layerrag}. These benchmarks fix the configuration or vary a single layer; none crosses release packages with an enforcement arm for record retrieval (Table~\ref{tab:related}).
+
+\textbf{Access control and policy enforcement.} LLMs fail role-based permissions as rules compose~\cite{sanyal2026orgaccess}, must both refuse unauthorized and answer legitimate requests~\cite{fazlija2025accessdenied}, and do not obey a dependable instruction hierarchy~\cite{geng2026controlillusion}; output-only audits miss leakage through internal channels~\cite{elyagoubi2026agentleak}. System-level designs enforce policy outside the model through capabilities~\cite{debenedetti2025camel} or reference monitors~\cite{palumbo2026policy}. Architectural enforcement outperforms prompt allowlists for tool access~\cite{uppala2026promptsdontprotect}, and retrieval-time attribute-based gating removes cross-tenant leakage relative to ungated retrieval~\cite{arceo2026securing}. We treat the enforcement advantage as an expected effect, and measure where it fails (policy gaps, lagging labels) and what it costs in accuracy and over-restriction.
+
+\textbf{Attribution, staleness and abstention.} Support is defined against identified sources~\cite{rashkin2023ais} and checked at claim level~\cite{gao2023alce}; Trust-Score reports that parametric knowledge inflates correctness relative to grounded citation and refusal~\cite{song2025trustscore}, and a correct citation need not be the evidence actually used~\cite{wallat2025correctness}. Outdated documents mislead retrieval-augmented generation even when current ones are retrieved~\cite{ouyang2025hoh}; refusal without supporting documents is tested in~\cite{chen2024rgb}, and stricter behaviour also rejects benign requests~\cite{cui2025orbench}. Here a claim counts as supported only if its cited source was read, is permitted for the role and is current.
+
+\textbf{Lifecycle evaluation.} EDDOps proposes evaluation across development and operation of LLM agents~\cite{xia2024eddops}; empirical evidence covers model-version drift~\cite{chen2024chatgptdrift}, a release-gate case study~\cite{maiorano2026qualitygate} and injected tool faults~\cite{gupta2026reliabilitybench}. We contribute a controlled comparison of documented packages with fault-adjusted, scenario-clustered estimates.
+
+\begin{table}[t]
+\centering
+\caption{Comparison with closely related benchmarks}
+\label{tab:related}
+\scriptsize
+\setlength{\tabcolsep}{2.4pt}
+\begin{tabular}{@{}lccccccc@{}}
+\toprule
+Benchmark & Roles & Perm. & Src. & Support & Drift & Pkg. & Enf. \\
+\midrule
+EnterpriseBench~\cite{vishwakarma2025enterprisebench} & $\checkmark$ & $\checkmark$ & -- & -- & -- & -- & -- \\
+CRMArena-Pro~\cite{huang2026crmarenapro} & $\circ$ & $\circ$ & -- & -- & -- & -- & -- \\
+ACCESS DENIED INC~\cite{fazlija2025accessdenied} & $\checkmark$ & $\checkmark$ & -- & -- & -- & -- & -- \\
+OrgAccess~\cite{sanyal2026orgaccess} & $\checkmark$ & $\checkmark$ & -- & -- & -- & -- & -- \\
+WorkSurface-Bench~\cite{liang2026worksurfacebench} & $\circ$ & -- & $\circ$ & $\circ$ & -- & -- & -- \\
+LayerRAG-Bench~\cite{shams2026layerrag} & -- & $\circ$ & $\circ$ & $\checkmark$ & $\circ$ & $\circ^{a}$ & -- \\
+Prompts Don't Protect~\cite{uppala2026promptsdontprotect} & $\circ$ & $\checkmark$ & -- & -- & -- & -- & $\checkmark$ \\
+\midrule
+This work & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark^{b}$ & $\checkmark$ \\
+\bottomrule
+\end{tabular}\\[2pt]
+\parbox{\columnwidth}{\scriptsize $\checkmark$ present, $\circ$ partial, -- absent. Perm.: permission boundary scored; Src.: authoritative-source selection scored; Support: answer support by cited evidence (here citation-level: read, permitted, current); Drift: stale or drifted documents/permissions; Pkg.: release configurations compared; Enf.: prompt-only vs.\ enforced permissions. $^{a}$One crossed contract-mode factor. $^{b}$Simulated packages. Release-gate case studies~\cite{maiorano2026qualitygate} are not benchmarks and are omitted.}
+\end{table}
+
+\section{Benchmark and Study Design}
+\label{sec:design}
+\subsection{Synthetic Enterprise and Scenarios}
+A generator builds a fictional manufacturer with six role profiles: finance, operations, HR, sales, compliance and executive. Each source is a CSV extract, a JSON API response or a policy standard with one of nine classification labels; an intended policy maps each label to the roles allowed to read it (e.g., individual HR records to HR only). Per profile, four task classes (lookup, calculation, comparison, evidence explanation) are crossed with four source conditions: authoritative source only, or with a stale version, a distractor (prior period or sister scope), or a relevant but prohibited record; four restricted questions have no permitted source. This yields 120 scenarios over 192 sources plus 39 package-specific versions. Format, calculation type, distractor type, the position of the correct option in comparisons and the prohibited record's class are counterbalanced against source condition, and half of the prohibited records carry a restriction cue in the title while the other half are marked only by their classification label (with a neutral title tag). Gold answers are computed from the generated values, and every confounder, injected version and drifted gold is asserted to imply a different answer. Cues outside the design are removed: source identifiers are randomly permuted, table rows are shuffled, and the catalog owner of a source is the function that owns its classification, never derived from who asks. A disjoint 30-scenario \emph{pilot split} (different seed, entities and scopes, and a higher fault prevalence, 25\% of answerable scenarios per fault against 12.5--19\% in the confirmatory split) serves for tuning and the pilot; the 120 confirmatory scenarios are frozen by SHA-256 hashes that the harness verifies before every run.
+
+\subsection{Agent, Tools and Reference Agent}
+The agent has three tools: \texttt{search\_sources} returns the metadata (never content) of the six best matches by stopword-free inverse-document-frequency term overlap, with ties broken by a seeded hash; \texttt{read\_source} returns content; \texttt{submit\_answer} records the answer, cited source identifiers and a refusal flag. The model is Qwen3-8B~\cite{yang2025qwen3} (4-bit Q4\_K\_M weights), served locally through Ollama with an 8,192-token context, temperature 0.7, top-$p$ 0.8, reasoning mode off and at most ten steps; tool calls that the model writes as plain text are parsed and executed (\pilot{\NTextual{} of turns in the pilot}). Paired cells of a scenario share the decoding seed. A second model family, Llama-3.1-8B-Instruct~\cite{grattafiori2024llama3}, repeats the study on the development, production and post-release packages with the same prompts and decoding, served with a chat template that keeps the tool definitions visible on every step (Section~\ref{sec:discussion}). The scripted \emph{reference agent} knows which document answers the question but must choose among its versions using what its package shows (version dates when the catalog shows them, the effective date printed in a policy document, otherwise the top-ranked search result, the same seeded choice the agent sees), obeys the stated policy, retries connector faults, computes exactly, and refuses when no permitted version is visible. It is deterministic given the seeds, so on the confirmatory split it is run before any model run, and it fixes the scenarios on which each package leaves the correct answer reachable.
+
+\subsection{Release-Stage Configuration Packages and Enforcement}
+Table~\ref{tab:stages} lists the five packages and the confirmatory scenarios whose own sources each fault affects. Scoring follows the \emph{intended} policy, the system prompt gives the \emph{stated} policy, and tool-level enforcement executes the \emph{deployed} policy with the index labels. They differ where a package injects a fault: development and integration leave restricted labels without a rule, UAT adds an erroneous explicit deny of a source its label permits, and the post-release package re-classifies 12 datasets and announces this only as a \emph{deny list} of source identifiers in the stated policy, while the index labels, and therefore tool-level filtering, lag; it also publishes new versions of 12 datasets while the old versions stay labelled current. In the \emph{prompt-only} mode tools return any source; in the \emph{tool-level} mode search is filtered and reads of non-permitted sources return \texttt{ACCESS\_DENIED}. The modes therefore differ only in the enforcement layer, which is only as good as the policy and labels it executes.
+
+\begin{table*}[t]
+\centering
+\caption{Release-stage configuration packages. Counts are confirmatory scenarios whose own sources a fault affects (of 120).}
+\label{tab:stages}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}lll>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+Package & Prompt & Catalog metadata & Data snapshot & Connectors & Deployed policy \\
+\midrule
+Development & minimal & id, title, label & authoritative source missing, older copy indexed (18) & local & two restricted labels have no rule \\
+Integration & + cite sources & + format, owner & connector serves the previous version (18) & authoritative JSON source fails once (9) & one restricted label has no rule \\
+UAT & full rules & + version, date, status & current & stable & complete; erroneous explicit deny (12) \\
+Production & full rules & full & current & stable & intended \\
+Post-release & full rules & full & new version while old one stays ``current'' (12) & stable & re-classification announced, labels lag (12) \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\section{Measures and Analysis}
+\label{sec:measures}
+For run $r$, let $R_r$ be the sources whose content the agent received, $C_r$ the cited sources, $U_r$ the used sources ($C_r$, or the read sources whose content yields the answer when nothing is cited), $A$ the authoritative sources, $F$, $T$, $D$ the intended-forbidden, stale and distractor sources, and $S$ the sources the policy as stated to the agent denies. The gold action is \emph{answer}, or \emph{refuse} for restricted scenarios and re-classified datasets.
+\begin{itemize}
+\item \SAR{} (answer-gold runs; correctness not required): $A \subseteq R_r \cap U_r$ and $U_r \cap (F \cup T \cup D \cup S) = \emptyset$.
+\item \SuAR{} (answer-gold runs; a refusal is unsupported): correct, $A \subseteq C_r \subseteq R_r$ and $C_r \cap (F \cup T \cup D) = \emptyset$.
+\item \ABCR{} (exposed runs): $F \cap R_r = \emptyset$. A run is \emph{exposed} if, fixed per scenario and package before any run, its scenario has a prohibited record, is a restricted question or uses its own re-classified dataset, or a forbidden source can reach the top six results for the literal question. Tool-level search hides denied sources, so denied reads are rare.
+\item Accuracy (answer-gold runs): a stated value matches gold within half a unit of gold's last decimal or 0.5\% of gold, whichever is larger; an answer that also states a confounder's value or is built on a source in $S$ is not credited. Correct refusal (refuse-gold runs): refused without reading a source in $F$; over-restriction: a refusal when the evidence is reachable in that package.
+\end{itemize}
+
+The hypotheses, fixed in the released protocol before any confirmatory run, are: H1a--d, development and integration lower \SAR{} and \SuAR{} relative to production; H2a--c, post-release drift lowers accuracy, \SAR{} and \ABCR{} (three contrasts); H3a, tool-level enforcement raises \ABCR{} where the deployed policy or labels are incomplete (development, integration, post-release); H3b, enforcement changes accuracy over all packages (two-sided); H4, profile differences (exploratory); H5, an accuracy-only release gate promotes configurations that a source- and boundary-aware gate holds, reported with the rate of correct but unsupported answers. For H1, H2a and H2b the estimand is \emph{agent-attributable}: the agent's mean difference between packages over the scenarios that the reference agent solves in every run of both packages, so that no injected fault forces a failure. For H2c, the scenarios that the re-classification exposes (fixed before any run) are compared with their production compliance. All nine contrasts use scenario-cluster bootstrap intervals and Holm-adjusted $p$-values~\cite{holm1979simple}, because outcomes are nested in scenarios and several cells sit at a boundary~\cite{miller2024errorbars,bowyer2025clt}; as an effect can rest on few scenarios, each is also checked with an exact sign-flip test on the scenario differences, and a contrast supports its hypothesis only with the pre-specified sign. For H5 an accuracy-only gate (accuracy $\geq$ 0.80) is compared with a gate that also requires \SuAR{} $\geq$ 0.80 and \ABCR{} $\geq$ 0.95, with a bootstrap over scenarios of the whole rule. A descriptive ablation (one repetition) runs the production package with one component of Table~\ref{tab:stages} taken from development or integration, and reports each difference from production, also on the scenarios the reference agent solves under that swap. The scorer is validated with scripted agents (an oracle and the reference agent score perfectly in production; a naive agent breaches without enforcement and, with enforcement, only where the deployed policy or labels are incomplete), and every run is re-scored from its trace before analysis. A stratified 20\% sample of confirmatory runs will be double-coded by both authors, with Cohen's $\kappa$~\cite{artstein2008intercoder}\pilot{; the pilot was scored automatically only}.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{generated/fig_stage_mode.pdf}
+\caption{Outcome rates by package (Dev: development, Int: integration, UAT: user-acceptance testing, Prod: production, Post: post-release) and enforcement mode, with scenario-cluster bootstrap 95\% intervals. Gray lines: the scripted reference agent (told which document answers, policy-compliant), i.e.\ what each package's injected faults leave to such an agent; its \ABCR{} is 1 by construction. \SAR, \SuAR{} and accuracy on answer-gold runs; \ABCR{} on exposed runs. \pilot{Pilot data.}}
+\label{fig:stage}
+\end{figure*}
+
+\section{Results}
+\label{sec:results}
+\pilot{\textbf{Pilot note.} These results come from the 30-scenario pilot split (\NRuns{} runs: 5 packages $\times$ 2 modes $\times$ 2 repetitions), the ablation and the replication. The same split was used to tune the harness and revise the protocol, so they are exploratory; the 3,600-run confirmatory study will replace them.}
+
+\textbf{Release packages (H1, H2a, H2b).} \pilot{The agent's raw \SAR{} gap between development and production (\ConTotalSarDevelopmentAll) is mostly what the injected faults force: the reference agent's \SAR{} is \IdealSarDev{} in development and \IdealSarInt{} in integration against \IdealSarProd{} in production (Fig.~\ref{fig:stage}), and on the scenarios it solves in both packages the H1 differences are small and not significant (\SAR{} \ConHOneSarDevelopmentAll{} for development and \ConHOneSarIntegrationAll{} for integration; \SuAR{} \ConHOneSuarDevelopmentAll{} and \ConHOneSuarIntegrationAll). In the ablation, the \SAR{} change from production, with the change on the scenarios the reference agent solves under the swap in parentheses, was \AblSarSnapshotDev{} (\AblFfSarSnapshotDev) for the development data snapshot, \AblSarMetadataDev{} (\AblFfSarMetadataDev) for catalog metadata without version and date, mostly from citing both of two indistinguishable versions, \AblSarConnectorsInt{} (\AblFfSarConnectorsInt) for the integration connector fault, which the agent did not retry, and \AblSarPromptDev{} and \AblSarPolicyDev{} for the development prompt and policy. After release, the \SAR{} difference from production was \ConHTwoSarPostreleaseAll{} (Holm $p=\ConHTwoSarPostreleaseAllP$; sign-flip $p=\ConHTwoSarPostreleaseAllPsf$), carried by \ConHTwoSarPostreleaseAllZ{} of \ConHTwoSarPostreleaseAllN{} scenarios and therefore not robust. Where a new version was published while the old one stayed labelled current, the agent used whichever version search listed first instead of comparing versions and dates; part of the difference reflects the permission drift instead, through a source the agent cited in every production and post-release run and that the drift put on the deny list. The post-release accuracy difference was \ConHTwoAccPostreleaseAll.}
+
+\textbf{Permission drift and enforcement (H2c, H3).} \pilot{On the scenarios that the re-classification exposes, the \ABCR{} difference from production was \ConHTwoAbcrPostreleaseAll{} (Holm $p=\ConHTwoAbcrPostreleaseAllP$; sign-flip $p=\ConHTwoAbcrPostreleaseAllPsf$). It sits mostly in the \ConOwndriftAbcrPostreleaseAllN{} scenarios whose own dataset was re-classified (\ConOwndriftAbcrPostreleaseAll; other drift-exposed scenarios \ConReachdriftAbcrPostreleaseAll): the deny list named those sources while the catalog still showed their old label, and the agent read them in \PostOwnBreach{} of \PostOwnN{} runs, with \PostOwnRefused{} refusals. The behaviour is not specific to drift: when the UAT policy denied a source whose label permitted it, the agent read that source in \UatDenyRead{} of \UatDenyNPrompt{} prompt-only runs (tool-level enforcement executed that deny). In development, integration and post-release, tool-level enforcement raised exposed-run \ABCR{} from \ResAbcrHThreePrompt{} to \ResAbcrHThreeTool{} (\ConHThreeAbcrToolDevelopmentIntegrationPostrelease, Holm $p=\ConHThreeAbcrToolDevelopmentIntegrationPostreleaseP$). Split by channel, the change was \ConCoveredAbcrCovToolDevelopmentIntegrationPostrelease{} through sources the deployed policy covers and \ConOpenAbcrOpenToolDevelopmentIntegrationPostrelease{} through sources it leaves open (unruled classes, lagging labels), where enforcement gave no protection; post-release tool-level \ABCR{} was therefore \ResAbcrPostTool. Enforcement acted through search filtering alone (\NBlocked{} denied reads) and changed neither accuracy (\ConHThreeAccToolAll) nor over-restriction (\ConCostOverToolAll) detectably.}
+
+\textbf{Release gates (H5).} \pilot{For this agent, an accuracy-only gate fails on refusal behaviour rather than on unsupported correct answers. It promoted \GateDisagree{} configurations that the source- and boundary-aware gate held: production with prompt-only enforcement (\ABCR{} \ResAbcrProdPrompt) and post-release with tool-level enforcement (\ResAbcrPostTool; bootstrap probabilities of disagreement \GatePDisProdPrompt{} and \GatePDisPostTool). Both reached the accuracy threshold on answerable questions while the agent read forbidden records on restricted or re-classified questions, which answer accuracy does not score; a gate on task success over all questions (correct answers and correct refusals) holds both (\GateDisagreeTask{} disagreements). Correct but unsupported answers were rare (\HFiveRate{} \HFiveCI; \HFiveN{} of \HFiveNCorrect{} correct runs, only \HFiveUnsupEvid{} of them built on a source the agent had read).}
+
+\textbf{Second model.} \pilot{With Llama-3.1-8B (one repetition; unadjusted tests, as specified for the replication), the deny-list behaviour recurred: the agent read re-classified datasets in \LlamaPostOwnBreach{} of \LlamaPostOwnN{} runs, with \LlamaPostOwnRefused{} refusals, and the \ABCR{} difference on the drift-exposed scenarios was \LlamaConHTwoAbcrPostreleaseAll{} ($p=\LlamaConHTwoAbcrPostreleaseAllPraw$; Holm $p=\LlamaConHTwoAbcrPostreleaseAllP$; sign-flip $p=\LlamaConHTwoAbcrPostreleaseAllPsf$). The post-release \SAR{} difference did not replicate (\LlamaConHTwoSarPostreleaseAll); the agent-attributable development differences were larger than Qwen3's but not significant (\SAR{} \LlamaConHOneSarDevelopmentAll, \SuAR{} \LlamaConHOneSuarDevelopmentAll), as was the tool-level gain in \ABCR{} (\LlamaConHThreeAbcrToolDevelopmentPostrelease); no configuration reached the accuracy threshold, so the two gates never disagreed.}
+
+\section{Discussion and Threats to Validity}
+\label{sec:discussion}
+\textbf{Construct validity.} Synthetic evaluation can misstate absolute difficulty~\cite{gill2025synthetic}; we therefore draw inferences from package and mode contrasts rather than absolute rates, assuming rather than showing that contrasts transfer better, and the H5 gate decisions, which compare absolute rates with fixed thresholds, are illustrative. Several results follow from the design and are reported as such: packages inject faults that defeat any agent, tool-level enforcement executes the deployed labels, and accuracy excludes refusal questions; the pilot measures how much of the agent's behaviour passes through these gaps, not how often they occur in real pipelines. The reference agent is not an upper bound: where versions cannot be told apart, an agent can do better or worse by chance. The post-release and UAT deny lists name sources by identifier against the label the catalog shows; a re-classification announced through updated labels would let tool-level enforcement act, so the drift result is specific to identifier-level announcements. \pilot{Exposure is broad (\NExposedRuns{} of \NRuns{} pilot runs)}, because any forbidden source that can reach the top results for the literal question counts.
+
+\textbf{Internal and external validity.} \pilot{The pilot uses 30 scenarios and two repetitions on the split that also served for tuning, and several effects rest on few scenarios. Under the pre-specified simulation, power at a 10-point effect is at least \PowMinTen{} for all nine contrasts with \PowItemsMin--\PowItemsMax{} eligible confirmatory scenarios; with the pilot's own scenario-level variance it is \PowTenPilotMin--\PowTenPilotStageMax{} for the stage contrasts, so unless scenarios are added before the confirmatory runs, a null stage verdict would be inconclusive rather than evidence of no effect.} Automatic scoring is deterministic for numeric and categorical answers but approximates claim support for explanation items, which the double-coding addresses. The serving stack is part of the configuration: Ollama's default Llama-3.1 template hides the tool definitions after one tool result, so the replication uses a template that keeps them visible. Only two 8B open-weight models and one lexical retriever are tested.
+
+\section{Conclusion}
+\pilot{In a pilot with a tool-using 8B agent, most of the development and integration gap in source appropriateness came from the faults each package injects by design. What the agent itself added was version choice when two versions are both labelled current, no retry after a connector fault and, most clearly and with both models, reading sources that an identifier-level deny list prohibited while their visible label permitted them, which tool-level enforcement executing the lagging labels could not stop and an accuracy gate on answerable questions did not see.} For agents like the ones tested, release gates should score refusal and boundary outcomes on all questions against the intended policy while running the deployed policy and labels, and re-classifications should reach the labels that enforcement executes. The confirmatory study on the frozen 120-scenario split will test these effects.
+
+\section*{Data Availability}
+The generator, fictional synthetic data (no real organization, person or record), harness, protocol with its deviation log, run logs with full tool traces (including discarded pilot runs, with reasons), and notebooks that regenerate every number in this paper are available at [repository URL].
+
+\section*{Acknowledgment}
+The authors used Claude Opus 5.5 (Anthropic) to write code for the benchmark generator, harness and analysis, to run the literature search, the citation audit and adversarial reviews of the study design and pilot results, and to produce initial drafts of all sections and Table~\ref{tab:related}, which the authors revised and verified. No language model scores runs: all outcomes are computed deterministically from tool traces, and Fig.~\ref{fig:stage} and all reported numbers are generated by the released analysis code.
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}

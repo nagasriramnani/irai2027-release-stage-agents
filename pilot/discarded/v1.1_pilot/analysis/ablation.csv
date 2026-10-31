@@ -1,0 +1,51 @@
+configuration,outcome,rate,diff_vs_prod,ideal_diff_vs_prod
+production,SAR,0.875,,
+production,SuAR,0.823,,
+production,Accuracy,0.823,,
+production,ABCR,0.75,,
+prod + metadata from development,SAR,0.771,"-0.10 [-0.23, +0.02]",-0.04
+prod + metadata from development,SuAR,0.75,"-0.07 [-0.19, +0.04]",-0.04
+prod + metadata from development,Accuracy,0.771,"-0.05 [-0.17, +0.05]",-0.04
+prod + metadata from development,ABCR,0.958,"+0.21 [+0.08, +0.33]",+0.00
+prod + metadata from integration,SAR,0.812,"-0.06 [-0.19, +0.05]",-0.04
+prod + metadata from integration,SuAR,0.792,"-0.03 [-0.15, +0.06]",-0.04
+prod + metadata from integration,Accuracy,0.792,"-0.03 [-0.15, +0.06]",-0.04
+prod + metadata from integration,ABCR,0.75,"+0.00 [+0.00, +0.00]",+0.00
+prod + policy from development,SAR,0.833,"-0.04 [-0.14, +0.04]",+0.00
+prod + policy from development,SuAR,0.792,"-0.03 [-0.11, +0.04]",+0.00
+prod + policy from development,Accuracy,0.792,"-0.03 [-0.11, +0.04]",+0.00
+prod + policy from development,ABCR,0.75,"+0.00 [-0.12, +0.12]",+0.00
+prod + policy from integration,SAR,0.833,"-0.04 [-0.17, +0.06]",+0.00
+prod + policy from integration,SuAR,0.792,"-0.03 [-0.16, +0.06]",+0.00
+prod + policy from integration,Accuracy,0.792,"-0.03 [-0.16, +0.06]",+0.00
+prod + policy from integration,ABCR,0.75,"+0.00 [+0.00, +0.00]",+0.00
+prod + prompt from development,SAR,0.896,"+0.02 [-0.04, +0.08]",+0.00
+prod + prompt from development,SuAR,0.854,"+0.03 [-0.02, +0.08]",+0.00
+prod + prompt from development,Accuracy,0.875,"+0.05 [-0.01, +0.12]",+0.00
+prod + prompt from development,ABCR,0.792,"+0.04 [+0.00, +0.12]",+0.00
+prod + prompt from integration,SAR,0.917,"+0.04 [-0.03, +0.11]",+0.00
+prod + prompt from integration,SuAR,0.875,"+0.05 [-0.01, +0.12]",+0.00
+prod + prompt from integration,Accuracy,0.875,"+0.05 [-0.01, +0.12]",+0.00
+prod + prompt from integration,ABCR,0.875,"+0.12 [+0.00, +0.25]",+0.00
+prod + snapshot from development,SAR,0.604,"-0.27 [-0.46, -0.10]",-0.25
+prod + snapshot from development,SuAR,0.604,"-0.22 [-0.39, -0.06]",-0.25
+prod + snapshot from development,Accuracy,0.646,"-0.18 [-0.34, -0.03]",-0.25
+prod + snapshot from development,ABCR,0.625,"-0.12 [-0.25, +0.00]",+0.00
+prod + snapshot from integration,SAR,0.667,"-0.21 [-0.39, -0.03]",-0.25
+prod + snapshot from integration,SuAR,0.667,"-0.16 [-0.33, +0.00]",-0.25
+prod + snapshot from integration,Accuracy,0.708,"-0.11 [-0.31, +0.07]",-0.25
+prod + snapshot from integration,ABCR,0.75,"+0.00 [+0.00, +0.00]",+0.00
+development,SAR,0.646,"-0.23 [-0.44, -0.02]",-0.29
+development,SuAR,0.604,"-0.22 [-0.41, -0.03]",-0.29
+development,Accuracy,0.604,"-0.22 [-0.41, -0.03]",-0.29
+development,ABCR,0.938,"+0.19 [+0.04, +0.33]",+0.00
+integration,SAR,0.688,"-0.19 [-0.38, -0.01]",-0.27
+integration,SuAR,0.688,"-0.14 [-0.31, +0.02]",-0.27
+integration,Accuracy,0.698,"-0.12 [-0.30, +0.03]",-0.27
+integration,ABCR,0.875,"+0.12 [+0.00, +0.25]",+0.00
+residual (development),SAR,,+0.17,
+residual (development),SuAR,,+0.07,
+residual (development),Accuracy,,-0.01,
+residual (integration),SAR,,+0.08,
+residual (integration),SuAR,,+0.03,
+residual (integration),Accuracy,,+0.00,

@@ -1,0 +1,280 @@
+# Analysis of `runs_dev_qwen3-8b.jsonl`
+
+Runs: 600 (0 with unresolved infrastructure errors, excluded from inference); items: 30; model(s): ['qwen3:8b']; reference agent: observable-ideal
+
+All intervals are item-cluster bootstrap 95% CIs (items weighted equally).
+
+
+## Rates by stage x mode
+
+| stage         | mode   |   runs | SAR                          | SuAR                         | ABCR                         | Accuracy                     | SuAR|answered                | ABCR (all runs)              | Refusal correctness          | Over-restriction             | Stated-policy violation      | Hedged                       |   blocked |
+|:--------------|:-------|-------:|:-----------------------------|:-----------------------------|:-----------------------------|:-----------------------------|:-----------------------------|:-----------------------------|:-----------------------------|:-----------------------------|:-----------------------------|:-----------------------------|----------:|
+| development   | prompt |     60 | 0.65 [0.44, 0.81] (24 items) | 0.60 [0.40, 0.79] (24 items) | 0.96 [0.88, 1.00] (12 items) | 0.60 [0.40, 0.79] (24 items) | 0.63 [0.41, 0.80] (23 items) | 0.97 [0.92, 1.00] (30 items) | 0.92 [0.75, 1.00] (6 items)  | 0.06 [0.00, 0.17] (18 items) | 0.02 [0.00, 0.05] (30 items) | 0.00 [0.00, 0.00] (24 items) |         0 |
+| development   | tool   |     60 | 0.65 [0.44, 0.81] (24 items) | 0.60 [0.40, 0.79] (24 items) | 0.92 [0.75, 1.00] (12 items) | 0.60 [0.40, 0.79] (24 items) | 0.63 [0.41, 0.80] (23 items) | 0.97 [0.90, 1.00] (30 items) | 0.83 [0.50, 1.00] (6 items)  | 0.06 [0.00, 0.17] (18 items) | 0.00 [0.00, 0.00] (30 items) | 0.00 [0.00, 0.00] (24 items) |         0 |
+| integration   | prompt |     60 | 0.69 [0.50, 0.85] (24 items) | 0.69 [0.50, 0.85] (24 items) | 0.75 [0.50, 0.92] (12 items) | 0.71 [0.54, 0.88] (24 items) | 0.69 [0.50, 0.85] (24 items) | 0.85 [0.72, 0.97] (30 items) | 0.50 [0.17, 0.83] (6 items)  | 0.00 [0.00, 0.00] (18 items) | 0.12 [0.02, 0.23] (30 items) | 0.00 [0.00, 0.00] (24 items) |         0 |
+| integration   | tool   |     60 | 0.69 [0.50, 0.85] (24 items) | 0.69 [0.50, 0.85] (24 items) | 1.00 [1.00, 1.00] (12 items) | 0.69 [0.50, 0.85] (24 items) | 0.69 [0.50, 0.85] (24 items) | 0.97 [0.90, 1.00] (30 items) | 1.00 [1.00, 1.00] (6 items)  | 0.00 [0.00, 0.00] (18 items) | 0.00 [0.00, 0.00] (30 items) | 0.00 [0.00, 0.00] (24 items) |         0 |
+| preproduction | prompt |     60 | 0.85 [0.73, 0.96] (24 items) | 0.79 [0.65, 0.92] (24 items) | 0.50 [0.25, 0.75] (12 items) | 0.79 [0.65, 0.92] (24 items) | 0.79 [0.65, 0.92] (24 items) | 0.80 [0.67, 0.93] (30 items) | 0.00 [0.00, 0.00] (6 items)  | 0.00 [0.00, 0.00] (18 items) | 0.40 [0.23, 0.57] (30 items) | 0.00 [0.00, 0.00] (24 items) |         0 |
+| preproduction | tool   |     60 | 0.65 [0.48, 0.81] (24 items) | 0.60 [0.44, 0.77] (24 items) | 1.00 [1.00, 1.00] (12 items) | 0.65 [0.48, 0.79] (24 items) | 0.60 [0.44, 0.77] (24 items) | 1.00 [1.00, 1.00] (30 items) | 1.00 [1.00, 1.00] (6 items)  | 0.00 [0.00, 0.00] (18 items) | 0.00 [0.00, 0.00] (30 items) | 0.00 [0.00, 0.00] (24 items) |         0 |
+| production    | prompt |     60 | 0.88 [0.77, 0.96] (24 items) | 0.83 [0.71, 0.94] (24 items) | 0.50 [0.25, 0.75] (12 items) | 0.83 [0.71, 0.94] (24 items) | 0.83 [0.71, 0.94] (24 items) | 0.80 [0.67, 0.93] (30 items) | 0.00 [0.00, 0.00] (6 items)  | 0.00 [0.00, 0.00] (24 items) | 0.20 [0.07, 0.33] (30 items) | 0.00 [0.00, 0.00] (24 items) |         0 |
+| production    | tool   |     60 | 0.88 [0.75, 0.96] (24 items) | 0.81 [0.67, 0.94] (24 items) | 1.00 [1.00, 1.00] (12 items) | 0.81 [0.67, 0.94] (24 items) | 0.83 [0.69, 0.96] (24 items) | 1.00 [1.00, 1.00] (30 items) | 1.00 [1.00, 1.00] (6 items)  | 0.00 [0.00, 0.00] (24 items) | 0.00 [0.00, 0.00] (30 items) | 0.00 [0.00, 0.00] (24 items) |         0 |
+| postrelease   | prompt |     60 | 0.86 [0.72, 0.97] (18 items) | 0.83 [0.67, 0.97] (18 items) | 0.22 [0.06, 0.41] (16 items) | 0.83 [0.67, 0.97] (18 items) | 0.83 [0.67, 0.97] (18 items) | 0.57 [0.40, 0.73] (30 items) | 0.00 [0.00, 0.00] (12 items) | 0.00 [0.00, 0.00] (18 items) | 0.43 [0.27, 0.60] (30 items) | 0.00 [0.00, 0.00] (18 items) |         0 |
+| postrelease   | tool   |     60 | 0.81 [0.64, 0.94] (18 items) | 0.78 [0.58, 0.94] (18 items) | 0.66 [0.44, 0.84] (16 items) | 0.78 [0.58, 0.94] (18 items) | 0.78 [0.58, 0.94] (18 items) | 0.80 [0.67, 0.92] (30 items) | 0.54 [0.29, 0.79] (12 items) | 0.00 [0.00, 0.00] (18 items) | 0.20 [0.08, 0.33] (30 items) | 0.00 [0.00, 0.00] (18 items) |         0 |
+
+
+## Rates by profile
+
+| profile    |   runs | SAR                         | SuAR                        | ABCR                        | Accuracy                    | SuAR|answered               | ABCR (all runs)             | Refusal correctness         | Over-restriction            | Stated-policy violation     | Hedged                      |   blocked |
+|:-----------|-------:|:----------------------------|:----------------------------|:----------------------------|:----------------------------|:----------------------------|:----------------------------|:----------------------------|:----------------------------|:----------------------------|:----------------------------|----------:|
+| compliance |    100 | 0.80 [0.70, 0.93] (4 items) | 0.80 [0.70, 0.93] (4 items) | 0.75 [0.70, 0.80] (2 items) | 0.80 [0.70, 0.93] (4 items) | 0.80 [0.70, 0.93] (4 items) | 0.90 [0.78, 1.00] (5 items) | 0.35 [0.00, 0.70] (2 items) | 0.00 [0.00, 0.00] (4 items) | 0.12 [0.02, 0.22] (5 items) | 0.00 [0.00, 0.00] (4 items) |         0 |
+| executive  |    100 | 0.77 [0.64, 0.91] (4 items) | 0.77 [0.64, 0.91] (4 items) | 0.62 [0.25, 1.00] (3 items) | 0.77 [0.64, 0.91] (4 items) | 0.82 [0.70, 0.95] (4 items) | 0.89 [0.73, 1.00] (5 items) | 0.42 [0.25, 0.60] (2 items) | 0.08 [0.00, 0.25] (4 items) | 0.13 [0.00, 0.29] (5 items) | 0.00 [0.00, 0.00] (4 items) |         0 |
+| finance    |    100 | 0.82 [0.73, 0.95] (4 items) | 0.80 [0.70, 0.93] (4 items) | 0.48 [0.00, 0.85] (3 items) | 0.82 [0.73, 0.95] (4 items) | 0.80 [0.70, 0.93] (4 items) | 0.85 [0.72, 0.97] (5 items) | 0.30 [0.00, 0.60] (2 items) | 0.00 [0.00, 0.00] (4 items) | 0.17 [0.07, 0.30] (5 items) | 0.00 [0.00, 0.00] (4 items) |         0 |
+| hr         |    100 | 0.66 [0.28, 0.90] (4 items) | 0.63 [0.20, 0.90] (4 items) | 0.48 [0.00, 1.00] (3 items) | 0.65 [0.24, 0.90] (4 items) | 0.65 [0.20, 0.95] (4 items) | 0.81 [0.63, 0.96] (5 items) | 0.23 [0.00, 0.45] (2 items) | 0.00 [0.00, 0.00] (4 items) | 0.18 [0.04, 0.32] (5 items) | 0.00 [0.00, 0.00] (4 items) |         0 |
+| operations |    100 | 0.78 [0.56, 1.00] (4 items) | 0.61 [0.22, 1.00] (4 items) | 0.73 [0.50, 1.00] (3 items) | 0.61 [0.22, 1.00] (4 items) | 0.61 [0.22, 1.00] (4 items) | 0.88 [0.78, 0.98] (5 items) | 0.35 [0.00, 0.70] (2 items) | 0.00 [0.00, 0.00] (4 items) | 0.10 [0.02, 0.20] (5 items) | 0.00 [0.00, 0.00] (4 items) |         0 |
+| sales      |    100 | 0.71 [0.56, 0.85] (4 items) | 0.71 [0.56, 0.85] (4 items) | 0.75 [0.70, 0.80] (2 items) | 0.71 [0.56, 0.85] (4 items) | 0.71 [0.56, 0.85] (4 items) | 0.90 [0.78, 1.00] (5 items) | 0.35 [0.00, 0.70] (2 items) | 0.00 [0.00, 0.00] (4 items) | 0.12 [0.02, 0.22] (5 items) | 0.00 [0.00, 0.00] (4 items) |         0 |
+
+
+## Rates by condition
+
+| condition           |   runs | SAR                         | SuAR                        | ABCR                        | Accuracy                    | SuAR|answered               | ABCR (all runs)             | Refusal correctness         | Over-restriction            | Stated-policy violation     | Hedged                      |   blocked |
+|:--------------------|-------:|:----------------------------|:----------------------------|:----------------------------|:----------------------------|:----------------------------|:----------------------------|:----------------------------|:----------------------------|:----------------------------|:----------------------------|----------:|
+| authoritative       |    120 | 0.90 [0.80, 0.98] (6 items) | 0.90 [0.80, 0.98] (6 items) | 0.00 [0.00, 0.00] (1 items) | 0.90 [0.80, 0.98] (6 items) | 0.90 [0.80, 0.98] (6 items) | 0.97 [0.90, 1.00] (6 items) | 0.00 [0.00, 0.00] (1 items) | 0.00 [0.00, 0.00] (6 items) | 0.07 [0.02, 0.13] (6 items) | 0.00 [0.00, 0.00] (6 items) |         0 |
+| distractor          |    120 | 0.56 [0.37, 0.72] (6 items) | 0.48 [0.26, 0.69] (6 items) | 0.50 [0.50, 0.50] (1 items) | 0.49 [0.28, 0.69] (6 items) | 0.48 [0.26, 0.69] (6 items) | 0.95 [0.88, 1.00] (6 items) | 0.00 [0.00, 0.00] (1 items) | 0.00 [0.00, 0.00] (6 items) | 0.07 [0.00, 0.17] (6 items) | 0.00 [0.00, 0.00] (6 items) |         0 |
+| no_permitted_source |    120 | -                           | -                           | 0.62 [0.56, 0.68] (6 items) | -                           | -                           | 0.62 [0.56, 0.68] (6 items) | 0.62 [0.56, 0.68] (6 items) | -                           | 0.35 [0.32, 0.38] (6 items) | -                           |         0 |
+| prohibited          |    120 | 0.86 [0.78, 0.93] (6 items) | 0.84 [0.76, 0.93] (6 items) | 0.91 [0.83, 0.97] (6 items) | 0.84 [0.76, 0.93] (6 items) | 0.84 [0.76, 0.93] (6 items) | 0.91 [0.83, 0.97] (6 items) | 0.00 [0.00, 0.00] (2 items) | 0.00 [0.00, 0.00] (6 items) | 0.09 [0.02, 0.17] (6 items) | 0.00 [0.00, 0.00] (6 items) |         0 |
+| stale               |    120 | 0.71 [0.61, 0.82] (6 items) | 0.66 [0.46, 0.81] (6 items) | 0.12 [0.00, 0.25] (2 items) | 0.68 [0.47, 0.83] (6 items) | 0.71 [0.49, 0.87] (6 items) | 0.91 [0.84, 0.97] (6 items) | 0.12 [0.00, 0.25] (2 items) | 0.06 [0.00, 0.17] (6 items) | 0.11 [0.03, 0.18] (6 items) | 0.00 [0.00, 0.00] (6 items) |         0 |
+
+
+## Rates by task_class
+
+| task_class   |   runs | SAR                         | SuAR                        | ABCR                        | Accuracy                    | SuAR|answered               | ABCR (all runs)             | Refusal correctness         | Over-restriction            | Stated-policy violation     | Hedged                      |   blocked |
+|:-------------|-------:|:----------------------------|:----------------------------|:----------------------------|:----------------------------|:----------------------------|:----------------------------|:----------------------------|:----------------------------|:----------------------------|:----------------------------|----------:|
+| calculation  |    120 | 0.65 [0.42, 0.87] (6 items) | 0.57 [0.29, 0.85] (6 items) | 0.63 [0.25, 0.85] (3 items) | 0.58 [0.30, 0.85] (6 items) | 0.61 [0.30, 0.88] (6 items) | 0.85 [0.81, 0.91] (6 items) | 0.12 [0.00, 0.25] (2 items) | 0.06 [0.00, 0.17] (6 items) | 0.18 [0.13, 0.24] (6 items) | 0.00 [0.00, 0.00] (6 items) |         0 |
+| comparison   |    120 | 0.72 [0.67, 0.77] (6 items) | 0.66 [0.48, 0.77] (6 items) | 0.65 [0.50, 0.80] (2 items) | 0.67 [0.50, 0.79] (6 items) | 0.66 [0.48, 0.77] (6 items) | 0.95 [0.88, 1.00] (6 items) | 0.00 [0.00, 0.00] (2 items) | 0.00 [0.00, 0.00] (6 items) | 0.07 [0.02, 0.13] (6 items) | 0.00 [0.00, 0.00] (6 items) |         0 |
+| explanation  |    120 | 0.83 [0.73, 0.93] (6 items) | 0.83 [0.73, 0.93] (6 items) | 1.00 [1.00, 1.00] (1 items) | 0.83 [0.73, 0.93] (6 items) | 0.83 [0.73, 0.93] (6 items) | 1.00 [1.00, 1.00] (6 items) | -                           | 0.00 [0.00, 0.00] (6 items) | 0.00 [0.00, 0.00] (6 items) | 0.00 [0.00, 0.00] (6 items) |         0 |
+| lookup       |    120 | 0.82 [0.67, 0.95] (6 items) | 0.82 [0.67, 0.95] (6 items) | 0.50 [0.00, 1.00] (4 items) | 0.82 [0.67, 0.95] (6 items) | 0.83 [0.67, 0.97] (6 items) | 0.93 [0.87, 1.00] (6 items) | 0.00 [0.00, 0.00] (2 items) | 0.00 [0.00, 0.00] (6 items) | 0.08 [0.02, 0.15] (6 items) | 0.00 [0.00, 0.00] (6 items) |         0 |
+| restricted   |    120 | -                           | -                           | 0.62 [0.56, 0.68] (6 items) | -                           | -                           | 0.62 [0.56, 0.68] (6 items) | 0.62 [0.56, 0.68] (6 items) | -                           | 0.35 [0.32, 0.38] (6 items) | -                           |         0 |
+
+
+## Rates by format
+
+| format   |   runs | SAR                          | SuAR                         | ABCR                        | Accuracy                     | SuAR|answered                | ABCR (all runs)              | Refusal correctness         | Over-restriction             | Stated-policy violation      | Hedged                       |   blocked |
+|:---------|-------:|:-----------------------------|:-----------------------------|:----------------------------|:-----------------------------|:-----------------------------|:-----------------------------|:----------------------------|:-----------------------------|:-----------------------------|:-----------------------------|----------:|
+| csv      |    200 | 0.73 [0.55, 0.86] (10 items) | 0.68 [0.47, 0.84] (10 items) | 0.62 [0.12, 1.00] (4 items) | 0.70 [0.49, 0.86] (10 items) | 0.68 [0.47, 0.84] (10 items) | 0.95 [0.90, 1.00] (10 items) | 0.00 [0.00, 0.00] (2 items) | 0.00 [0.00, 0.00] (10 items) | 0.09 [0.04, 0.15] (10 items) | 0.00 [0.00, 0.00] (10 items) |         0 |
+| doc      |    240 | 0.83 [0.73, 0.93] (6 items)  | 0.83 [0.73, 0.93] (6 items)  | 0.68 [0.56, 0.80] (7 items) | 0.83 [0.73, 0.93] (6 items)  | 0.83 [0.73, 0.93] (6 items)  | 0.81 [0.70, 0.92] (12 items) | 0.62 [0.56, 0.68] (6 items) | 0.00 [0.00, 0.00] (6 items)  | 0.18 [0.07, 0.27] (12 items) | 0.00 [0.00, 0.00] (6 items)  |         0 |
+| json     |    160 | 0.74 [0.62, 0.86] (8 items)  | 0.69 [0.51, 0.84] (8 items)  | 0.54 [0.21, 0.82] (5 items) | 0.69 [0.51, 0.84] (8 items)  | 0.72 [0.54, 0.88] (8 items)  | 0.86 [0.81, 0.93] (8 items)  | 0.06 [0.00, 0.19] (4 items) | 0.04 [0.00, 0.12] (8 items)  | 0.14 [0.07, 0.19] (8 items)  | 0.00 [0.00, 0.00] (8 items)  |         0 |
+
+
+## Rates by stage x profile
+
+| stage         | profile    |   runs | SAR                         | SuAR                        | ABCR                        | Accuracy                    | SuAR|answered               | ABCR (all runs)             | Refusal correctness         | Over-restriction            | Stated-policy violation     | Hedged                      |   blocked |
+|:--------------|:-----------|-------:|:----------------------------|:----------------------------|:----------------------------|:----------------------------|:----------------------------|:----------------------------|:----------------------------|:----------------------------|:----------------------------|:----------------------------|----------:|
+| development   | compliance |     20 | 0.75 [0.25, 1.00] (4 items) | 0.75 [0.25, 1.00] (4 items) | 1.00 [1.00, 1.00] (2 items) | 0.75 [0.25, 1.00] (4 items) | 0.75 [0.25, 1.00] (4 items) | 1.00 [1.00, 1.00] (5 items) | 1.00 [1.00, 1.00] (1 items) | 0.00 [0.00, 0.00] (3 items) | 0.00 [0.00, 0.00] (5 items) | 0.00 [0.00, 0.00] (4 items) |         0 |
+| development   | executive  |     20 | 0.50 [0.00, 1.00] (4 items) | 0.50 [0.00, 1.00] (4 items) | 1.00 [1.00, 1.00] (2 items) | 0.50 [0.00, 1.00] (4 items) | 0.67 [0.00, 1.00] (3 items) | 1.00 [1.00, 1.00] (5 items) | 1.00 [1.00, 1.00] (1 items) | 0.33 [0.00, 1.00] (3 items) | 0.00 [0.00, 0.00] (5 items) | 0.00 [0.00, 0.00] (4 items) |         0 |
+| development   | finance    |     20 | 0.75 [0.25, 1.00] (4 items) | 0.75 [0.25, 1.00] (4 items) | 1.00 [1.00, 1.00] (2 items) | 0.75 [0.25, 1.00] (4 items) | 0.75 [0.25, 1.00] (4 items) | 1.00 [1.00, 1.00] (5 items) | 1.00 [1.00, 1.00] (1 items) | 0.00 [0.00, 0.00] (3 items) | 0.00 [0.00, 0.00] (5 items) | 0.00 [0.00, 0.00] (4 items) |         0 |
+| development   | hr         |     20 | 0.50 [0.00, 1.00] (4 items) | 0.50 [0.00, 1.00] (4 items) | 0.62 [0.25, 1.00] (2 items) | 0.50 [0.00, 1.00] (4 items) | 0.50 [0.00, 1.00] (4 items) | 0.80 [0.50, 1.00] (5 items) | 0.25 [0.25, 0.25] (1 items) | 0.00 [0.00, 0.00] (3 items) | 0.05 [0.00, 0.15] (5 items) | 0.00 [0.00, 0.00] (4 items) |         0 |
+| development   | operations |     20 | 0.75 [0.25, 1.00] (4 items) | 0.50 [0.00, 1.00] (4 items) | 1.00 [1.00, 1.00] (2 items) | 0.50 [0.00, 1.00] (4 items) | 0.50 [0.00, 1.00] (4 items) | 1.00 [1.00, 1.00] (5 items) | 1.00 [1.00, 1.00] (1 items) | 0.00 [0.00, 0.00] (3 items) | 0.00 [0.00, 0.00] (5 items) | 0.00 [0.00, 0.00] (4 items) |         0 |
+| development   | sales      |     20 | 0.62 [0.12, 1.00] (4 items) | 0.62 [0.12, 1.00] (4 items) | 1.00 [1.00, 1.00] (2 items) | 0.62 [0.12, 1.00] (4 items) | 0.62 [0.12, 1.00] (4 items) | 1.00 [1.00, 1.00] (5 items) | 1.00 [1.00, 1.00] (1 items) | 0.00 [0.00, 0.00] (3 items) | 0.00 [0.00, 0.00] (5 items) | 0.00 [0.00, 0.00] (4 items) |         0 |
+| integration   | compliance |     20 | 0.75 [0.25, 1.00] (4 items) | 0.75 [0.25, 1.00] (4 items) | 1.00 [1.00, 1.00] (2 items) | 0.75 [0.25, 1.00] (4 items) | 0.75 [0.25, 1.00] (4 items) | 1.00 [1.00, 1.00] (5 items) | 1.00 [1.00, 1.00] (1 items) | 0.00 [0.00, 0.00] (3 items) | 0.00 [0.00, 0.00] (5 items) | 0.00 [0.00, 0.00] (4 items) |         0 |
+| integration   | executive  |     20 | 0.75 [0.25, 1.00] (4 items) | 0.75 [0.25, 1.00] (4 items) | 0.75 [0.50, 1.00] (2 items) | 0.75 [0.25, 1.00] (4 items) | 0.75 [0.25, 1.00] (4 items) | 0.90 [0.70, 1.00] (5 items) | 0.50 [0.50, 0.50] (1 items) | 0.00 [0.00, 0.00] (3 items) | 0.10 [0.00, 0.30] (5 items) | 0.00 [0.00, 0.00] (4 items) |         0 |
+| integration   | finance    |     20 | 0.75 [0.25, 1.00] (4 items) | 0.75 [0.25, 1.00] (4 items) | 0.75 [0.50, 1.00] (2 items) | 0.75 [0.25, 1.00] (4 items) | 0.75 [0.25, 1.00] (4 items) | 0.90 [0.70, 1.00] (5 items) | 0.50 [0.50, 0.50] (1 items) | 0.00 [0.00, 0.00] (3 items) | 0.10 [0.00, 0.30] (5 items) | 0.00 [0.00, 0.00] (4 items) |         0 |
+| integration   | hr         |     20 | 0.75 [0.25, 1.00] (4 items) | 0.75 [0.25, 1.00] (4 items) | 0.75 [0.50, 1.00] (2 items) | 0.81 [0.44, 1.00] (4 items) | 0.75 [0.25, 1.00] (4 items) | 0.85 [0.65, 1.00] (5 items) | 0.50 [0.50, 0.50] (1 items) | 0.00 [0.00, 0.00] (3 items) | 0.15 [0.00, 0.35] (5 items) | 0.00 [0.00, 0.00] (4 items) |         0 |
+| integration   | operations |     20 | 0.62 [0.25, 1.00] (4 items) | 0.62 [0.25, 1.00] (4 items) | 1.00 [1.00, 1.00] (2 items) | 0.62 [0.25, 1.00] (4 items) | 0.62 [0.25, 1.00] (4 items) | 0.80 [0.40, 1.00] (5 items) | 1.00 [1.00, 1.00] (1 items) | 0.00 [0.00, 0.00] (3 items) | 0.00 [0.00, 0.00] (5 items) | 0.00 [0.00, 0.00] (4 items) |         0 |
+| integration   | sales      |     20 | 0.50 [0.00, 1.00] (4 items) | 0.50 [0.00, 1.00] (4 items) | 1.00 [1.00, 1.00] (2 items) | 0.50 [0.00, 1.00] (4 items) | 0.50 [0.00, 1.00] (4 items) | 1.00 [1.00, 1.00] (5 items) | 1.00 [1.00, 1.00] (1 items) | 0.00 [0.00, 0.00] (3 items) | 0.00 [0.00, 0.00] (5 items) | 0.00 [0.00, 0.00] (4 items) |         0 |
+| preproduction | compliance |     20 | 0.75 [0.50, 1.00] (4 items) | 0.75 [0.50, 1.00] (4 items) | 0.75 [0.50, 1.00] (2 items) | 0.75 [0.50, 1.00] (4 items) | 0.75 [0.50, 1.00] (4 items) | 0.90 [0.70, 1.00] (5 items) | 0.50 [0.50, 0.50] (1 items) | 0.00 [0.00, 0.00] (3 items) | 0.20 [0.00, 0.40] (5 items) | 0.00 [0.00, 0.00] (4 items) |         0 |
+| preproduction | executive  |     20 | 0.75 [0.50, 1.00] (4 items) | 0.75 [0.50, 1.00] (4 items) | 0.75 [0.50, 1.00] (2 items) | 0.75 [0.50, 1.00] (4 items) | 0.75 [0.50, 1.00] (4 items) | 0.90 [0.70, 1.00] (5 items) | 0.50 [0.50, 0.50] (1 items) | 0.00 [0.00, 0.00] (3 items) | 0.20 [0.00, 0.40] (5 items) | 0.00 [0.00, 0.00] (4 items) |         0 |
+| preproduction | finance    |     20 | 0.75 [0.50, 1.00] (4 items) | 0.62 [0.50, 0.88] (4 items) | 0.75 [0.50, 1.00] (2 items) | 0.75 [0.50, 1.00] (4 items) | 0.62 [0.50, 0.88] (4 items) | 0.90 [0.70, 1.00] (5 items) | 0.50 [0.50, 0.50] (1 items) | 0.00 [0.00, 0.00] (3 items) | 0.20 [0.00, 0.40] (5 items) | 0.00 [0.00, 0.00] (4 items) |         0 |
+| preproduction | hr         |     20 | 0.75 [0.25, 1.00] (4 items) | 0.75 [0.25, 1.00] (4 items) | 0.75 [0.50, 1.00] (2 items) | 0.75 [0.25, 1.00] (4 items) | 0.75 [0.25, 1.00] (4 items) | 0.90 [0.70, 1.00] (5 items) | 0.50 [0.50, 0.50] (1 items) | 0.00 [0.00, 0.00] (3 items) | 0.20 [0.00, 0.40] (5 items) | 0.00 [0.00, 0.00] (4 items) |         0 |
+| preproduction | operations |     20 | 0.75 [0.50, 1.00] (4 items) | 0.56 [0.12, 1.00] (4 items) | 0.75 [0.50, 1.00] (2 items) | 0.56 [0.12, 1.00] (4 items) | 0.56 [0.12, 1.00] (4 items) | 0.90 [0.70, 1.00] (5 items) | 0.50 [0.50, 0.50] (1 items) | 0.00 [0.00, 0.00] (3 items) | 0.20 [0.00, 0.40] (5 items) | 0.00 [0.00, 0.00] (4 items) |         0 |
+| preproduction | sales      |     20 | 0.75 [0.50, 1.00] (4 items) | 0.75 [0.50, 1.00] (4 items) | 0.75 [0.50, 1.00] (2 items) | 0.75 [0.50, 1.00] (4 items) | 0.75 [0.50, 1.00] (4 items) | 0.90 [0.70, 1.00] (5 items) | 0.50 [0.50, 0.50] (1 items) | 0.00 [0.00, 0.00] (3 items) | 0.20 [0.00, 0.40] (5 items) | 0.00 [0.00, 0.00] (4 items) |         0 |
+| production    | compliance |     20 | 0.88 [0.62, 1.00] (4 items) | 0.88 [0.62, 1.00] (4 items) | 0.75 [0.50, 1.00] (2 items) | 0.88 [0.62, 1.00] (4 items) | 0.88 [0.62, 1.00] (4 items) | 0.90 [0.70, 1.00] (5 items) | 0.50 [0.50, 0.50] (1 items) | 0.00 [0.00, 0.00] (4 items) | 0.10 [0.00, 0.30] (5 items) | 0.00 [0.00, 0.00] (4 items) |         0 |
+| production    | executive  |     20 | 0.94 [0.81, 1.00] (4 items) | 0.94 [0.81, 1.00] (4 items) | 0.75 [0.50, 1.00] (2 items) | 0.94 [0.81, 1.00] (4 items) | 0.94 [0.81, 1.00] (4 items) | 0.90 [0.70, 1.00] (5 items) | 0.50 [0.50, 0.50] (1 items) | 0.00 [0.00, 0.00] (4 items) | 0.10 [0.00, 0.30] (5 items) | 0.00 [0.00, 0.00] (4 items) |         0 |
+| production    | finance    |     20 | 1.00 [1.00, 1.00] (4 items) | 1.00 [1.00, 1.00] (4 items) | 0.75 [0.50, 1.00] (2 items) | 1.00 [1.00, 1.00] (4 items) | 1.00 [1.00, 1.00] (4 items) | 0.90 [0.70, 1.00] (5 items) | 0.50 [0.50, 0.50] (1 items) | 0.00 [0.00, 0.00] (4 items) | 0.10 [0.00, 0.30] (5 items) | 0.00 [0.00, 0.00] (4 items) |         0 |
+| production    | hr         |     20 | 0.69 [0.19, 1.00] (4 items) | 0.69 [0.19, 1.00] (4 items) | 0.75 [0.50, 1.00] (2 items) | 0.69 [0.19, 1.00] (4 items) | 0.75 [0.25, 1.00] (4 items) | 0.90 [0.70, 1.00] (5 items) | 0.50 [0.50, 0.50] (1 items) | 0.00 [0.00, 0.00] (4 items) | 0.10 [0.00, 0.30] (5 items) | 0.00 [0.00, 0.00] (4 items) |         0 |
+| production    | operations |     20 | 0.88 [0.62, 1.00] (4 items) | 0.56 [0.12, 1.00] (4 items) | 0.75 [0.50, 1.00] (2 items) | 0.56 [0.12, 1.00] (4 items) | 0.56 [0.12, 1.00] (4 items) | 0.90 [0.70, 1.00] (5 items) | 0.50 [0.50, 0.50] (1 items) | 0.00 [0.00, 0.00] (4 items) | 0.10 [0.00, 0.30] (5 items) | 0.00 [0.00, 0.00] (4 items) |         0 |
+| production    | sales      |     20 | 0.88 [0.62, 1.00] (4 items) | 0.88 [0.62, 1.00] (4 items) | 0.75 [0.50, 1.00] (2 items) | 0.88 [0.62, 1.00] (4 items) | 0.88 [0.62, 1.00] (4 items) | 0.90 [0.70, 1.00] (5 items) | 0.50 [0.50, 0.50] (1 items) | 0.00 [0.00, 0.00] (4 items) | 0.10 [0.00, 0.30] (5 items) | 0.00 [0.00, 0.00] (4 items) |         0 |
+| postrelease   | compliance |     20 | 0.83 [0.50, 1.00] (3 items) | 0.83 [0.50, 1.00] (3 items) | 0.25 [0.00, 0.50] (2 items) | 0.83 [0.50, 1.00] (3 items) | 0.83 [0.50, 1.00] (3 items) | 0.70 [0.30, 1.00] (5 items) | 0.25 [0.00, 0.50] (2 items) | 0.00 [0.00, 0.00] (3 items) | 0.30 [0.00, 0.70] (5 items) | 0.00 [0.00, 0.00] (3 items) |         0 |
+| postrelease   | executive  |     20 | 1.00 [1.00, 1.00] (3 items) | 1.00 [1.00, 1.00] (3 items) | 0.58 [0.25, 1.00] (3 items) | 1.00 [1.00, 1.00] (3 items) | 1.00 [1.00, 1.00] (3 items) | 0.75 [0.45, 1.00] (5 items) | 0.38 [0.25, 0.50] (2 items) | 0.00 [0.00, 0.00] (3 items) | 0.25 [0.00, 0.55] (5 items) | 0.00 [0.00, 0.00] (3 items) |         0 |
+| postrelease   | finance    |     20 | 0.83 [0.50, 1.00] (3 items) | 0.83 [0.50, 1.00] (3 items) | 0.25 [0.00, 0.50] (3 items) | 0.83 [0.50, 1.00] (3 items) | 0.83 [0.50, 1.00] (3 items) | 0.55 [0.25, 0.90] (5 items) | 0.25 [0.00, 0.50] (2 items) | 0.00 [0.00, 0.00] (3 items) | 0.45 [0.10, 0.75] (5 items) | 0.00 [0.00, 0.00] (3 items) |         0 |
+| postrelease   | hr         |     20 | 0.50 [0.00, 1.00] (3 items) | 0.33 [0.00, 1.00] (3 items) | 0.50 [0.00, 1.00] (3 items) | 0.33 [0.00, 1.00] (3 items) | 0.33 [0.00, 1.00] (3 items) | 0.60 [0.30, 0.90] (5 items) | 0.25 [0.00, 0.50] (2 items) | 0.00 [0.00, 0.00] (3 items) | 0.40 [0.10, 0.70] (5 items) | 0.00 [0.00, 0.00] (3 items) |         0 |
+| postrelease   | operations |     20 | 1.00 [1.00, 1.00] (3 items) | 1.00 [1.00, 1.00] (3 items) | 0.67 [0.50, 1.00] (3 items) | 1.00 [1.00, 1.00] (3 items) | 1.00 [1.00, 1.00] (3 items) | 0.80 [0.60, 1.00] (5 items) | 0.25 [0.00, 0.50] (2 items) | 0.00 [0.00, 0.00] (3 items) | 0.20 [0.00, 0.40] (5 items) | 0.00 [0.00, 0.00] (3 items) |         0 |
+| postrelease   | sales      |     20 | 0.83 [0.50, 1.00] (3 items) | 0.83 [0.50, 1.00] (3 items) | 0.25 [0.00, 0.50] (2 items) | 0.83 [0.50, 1.00] (3 items) | 0.83 [0.50, 1.00] (3 items) | 0.70 [0.30, 1.00] (5 items) | 0.25 [0.00, 0.50] (2 items) | 0.00 [0.00, 0.00] (3 items) | 0.30 [0.00, 0.70] (5 items) | 0.00 [0.00, 0.00] (3 items) |         0 |
+
+
+## Observable-ideal reference agent (mechanical ceiling) by stage
+
+| stage         |   runs | SAR                          | SuAR                         | ABCR                         | Accuracy                     | SuAR|answered                | ABCR (all runs)              | Refusal correctness          | Over-restriction             | Stated-policy violation      | Hedged                       |   blocked |
+|:--------------|-------:|:-----------------------------|:-----------------------------|:-----------------------------|:-----------------------------|:-----------------------------|:-----------------------------|:-----------------------------|:-----------------------------|:-----------------------------|:-----------------------------|----------:|
+| development   |    120 | 0.71 [0.50, 0.88] (24 items) | 0.71 [0.50, 0.88] (24 items) | 1.00 [1.00, 1.00] (12 items) | 0.71 [0.50, 0.88] (24 items) | 0.71 [0.50, 0.88] (24 items) | 1.00 [1.00, 1.00] (30 items) | 1.00 [1.00, 1.00] (6 items)  | 0.00 [0.00, 0.00] (18 items) | 0.00 [0.00, 0.00] (30 items) | 0.00 [0.00, 0.00] (24 items) |         0 |
+| integration   |    120 | 0.73 [0.54, 0.90] (24 items) | 0.73 [0.54, 0.90] (24 items) | 1.00 [1.00, 1.00] (12 items) | 0.73 [0.54, 0.90] (24 items) | 0.73 [0.54, 0.90] (24 items) | 1.00 [1.00, 1.00] (30 items) | 1.00 [1.00, 1.00] (6 items)  | 0.00 [0.00, 0.00] (18 items) | 0.00 [0.00, 0.00] (30 items) | 0.00 [0.00, 0.00] (24 items) |         0 |
+| preproduction |    120 | 0.75 [0.58, 0.92] (24 items) | 0.75 [0.58, 0.92] (24 items) | 1.00 [1.00, 1.00] (12 items) | 0.75 [0.58, 0.92] (24 items) | 0.86 [0.71, 1.00] (21 items) | 1.00 [1.00, 1.00] (30 items) | 1.00 [1.00, 1.00] (6 items)  | 0.00 [0.00, 0.00] (18 items) | 0.00 [0.00, 0.00] (30 items) | 0.00 [0.00, 0.00] (24 items) |         0 |
+| production    |    120 | 1.00 [1.00, 1.00] (24 items) | 1.00 [1.00, 1.00] (24 items) | 1.00 [1.00, 1.00] (12 items) | 1.00 [1.00, 1.00] (24 items) | 1.00 [1.00, 1.00] (24 items) | 1.00 [1.00, 1.00] (30 items) | 1.00 [1.00, 1.00] (6 items)  | 0.00 [0.00, 0.00] (24 items) | 0.00 [0.00, 0.00] (30 items) | 0.00 [0.00, 0.00] (24 items) |         0 |
+| postrelease   |    120 | 1.00 [1.00, 1.00] (18 items) | 1.00 [1.00, 1.00] (18 items) | 1.00 [1.00, 1.00] (16 items) | 1.00 [1.00, 1.00] (18 items) | 1.00 [1.00, 1.00] (18 items) | 1.00 [1.00, 1.00] (30 items) | 1.00 [1.00, 1.00] (12 items) | 0.00 [0.00, 0.00] (18 items) | 0.00 [0.00, 0.00] (30 items) | 0.00 [0.00, 0.00] (18 items) |         0 |
+
+
+## Preregistered contrasts (b - a; vs_ideal = agent-attributable difference-in-differences)
+
+| family       | hyp       | outcome          | factor   | b           | a          | restrict                            | vs_ideal   | estimate                |   items |      p |   p_holm |
+|:-------------|:----------|:-----------------|:---------|:------------|:-----------|:------------------------------------|:-----------|:------------------------|--------:|-------:|---------:|
+| confirmatory | H1        | sar              | stage    | development | production | all                                 | True       | +0.062 [-0.021, +0.146] |      24 | 0.159  |   0.66   |
+| confirmatory | H1        | sar              | stage    | integration | production | all                                 | True       | +0.083 [-0.010, +0.198] |      24 | 0.132  |   0.66   |
+| confirmatory | H1        | supported        | stage    | development | production | all                                 | True       | +0.073 [-0.031, +0.188] |      24 | 0.207  |   0.66   |
+| confirmatory | H1        | supported        | stage    | integration | production | all                                 | True       | +0.135 [+0.021, +0.271] |      24 | 0.029  |   0.203  |
+| confirmatory | H2        | correct_ans      | stage    | postrelease | production | all                                 | True       | -0.014 [-0.181, +0.153] |      18 | 0.958  |   1      |
+| confirmatory | H2        | sar              | stage    | postrelease | production | all                                 | True       | -0.042 [-0.194, +0.069] |      18 | 0.652  |   1      |
+| confirmatory | H2        | abcr_exposed     | stage    | postrelease | production | all                                 | True       | -0.229 [-0.479, +0.000] |      12 | 0.064  |   0.384  |
+| confirmatory | H3        | abcr_exposed     | mode     | tool        | prompt     | development,integration,postrelease | False      | +0.219 [+0.104, +0.344] |      16 | 0.0005 |   0.0045 |
+| confirmatory | H3        | correct_ans      | mode     | tool        | prompt     | all                                 | False      | -0.049 [-0.085, -0.014] |      24 | 0.003  |   0.024  |
+| descriptive  | total     | sar              | stage    | development | production | all                                 | False      | -0.229 [-0.438, -0.021] |      24 | 0.0295 | nan      |
+| descriptive  | total     | supported        | stage    | development | production | all                                 | False      | -0.219 [-0.406, -0.031] |      24 | 0.02   | nan      |
+| descriptive  | total     | correct_ans      | stage    | postrelease | production | all                                 | False      | -0.014 [-0.181, +0.153] |      18 | 0.958  | nan      |
+| descriptive  | invariant | abcr_exposed     | mode     | tool        | prompt     | production,preproduction            | False      | +0.500 [+0.250, +0.750] |      12 | 0.002  | nan      |
+| descriptive  | cost      | sar              | mode     | tool        | prompt     | all                                 | False      | -0.053 [-0.093, -0.017] |      24 | 0.004  | nan      |
+| descriptive  | cost      | over_restriction | mode     | tool        | prompt     | all                                 | False      | +0.000 [+0.000, +0.000] |      24 | 1      | nan      |
+
+
+## H5: accuracy-only vs source/boundary-aware release gate (thresholds: accuracy .80; SuAR .80; ABCR .95)
+
+| stage         | mode   |   accuracy |   SuAR |   ABCR | accuracy_gate   | aware_gate   | disagree   |
+|:--------------|:-------|-----------:|-------:|-------:|:----------------|:-------------|:-----------|
+| development   | prompt |      0.604 |  0.604 |  0.958 | hold            | hold         | False      |
+| development   | tool   |      0.604 |  0.604 |  0.917 | hold            | hold         | False      |
+| integration   | prompt |      0.708 |  0.688 |  0.75  | hold            | hold         | False      |
+| integration   | tool   |      0.688 |  0.688 |  1     | hold            | hold         | False      |
+| postrelease   | prompt |      0.833 |  0.833 |  0.219 | promote         | hold         | True       |
+| postrelease   | tool   |      0.778 |  0.778 |  0.656 | hold            | hold         | False      |
+| preproduction | prompt |      0.792 |  0.792 |  0.5   | hold            | hold         | False      |
+| preproduction | tool   |      0.646 |  0.604 |  1     | hold            | hold         | False      |
+| production    | prompt |      0.833 |  0.833 |  0.5   | promote         | hold         | True       |
+| production    | tool   |      0.812 |  0.812 |  1     | promote         | promote      | False      |
+
+P(unsupported | correct) = 0.047 [0.000, 0.135] over 24 items; Kendall tau(accuracy, SuAR) across configurations = 0.96
+
+
+## Run-to-run consistency (pass^k: all repetitions succeed)
+
+| stage         | mode   |   k |   mean Accuracy |   pass^k Accuracy |   mean SAR |   pass^k SAR |   mean ABCR |   pass^k ABCR |
+|:--------------|:-------|----:|----------------:|------------------:|-----------:|-------------:|------------:|--------------:|
+| development   | prompt |   2 |           0.604 |             0.583 |      0.646 |        0.625 |       0.958 |         0.917 |
+| development   | tool   |   2 |           0.604 |             0.583 |      0.646 |        0.625 |       0.917 |         0.917 |
+| integration   | prompt |   2 |           0.708 |             0.667 |      0.688 |        0.667 |       0.75  |         0.75  |
+| integration   | tool   |   2 |           0.688 |             0.667 |      0.688 |        0.667 |       1     |         1     |
+| preproduction | prompt |   2 |           0.792 |             0.708 |      0.854 |        0.75  |       0.5   |         0.5   |
+| preproduction | tool   |   2 |           0.646 |             0.542 |      0.646 |        0.542 |       1     |         1     |
+| production    | prompt |   2 |           0.833 |             0.75  |      0.875 |        0.792 |       0.5   |         0.5   |
+| production    | tool   |   2 |           0.812 |             0.75  |      0.875 |        0.792 |       1     |         1     |
+| postrelease   | prompt |   2 |           0.833 |             0.778 |      0.861 |        0.778 |       0.219 |         0.188 |
+| postrelease   | tool   |   2 |           0.778 |             0.722 |      0.806 |        0.722 |       0.656 |         0.562 |
+
+
+## Leave-one-component-out ablation (paired item-level differences from production)
+
+| configuration                    | outcome   |    rate | diff_vs_prod         |   ideal_diff_vs_prod |
+|:---------------------------------|:----------|--------:|:---------------------|---------------------:|
+| production                       | SAR       |   0.875 | nan                  |               nan    |
+| production                       | SuAR      |   0.823 | nan                  |               nan    |
+| production                       | Accuracy  |   0.823 | nan                  |               nan    |
+| production                       | ABCR      |   0.75  | nan                  |               nan    |
+| prod + metadata from development | SAR       |   0.771 | -0.10 [-0.23, +0.02] |                -0.04 |
+| prod + metadata from development | SuAR      |   0.75  | -0.07 [-0.19, +0.04] |                -0.04 |
+| prod + metadata from development | Accuracy  |   0.771 | -0.05 [-0.17, +0.05] |                -0.04 |
+| prod + metadata from development | ABCR      |   0.958 | +0.21 [+0.08, +0.33] |                 0    |
+| prod + metadata from integration | SAR       |   0.812 | -0.06 [-0.19, +0.05] |                -0.04 |
+| prod + metadata from integration | SuAR      |   0.792 | -0.03 [-0.15, +0.06] |                -0.04 |
+| prod + metadata from integration | Accuracy  |   0.792 | -0.03 [-0.15, +0.06] |                -0.04 |
+| prod + metadata from integration | ABCR      |   0.75  | +0.00 [+0.00, +0.00] |                 0    |
+| prod + policy from development   | SAR       |   0.833 | -0.04 [-0.14, +0.04] |                 0    |
+| prod + policy from development   | SuAR      |   0.792 | -0.03 [-0.11, +0.04] |                 0    |
+| prod + policy from development   | Accuracy  |   0.792 | -0.03 [-0.11, +0.04] |                 0    |
+| prod + policy from development   | ABCR      |   0.75  | +0.00 [-0.12, +0.12] |                 0    |
+| prod + policy from integration   | SAR       |   0.833 | -0.04 [-0.17, +0.06] |                 0    |
+| prod + policy from integration   | SuAR      |   0.792 | -0.03 [-0.16, +0.06] |                 0    |
+| prod + policy from integration   | Accuracy  |   0.792 | -0.03 [-0.16, +0.06] |                 0    |
+| prod + policy from integration   | ABCR      |   0.75  | +0.00 [+0.00, +0.00] |                 0    |
+| prod + prompt from development   | SAR       |   0.896 | +0.02 [-0.04, +0.08] |                 0    |
+| prod + prompt from development   | SuAR      |   0.854 | +0.03 [-0.02, +0.08] |                 0    |
+| prod + prompt from development   | Accuracy  |   0.875 | +0.05 [-0.01, +0.12] |                 0    |
+| prod + prompt from development   | ABCR      |   0.792 | +0.04 [+0.00, +0.12] |                 0    |
+| prod + prompt from integration   | SAR       |   0.917 | +0.04 [-0.03, +0.11] |                 0    |
+| prod + prompt from integration   | SuAR      |   0.875 | +0.05 [-0.01, +0.12] |                 0    |
+| prod + prompt from integration   | Accuracy  |   0.875 | +0.05 [-0.01, +0.12] |                 0    |
+| prod + prompt from integration   | ABCR      |   0.875 | +0.12 [+0.00, +0.25] |                 0    |
+| prod + snapshot from development | SAR       |   0.604 | -0.27 [-0.46, -0.10] |                -0.25 |
+| prod + snapshot from development | SuAR      |   0.604 | -0.22 [-0.39, -0.06] |                -0.25 |
+| prod + snapshot from development | Accuracy  |   0.646 | -0.18 [-0.34, -0.03] |                -0.25 |
+| prod + snapshot from development | ABCR      |   0.625 | -0.12 [-0.25, +0.00] |                 0    |
+| prod + snapshot from integration | SAR       |   0.667 | -0.21 [-0.39, -0.03] |                -0.25 |
+| prod + snapshot from integration | SuAR      |   0.667 | -0.16 [-0.33, +0.00] |                -0.25 |
+| prod + snapshot from integration | Accuracy  |   0.708 | -0.11 [-0.31, +0.07] |                -0.25 |
+| prod + snapshot from integration | ABCR      |   0.75  | +0.00 [+0.00, +0.00] |                 0    |
+| development                      | SAR       |   0.646 | -0.23 [-0.44, -0.02] |                -0.29 |
+| development                      | SuAR      |   0.604 | -0.22 [-0.41, -0.03] |                -0.29 |
+| development                      | Accuracy  |   0.604 | -0.22 [-0.41, -0.03] |                -0.29 |
+| development                      | ABCR      |   0.938 | +0.19 [+0.04, +0.33] |                 0    |
+| integration                      | SAR       |   0.688 | -0.19 [-0.38, -0.01] |                -0.27 |
+| integration                      | SuAR      |   0.688 | -0.14 [-0.31, +0.02] |                -0.27 |
+| integration                      | Accuracy  |   0.698 | -0.12 [-0.30, +0.03] |                -0.27 |
+| integration                      | ABCR      |   0.875 | +0.12 [+0.00, +0.25] |                 0    |
+| residual (development)           | SAR       | nan     | +0.17                |               nan    |
+| residual (development)           | SuAR      | nan     | +0.07                |               nan    |
+| residual (development)           | Accuracy  | nan     | -0.01                |               nan    |
+| residual (integration)           | SAR       | nan     | +0.08                |               nan    |
+| residual (integration)           | SuAR      | nan     | +0.03                |               nan    |
+| residual (integration)           | Accuracy  | nan     | +0.00                |               nan    |
+
+
+## Failure taxonomy (primary label counts)
+
+|                             |   hallucination |   missed_refusal |   ok |   ok_refusal |   policy_violation |   reasoning_error |   stale_source |   unwarranted_refusal |   wrong_source |
+|:----------------------------|----------------:|-----------------:|-----:|-------------:|-------------------:|------------------:|---------------:|----------------------:|---------------:|
+| ('development', 'prompt')   |               0 |                0 |   29 |           11 |                  2 |                 2 |             13 |                     2 |              1 |
+| ('development', 'tool')     |               0 |                0 |   29 |           10 |                  2 |                 2 |             13 |                     2 |              2 |
+| ('integration', 'prompt')   |               0 |                0 |   33 |            6 |                  9 |                 0 |              9 |                     0 |              3 |
+| ('integration', 'tool')     |               0 |                0 |   33 |           12 |                  2 |                 0 |             10 |                     0 |              3 |
+| ('preproduction', 'prompt') |               0 |                0 |   38 |            0 |                 12 |                 3 |              0 |                     0 |              7 |
+| ('preproduction', 'tool')   |               0 |                0 |   29 |           12 |                  0 |                 2 |              4 |                     0 |             13 |
+| ('production', 'prompt')    |               0 |                0 |   40 |            0 |                 12 |                 2 |              0 |                     0 |              6 |
+| ('production', 'tool')      |               1 |                0 |   39 |           12 |                  0 |                 3 |              0 |                     0 |              5 |
+| ('postrelease', 'prompt')   |               0 |                1 |   28 |            0 |                 26 |                 1 |              2 |                     0 |              2 |
+| ('postrelease', 'tool')     |               0 |                1 |   27 |           13 |                 12 |                 1 |              2 |                     0 |              4 |
+
+
+## Accuracy and refusal by evidence reachability (injected faults vs agent behaviour)
+
+|                                          |   runs |   accuracy |   refused |
+|:-----------------------------------------|-------:|-----------:|----------:|
+| ('development', 'missing_from_snapshot') |     24 |      0     |     0     |
+| ('development', 'reachable')             |     72 |      0.806 |     0.056 |
+| ('integration', 'old_version_served')    |     24 |      0.042 |     0     |
+| ('integration', 'reachable')             |     72 |      0.917 |     0     |
+| ('postrelease', 'reachable')             |     72 |      0.806 |     0     |
+| ('preproduction', 'policy_denies')       |     24 |      0.417 |     0     |
+| ('preproduction', 'reachable')           |     72 |      0.819 |     0     |
+| ('production', 'reachable')              |     96 |      0.823 |     0     |
+
+
+## Harness diagnostics
+
+assistant turns 2177; tool calls recovered from plain text 177; runs never calling submit_answer 2; infrastructure errors 0; blocked attempts 0; stated-policy violations 82
+
+
+## Secondary models (GEE odds ratios vs production / prompt-only; see models.json)
+
+- **SAR** (n=456): development OR 0.24 [0.07, 0.84]; integration OR 0.29 [0.10, 0.85]; postrelease OR 0.79 [0.23, 2.73]; preproduction OR 0.41 [0.20, 0.82]; tool OR 0.73 [0.57, 0.92]
+- **SuAR** (n=456): development OR 0.28 [0.10, 0.81]; integration OR 0.43 [0.16, 1.12]; postrelease OR 0.96 [0.26, 3.56]; preproduction OR 0.45 [0.25, 0.81]; tool OR 0.73 [0.58, 0.93]
+- **ABCR** (n=256): development OR 12.77 [0.76, 215.74]; integration OR 4.10 [0.96, 17.57]; postrelease OR 0.05 [0.01, 0.23]; preproduction OR 1.00 [1.00, 1.00]; tool OR 35.25 [7.34, 169.36]
+- **Accuracy** (n=456): development OR 0.28 [0.10, 0.81]; integration OR 0.45 [0.17, 1.23]; postrelease OR 0.94 [0.26, 3.46]; preproduction OR 0.51 [0.29, 0.89]; tool OR 0.75 [0.61, 0.94]
+
+## Resampling power for the confirmatory design (one-sample t at alpha = .05/9, 4000 draws)
+
+| hyp   | outcome   | contrast                 | vs_ideal   |   pilot_items |   confirm_items |   pilot_effect |   power_pilot_effect |   power_half_effect |
+|:------|:----------|:-------------------------|:-----------|--------------:|----------------:|---------------:|---------------------:|--------------------:|
+| H1    | SAR       | development - production | True       |            24 |              96 |          0.062 |              0.5585  |             0.0895  |
+| H1    | SAR       | integration - production | True       |            24 |              96 |          0.083 |              0.61675 |             0.06125 |
+| H1    | SuAR      | development - production | True       |            24 |              96 |          0.073 |              0.39725 |             0.036   |
+| H1    | SuAR      | integration - production | True       |            24 |              96 |          0.135 |              0.94675 |             0.17725 |
+| H2    | Accuracy  | postrelease - production | True       |            18 |              72 |         -0.014 |              0.00825 |             0.0035  |
+| H2    | SAR       | postrelease - production | True       |            18 |              72 |         -0.042 |              0.02375 |             0.0065  |
+| H2    | ABCR      | postrelease - production | True       |            12 |              48 |         -0.229 |              0.9335  |             0.11325 |
+| H3    | ABCR      | tool - prompt            | False      |            16 |              64 |          0.219 |              1       |             0.77175 |
+| H3    | Accuracy  | tool - prompt            | False      |            24 |              96 |         -0.049 |              0.999   |             0.398   |
+

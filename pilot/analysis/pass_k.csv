@@ -1,0 +1,11 @@
+stage,mode,k,mean Accuracy,pass^k Accuracy,mean SAR,pass^k SAR,mean ABCR,pass^k ABCR
+development,prompt,2,0.604,0.542,0.583,0.542,0.893,0.857
+development,tool,2,0.583,0.542,0.562,0.542,0.857,0.821
+integration,prompt,2,0.542,0.542,0.542,0.542,0.929,0.893
+integration,tool,2,0.542,0.542,0.542,0.542,0.964,0.964
+preproduction,prompt,2,0.604,0.583,0.688,0.667,0.768,0.679
+preproduction,tool,2,0.646,0.583,0.729,0.708,1.0,1.0
+production,prompt,2,0.833,0.792,0.938,0.917,0.839,0.821
+production,tool,2,0.854,0.833,0.958,0.958,1.0,1.0
+postrelease,prompt,2,0.778,0.722,0.833,0.778,0.571,0.536
+postrelease,tool,2,0.861,0.833,0.806,0.778,0.75,0.75

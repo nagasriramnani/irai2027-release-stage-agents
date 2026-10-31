@@ -1,0 +1,71 @@
+10/600 runs, 14.2s/run, ETA 139 min
+20/600 runs, 14.0s/run, ETA 135 min
+30/600 runs, 13.3s/run, ETA 127 min
+40/600 runs, 12.6s/run, ETA 118 min
+50/600 runs, 12.0s/run, ETA 110 min
+60/600 runs, 11.8s/run, ETA 106 min
+70/600 runs, 12.0s/run, ETA 106 min
+80/600 runs, 12.9s/run, ETA 111 min
+90/600 runs, 13.6s/run, ETA 115 min
+100/600 runs, 14.1s/run, ETA 118 min
+110/600 runs, 14.5s/run, ETA 119 min
+120/600 runs, 15.1s/run, ETA 121 min
+130/600 runs, 15.3s/run, ETA 120 min
+140/600 runs, 15.6s/run, ETA 120 min
+150/600 runs, 16.2s/run, ETA 122 min
+160/600 runs, 16.5s/run, ETA 121 min
+170/600 runs, 16.6s/run, ETA 119 min
+180/600 runs, 16.9s/run, ETA 118 min
+190/600 runs, 17.1s/run, ETA 117 min
+200/600 runs, 17.1s/run, ETA 114 min
+210/600 runs, 17.4s/run, ETA 113 min
+220/600 runs, 17.6s/run, ETA 112 min
+230/600 runs, 17.7s/run, ETA 109 min
+240/600 runs, 17.9s/run, ETA 107 min
+250/600 runs, 18.0s/run, ETA 105 min
+260/600 runs, 18.0s/run, ETA 102 min
+270/600 runs, 18.1s/run, ETA 100 min
+280/600 runs, 18.2s/run, ETA 97 min
+290/600 runs, 18.2s/run, ETA 94 min
+300/600 runs, 18.2s/run, ETA 91 min
+310/600 runs, 18.0s/run, ETA 87 min
+320/600 runs, 17.8s/run, ETA 83 min
+330/600 runs, 17.6s/run, ETA 79 min
+340/600 runs, 17.4s/run, ETA 76 min
+350/600 runs, 17.3s/run, ETA 72 min
+360/600 runs, 17.1s/run, ETA 68 min
+370/600 runs, 17.0s/run, ETA 65 min
+380/600 runs, 16.8s/run, ETA 62 min
+390/600 runs, 17.2s/run, ETA 60 min
+400/600 runs, 18.7s/run, ETA 62 min
+410/600 runs, 18.6s/run, ETA 59 min
+420/600 runs, 18.4s/run, ETA 55 min
+430/600 runs, 18.3s/run, ETA 52 min
+440/600 runs, 18.1s/run, ETA 48 min
+450/600 runs, 18.0s/run, ETA 45 min
+460/600 runs, 17.8s/run, ETA 42 min
+470/600 runs, 17.7s/run, ETA 38 min
+480/600 runs, 17.5s/run, ETA 35 min
+490/600 runs, 17.4s/run, ETA 32 min
+500/600 runs, 17.4s/run, ETA 29 min
+510/600 runs, 17.2s/run, ETA 26 min
+520/600 runs, 17.1s/run, ETA 23 min
+530/600 runs, 17.0s/run, ETA 20 min
+540/600 runs, 16.9s/run, ETA 17 min
+550/600 runs, 16.8s/run, ETA 14 min
+560/600 runs, 16.7s/run, ETA 11 min
+570/600 runs, 16.6s/run, ETA 8 min
+580/600 runs, 16.6s/run, ETA 6 min
+590/600 runs, 16.5s/run, ETA 3 min
+600/600 runs, 16.4s/run, ETA 0 min
+        stage |          mode |   n |              sar |        supported |             abcr |      correct_ans |     refusal_corr |     over_restric | blocked
+  development |        prompt |  60 |     0.65 (31/48) |     0.60 (29/48) |     0.97 (58/60) |     0.60 (29/48) |     0.92 (11/12) |      0.06 (2/36) | 0
+  development |          tool |  60 |     0.65 (31/48) |     0.60 (29/48) |     0.97 (58/60) |     0.60 (29/48) |     0.83 (10/12) |      0.06 (2/36) | 0
+  integration |        prompt |  60 |     0.69 (33/48) |     0.69 (33/48) |     0.85 (51/60) |     0.71 (34/48) |      0.50 (6/12) |      0.00 (0/36) | 0
+  integration |          tool |  60 |     0.69 (33/48) |     0.69 (33/48) |     0.97 (58/60) |     0.69 (33/48) |     1.00 (12/12) |      0.00 (0/36) | 0
+preproduction |        prompt |  60 |     0.85 (41/48) |     0.79 (38/48) |     0.80 (48/60) |     0.79 (38/48) |      0.00 (0/12) |      0.00 (0/36) | 0
+preproduction |          tool |  60 |     0.65 (31/48) |     0.60 (29/48) |     1.00 (60/60) |     0.65 (31/48) |     1.00 (12/12) |      0.00 (0/36) | 0
+   production |        prompt |  60 |     0.88 (42/48) |     0.83 (40/48) |     0.80 (48/60) |     0.83 (40/48) |      0.00 (0/12) |      0.00 (0/48) | 0
+   production |          tool |  60 |     0.88 (42/48) |     0.81 (39/48) |     1.00 (60/60) |     0.81 (39/48) |     1.00 (12/12) |      0.00 (0/48) | 0
+  postrelease |        prompt |  60 |     0.86 (31/36) |     0.83 (30/36) |     0.57 (34/60) |     0.83 (30/36) |      0.00 (0/24) |      0.00 (0/36) | 0
+  postrelease |          tool |  60 |     0.81 (29/36) |     0.78 (28/36) |     0.80 (48/60) |     0.78 (28/36) |     0.54 (13/24) |      0.00 (0/36) | 0

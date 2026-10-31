@@ -1,0 +1,40 @@
+{
+ "internal-general": [
+  "finance",
+  "operations",
+  "hr",
+  "sales",
+  "compliance",
+  "executive"
+ ],
+ "finance-internal": [
+  "finance",
+  "executive"
+ ],
+ "ops-internal": [
+  "operations",
+  "executive"
+ ],
+ "hr-internal": [
+  "hr",
+  "executive"
+ ],
+ "hr-confidential": [
+  "hr"
+ ],
+ "sales-internal": [
+  "sales",
+  "executive",
+  "finance"
+ ],
+ "compliance-internal": [
+  "compliance",
+  "executive"
+ ],
+ "compliance-investigations": [
+  "compliance"
+ ],
+ "board-restricted": [
+  "executive"
+ ]
+}

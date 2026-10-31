@@ -1,0 +1,46 @@
+{
+ "dev_missing": [
+  "OPE-COMP-DIST-02",
+  "EXE-LOOK-PROH-00",
+  "SAL-EXPL-STAL-03",
+  "COM-CALC-PROH-01",
+  "FIN-LOOK-AUTH-00",
+  "HR-CALC-DIST-01"
+ ],
+ "int_mixed": [
+  "COM-LOOK-AUTH-00",
+  "EXE-COMP-DIST-02",
+  "FIN-CALC-PROH-01",
+  "SAL-EXPL-STAL-03",
+  "OPE-LOOK-PROH-00",
+  "HR-CALC-DIST-01"
+ ],
+ "uat_overrestrict": [
+  "EXE-CALC-STAL-01",
+  "OPE-LOOK-PROH-00",
+  "FIN-EXPL-DIST-03",
+  "HR-COMP-AUTH-02",
+  "COM-CALC-PROH-01",
+  "SAL-EXPL-STAL-03"
+ ],
+ "drift_fresh": [
+  "FIN-LOOK-AUTH-00",
+  "EXE-CALC-STAL-01",
+  "SAL-LOOK-DIST-00",
+  "COM-CALC-PROH-01",
+  "HR-COMP-AUTH-02",
+  "OPE-CALC-STAL-01"
+ ],
+ "drift_perm": [
+  "EXE-LOOK-PROH-00",
+  "FIN-COMP-STAL-02",
+  "HR-CALC-DIST-01",
+  "COM-LOOK-AUTH-00",
+  "SAL-CALC-AUTH-01",
+  "OPE-COMP-DIST-02"
+ ],
+ "transient_fault_sources": [
+  "SRC-0058",
+  "SRC-0063"
+ ]
+}

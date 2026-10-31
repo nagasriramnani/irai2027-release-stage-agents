@@ -1,0 +1,625 @@
+{
+ "sar": {
+  "outcome": "SAR",
+  "n": 456,
+  "events": 325,
+  "gee": {
+   "C(stage, Treatment('production'))[T.development]": {
+    "OR": 0.04652182928388845,
+    "lo": 0.01045261876980279,
+    "hi": 0.20705630307419068,
+    "p": 5.64521646867156e-05
+   },
+   "C(stage, Treatment('production'))[T.integration]": {
+    "OR": 0.03979110642484534,
+    "lo": 0.007939355715906704,
+    "hi": 0.19942829206419374,
+    "p": 8.835704301537363e-05
+   },
+   "C(stage, Treatment('production'))[T.postrelease]": {
+    "OR": 0.18423777876078265,
+    "lo": 0.03539550605582284,
+    "hi": 0.9589793424389564,
+    "p": 0.04445987404672522
+   },
+   "C(stage, Treatment('production'))[T.preproduction]": {
+    "OR": 0.09770171944952351,
+    "lo": 0.019180438480460596,
+    "hi": 0.49767506582905663,
+    "p": 0.0051095217519733765
+   },
+   "C(mode, Treatment('prompt'))[T.tool]": {
+    "OR": 1.0299603427807371,
+    "lo": 0.850147984526217,
+    "hi": 1.2478042964392866,
+    "p": 0.7629880189636493
+   },
+   "C(profile)[T.executive]": {
+    "OR": 1.7944964013512033,
+    "lo": 0.4849883250820643,
+    "hi": 6.639783202858605,
+    "p": 0.3810633021596722
+   },
+   "C(profile)[T.finance]": {
+    "OR": 1.9295490325330351,
+    "lo": 0.4928310136006146,
+    "hi": 7.554637119421191,
+    "p": 0.34523881716591687
+   },
+   "C(profile)[T.hr]": {
+    "OR": 1.0358411889787327,
+    "lo": 0.23262500221647833,
+    "hi": 4.612431847658332,
+    "p": 0.9631421733012252
+   },
+   "C(profile)[T.operations]": {
+    "OR": 1.1576711199364642,
+    "lo": 0.2904795770286241,
+    "hi": 4.6137578264336385,
+    "p": 0.8355839429968402
+   },
+   "C(profile)[T.sales]": {
+    "OR": 1.8247607993061368,
+    "lo": 0.08164681598532678,
+    "hi": 40.78238611635242,
+    "p": 0.7043674868423655
+   },
+   "C(task_class)[T.comparison]": {
+    "OR": 8.271191565155295,
+    "lo": 2.7231774700936975,
+    "hi": 25.122347206090172,
+    "p": 0.00019353016927927988
+   },
+   "C(task_class)[T.explanation]": {
+    "OR": 13.255877091667275,
+    "lo": 1.368935472869717,
+    "hi": 128.36125657627144,
+    "p": 0.025677279687484796
+   },
+   "C(task_class)[T.lookup]": {
+    "OR": 5.812240774889326,
+    "lo": 2.0939348936863342,
+    "hi": 16.13333008927189,
+    "p": 0.0007280763991079482
+   }
+  },
+  "mixed": {
+   "C(stage, Treatment('production'))[T.development]": {
+    "OR": 0.046256306122304504,
+    "lo": 0.02780097252410343,
+    "hi": 0.07696298588926245
+   },
+   "C(stage, Treatment('production'))[T.integration]": {
+    "OR": 0.03770718011597862,
+    "lo": 0.022693148316411952,
+    "hi": 0.06265465736504125
+   },
+   "C(stage, Treatment('production'))[T.postrelease]": {
+    "OR": 0.2660888083279689,
+    "lo": 0.13391240292893203,
+    "hi": 0.5287281265124801
+   },
+   "C(stage, Treatment('production'))[T.preproduction]": {
+    "OR": 0.1172526549788653,
+    "lo": 0.06829286458360458,
+    "hi": 0.20131217490170167
+   },
+   "C(mode, Treatment('prompt'))[T.tool]": {
+    "OR": 1.0572497575616757,
+    "lo": 0.728834291384657,
+    "hi": 1.5336504649645974
+   },
+   "C(profile)[T.executive]": {
+    "OR": 1.1866803684600942,
+    "lo": 0.6304273993254498,
+    "hi": 2.2337390449643433
+   },
+   "C(profile)[T.finance]": {
+    "OR": 1.2520301982566313,
+    "lo": 0.6753759866848386,
+    "hi": 2.3210473103155267
+   },
+   "C(profile)[T.hr]": {
+    "OR": 0.7098263296854185,
+    "lo": 0.35722719447691037,
+    "hi": 1.4104564996863342
+   },
+   "C(profile)[T.operations]": {
+    "OR": 1.0444468085024956,
+    "lo": 0.5650280231335159,
+    "hi": 1.930646076173954
+   },
+   "C(profile)[T.sales]": {
+    "OR": 1.8529543150893686,
+    "lo": 0.9389616282791787,
+    "hi": 3.6566347232961225
+   },
+   "C(task_class)[T.comparison]": {
+    "OR": 9.458692377597737,
+    "lo": 5.435979721327389,
+    "hi": 16.458277271162995
+   },
+   "C(task_class)[T.explanation]": {
+    "OR": 18.728124057293947,
+    "lo": 9.633576242479535,
+    "hi": 36.40835156925239
+   },
+   "C(task_class)[T.lookup]": {
+    "OR": 3.84938592024616,
+    "lo": 2.3874018589359682,
+    "hi": 6.206651765611614
+   }
+  },
+  "scenario_sd": 1.4425820578762245
+ },
+ "supported": {
+  "outcome": "SuAR",
+  "n": 456,
+  "events": 301,
+  "gee": {
+   "C(stage, Treatment('production'))[T.development]": {
+    "OR": NaN,
+    "lo": NaN,
+    "hi": NaN,
+    "p": NaN
+   },
+   "C(stage, Treatment('production'))[T.integration]": {
+    "OR": NaN,
+    "lo": NaN,
+    "hi": NaN,
+    "p": NaN
+   },
+   "C(stage, Treatment('production'))[T.postrelease]": {
+    "OR": NaN,
+    "lo": NaN,
+    "hi": NaN,
+    "p": NaN
+   },
+   "C(stage, Treatment('production'))[T.preproduction]": {
+    "OR": NaN,
+    "lo": NaN,
+    "hi": NaN,
+    "p": NaN
+   },
+   "C(mode, Treatment('prompt'))[T.tool]": {
+    "OR": NaN,
+    "lo": NaN,
+    "hi": NaN,
+    "p": NaN
+   },
+   "C(profile)[T.executive]": {
+    "OR": NaN,
+    "lo": NaN,
+    "hi": NaN,
+    "p": NaN
+   },
+   "C(profile)[T.finance]": {
+    "OR": NaN,
+    "lo": NaN,
+    "hi": NaN,
+    "p": NaN
+   },
+   "C(profile)[T.hr]": {
+    "OR": NaN,
+    "lo": NaN,
+    "hi": NaN,
+    "p": NaN
+   },
+   "C(profile)[T.operations]": {
+    "OR": NaN,
+    "lo": NaN,
+    "hi": NaN,
+    "p": NaN
+   },
+   "C(profile)[T.sales]": {
+    "OR": NaN,
+    "lo": NaN,
+    "hi": NaN,
+    "p": NaN
+   },
+   "C(task_class)[T.comparison]": {
+    "OR": NaN,
+    "lo": NaN,
+    "hi": NaN,
+    "p": NaN
+   },
+   "C(task_class)[T.explanation]": {
+    "OR": NaN,
+    "lo": NaN,
+    "hi": NaN,
+    "p": NaN
+   },
+   "C(task_class)[T.lookup]": {
+    "OR": NaN,
+    "lo": NaN,
+    "hi": NaN,
+    "p": NaN
+   }
+  },
+  "mixed": {
+   "C(stage, Treatment('production'))[T.development]": {
+    "OR": 0.12336479848122808,
+    "lo": 0.0748013915351778,
+    "hi": 0.20345709073014828
+   },
+   "C(stage, Treatment('production'))[T.integration]": {
+    "OR": 0.12336481951637021,
+    "lo": 0.07480140779305379,
+    "hi": 0.20345711589294252
+   },
+   "C(stage, Treatment('production'))[T.postrelease]": {
+    "OR": 0.7306485570728716,
+    "lo": 0.37219597209629934,
+    "hi": 1.4343178163533308
+   },
+   "C(stage, Treatment('production'))[T.preproduction]": {
+    "OR": 0.19696033131383683,
+    "lo": 0.11845104597283389,
+    "hi": 0.3275055259550299
+   },
+   "C(mode, Treatment('prompt'))[T.tool]": {
+    "OR": 1.041858128983053,
+    "lo": 0.7339336009380736,
+    "hi": 1.4789735195945273
+   },
+   "C(profile)[T.executive]": {
+    "OR": 1.09354252095471,
+    "lo": 0.6112546210850629,
+    "hi": 1.956361888950969
+   },
+   "C(profile)[T.finance]": {
+    "OR": 0.6867938262583176,
+    "lo": 0.3560320348248284,
+    "hi": 1.3248407829891333
+   },
+   "C(profile)[T.hr]": {
+    "OR": 0.8778745623225458,
+    "lo": 0.44957810865792647,
+    "hi": 1.714193223227827
+   },
+   "C(profile)[T.operations]": {
+    "OR": 1.2139182652466984,
+    "lo": 0.6723941732470705,
+    "hi": 2.191568001821577
+   },
+   "C(profile)[T.sales]": {
+    "OR": 0.7091801494940051,
+    "lo": 0.41018407054632383,
+    "hi": 1.2261238808383728
+   },
+   "C(task_class)[T.comparison]": {
+    "OR": 5.424596871848378,
+    "lo": 3.4238277455990236,
+    "hi": 8.594547801036896
+   },
+   "C(task_class)[T.explanation]": {
+    "OR": 27.41558458438392,
+    "lo": 14.273942633701747,
+    "hi": 52.65638915550193
+   },
+   "C(task_class)[T.lookup]": {
+    "OR": 5.367238619202119,
+    "lo": 3.3909325303382625,
+    "hi": 8.495377049740652
+   }
+  },
+  "scenario_sd": 1.381618932435045
+ },
+ "abcr_exposed": {
+  "outcome": "ABCR",
+  "n": 560,
+  "events": 480,
+  "gee": {
+   "C(stage, Treatment('production'))[T.development]": {
+    "OR": 0.5591230687813823,
+    "lo": 0.1995992689511682,
+    "hi": 1.5662312176102824,
+    "p": 0.26862109184588334
+   },
+   "C(stage, Treatment('production'))[T.integration]": {
+    "OR": 1.6202840312612001,
+    "lo": 0.494217467219691,
+    "hi": 5.312075181658908,
+    "p": 0.4256766758052162
+   },
+   "C(stage, Treatment('production'))[T.postrelease]": {
+    "OR": 0.1027941232649635,
+    "lo": 0.041178714616096776,
+    "hi": 0.256604215948062,
+    "p": 1.0923794972746932e-06
+   },
+   "C(stage, Treatment('production'))[T.preproduction]": {
+    "OR": 0.6194237427019536,
+    "lo": 0.4126318102725989,
+    "hi": 0.9298502041551763,
+    "p": 0.020839799619786596
+   },
+   "C(mode, Treatment('prompt'))[T.tool]": {
+    "OR": 3.6450314509903965,
+    "lo": 2.058962770840766,
+    "hi": 6.45288708803792,
+    "p": 9.070343135688608e-06
+   },
+   "C(profile)[T.executive]": {
+    "OR": 0.366223142597462,
+    "lo": 0.046817567832336836,
+    "hi": 2.864723572447626,
+    "p": 0.3384999668495461
+   },
+   "C(profile)[T.finance]": {
+    "OR": 0.7561150090325367,
+    "lo": 0.08065380107739739,
+    "hi": 7.088443436604384,
+    "p": 0.8065898822774354
+   },
+   "C(profile)[T.hr]": {
+    "OR": 0.8013332862923568,
+    "lo": 0.10974521994623382,
+    "hi": 5.851143548982836,
+    "p": 0.8271624770797745
+   },
+   "C(profile)[T.operations]": {
+    "OR": 0.8212746697912451,
+    "lo": 0.10490558234323247,
+    "hi": 6.429515648022428,
+    "p": 0.8512398872646787
+   },
+   "C(profile)[T.sales]": {
+    "OR": 0.6863495742233232,
+    "lo": 0.11254588502760193,
+    "hi": 4.185632712568794,
+    "p": 0.6832763251224736
+   },
+   "C(task_class)[T.comparison]": {
+    "OR": 2.396199889361632,
+    "lo": 0.2927878582320007,
+    "hi": 19.610696783836577,
+    "p": 0.4152096540780039
+   },
+   "C(task_class)[T.explanation]": {
+    "OR": 521714017907008.7,
+    "lo": 86698483134251.38,
+    "hi": 3139449580210061.5,
+    "p": 8.187744666014954e-300
+   },
+   "C(task_class)[T.lookup]": {
+    "OR": 2.0418910013442697,
+    "lo": 0.27699653722025597,
+    "hi": 15.05188080403849,
+    "p": 0.4836668365064897
+   },
+   "C(task_class)[T.restricted]": {
+    "OR": 0.22488543405492206,
+    "lo": 0.061767416732288784,
+    "hi": 0.8187724390233975,
+    "p": 0.023621129463801294
+   }
+  },
+  "mixed": {
+   "C(stage, Treatment('production'))[T.development]": {
+    "OR": 0.6179365804401703,
+    "lo": 0.30666601368786245,
+    "hi": 1.2451514038159754
+   },
+   "C(stage, Treatment('production'))[T.integration]": {
+    "OR": 2.387076317835608,
+    "lo": 0.937947602954697,
+    "hi": 6.075108384755715
+   },
+   "C(stage, Treatment('production'))[T.postrelease]": {
+    "OR": 0.05989893614751818,
+    "lo": 0.034177049466572074,
+    "hi": 0.1049792948075784
+   },
+   "C(stage, Treatment('production'))[T.preproduction]": {
+    "OR": 0.7058800020947892,
+    "lo": 0.344553310759,
+    "hi": 1.4461233190873484
+   },
+   "C(mode, Treatment('prompt'))[T.tool]": {
+    "OR": 5.721067480188455,
+    "lo": 3.3750973729728417,
+    "hi": 9.697679650658555
+   },
+   "C(profile)[T.executive]": {
+    "OR": 0.5010020277276703,
+    "lo": 0.2428361877500492,
+    "hi": 1.0336310832123354
+   },
+   "C(profile)[T.finance]": {
+    "OR": 1.173492541955063,
+    "lo": 0.5448733426747552,
+    "hi": 2.5273483545077053
+   },
+   "C(profile)[T.hr]": {
+    "OR": 1.6806976133694012,
+    "lo": 0.77052355385376,
+    "hi": 3.66600664373943
+   },
+   "C(profile)[T.operations]": {
+    "OR": 1.5561272909206685,
+    "lo": 0.7034771230950128,
+    "hi": 3.442232968279543
+   },
+   "C(profile)[T.sales]": {
+    "OR": 1.4476397786328068,
+    "lo": 0.6744660072611884,
+    "hi": 3.107140917582956
+   },
+   "C(task_class)[T.comparison]": {
+    "OR": 3.328066550038514,
+    "lo": 1.4218491504775648,
+    "hi": 7.789874866658735
+   },
+   "C(task_class)[T.explanation]": {
+    "OR": 24.524263861700785,
+    "lo": 2.9227555278604944,
+    "hi": 205.77825008805544
+   },
+   "C(task_class)[T.lookup]": {
+    "OR": 3.0786857205768965,
+    "lo": 1.3810557559711698,
+    "hi": 6.863086971763034
+   },
+   "C(task_class)[T.restricted]": {
+    "OR": 0.11631074229221819,
+    "lo": 0.07216293058477252,
+    "hi": 0.1874672863607544
+   }
+  },
+  "scenario_sd": 1.7457963241016816
+ },
+ "correct_ans": {
+  "outcome": "Accuracy",
+  "n": 456,
+  "events": 309,
+  "gee": {
+   "C(stage, Treatment('production'))[T.development]": {
+    "OR": NaN,
+    "lo": NaN,
+    "hi": NaN,
+    "p": NaN
+   },
+   "C(stage, Treatment('production'))[T.integration]": {
+    "OR": NaN,
+    "lo": NaN,
+    "hi": NaN,
+    "p": NaN
+   },
+   "C(stage, Treatment('production'))[T.postrelease]": {
+    "OR": NaN,
+    "lo": NaN,
+    "hi": NaN,
+    "p": NaN
+   },
+   "C(stage, Treatment('production'))[T.preproduction]": {
+    "OR": NaN,
+    "lo": NaN,
+    "hi": NaN,
+    "p": NaN
+   },
+   "C(mode, Treatment('prompt'))[T.tool]": {
+    "OR": NaN,
+    "lo": NaN,
+    "hi": NaN,
+    "p": NaN
+   },
+   "C(profile)[T.executive]": {
+    "OR": NaN,
+    "lo": NaN,
+    "hi": NaN,
+    "p": NaN
+   },
+   "C(profile)[T.finance]": {
+    "OR": NaN,
+    "lo": NaN,
+    "hi": NaN,
+    "p": NaN
+   },
+   "C(profile)[T.hr]": {
+    "OR": NaN,
+    "lo": NaN,
+    "hi": NaN,
+    "p": NaN
+   },
+   "C(profile)[T.operations]": {
+    "OR": NaN,
+    "lo": NaN,
+    "hi": NaN,
+    "p": NaN
+   },
+   "C(profile)[T.sales]": {
+    "OR": NaN,
+    "lo": NaN,
+    "hi": NaN,
+    "p": NaN
+   },
+   "C(task_class)[T.comparison]": {
+    "OR": NaN,
+    "lo": NaN,
+    "hi": NaN,
+    "p": NaN
+   },
+   "C(task_class)[T.explanation]": {
+    "OR": NaN,
+    "lo": NaN,
+    "hi": NaN,
+    "p": NaN
+   },
+   "C(task_class)[T.lookup]": {
+    "OR": NaN,
+    "lo": NaN,
+    "hi": NaN,
+    "p": NaN
+   }
+  },
+  "mixed": {
+   "C(stage, Treatment('production'))[T.development]": {
+    "OR": 0.16062578545545328,
+    "lo": 0.09584878379930953,
+    "hi": 0.2691807024615284
+   },
+   "C(stage, Treatment('production'))[T.integration]": {
+    "OR": 0.11327822433354798,
+    "lo": 0.06774704667465777,
+    "hi": 0.1894098228338223
+   },
+   "C(stage, Treatment('production'))[T.postrelease]": {
+    "OR": 0.9415352370919408,
+    "lo": 0.46241556587220894,
+    "hi": 1.9170820969525124
+   },
+   "C(stage, Treatment('production'))[T.preproduction]": {
+    "OR": 0.19867468278541484,
+    "lo": 0.11801950447534382,
+    "hi": 0.33445005344969464
+   },
+   "C(mode, Treatment('prompt'))[T.tool]": {
+    "OR": 1.196414798733668,
+    "lo": 0.8323760985873744,
+    "hi": 1.7196653929133316
+   },
+   "C(profile)[T.executive]": {
+    "OR": 1.03726929101742,
+    "lo": 0.5789639105413229,
+    "hi": 1.858367270391352
+   },
+   "C(profile)[T.finance]": {
+    "OR": 0.6255355589513872,
+    "lo": 0.32018650923249925,
+    "hi": 1.2220837675221694
+   },
+   "C(profile)[T.hr]": {
+    "OR": 0.8670008432702555,
+    "lo": 0.43087134543532873,
+    "hi": 1.7445821593725785
+   },
+   "C(profile)[T.operations]": {
+    "OR": 2.0588339754078064,
+    "lo": 1.06252493455874,
+    "hi": 3.9893626967482487
+   },
+   "C(profile)[T.sales]": {
+    "OR": 0.6279423946810073,
+    "lo": 0.36133318186240343,
+    "hi": 1.0912688643908517
+   },
+   "C(task_class)[T.comparison]": {
+    "OR": 7.197685466983352,
+    "lo": 4.354971441094908,
+    "hi": 11.895985262442583
+   },
+   "C(task_class)[T.explanation]": {
+    "OR": 24.721635563535113,
+    "lo": 12.669919713973362,
+    "hi": 48.237027442424164
+   },
+   "C(task_class)[T.lookup]": {
+    "OR": 4.3132237540263105,
+    "lo": 2.717913700570879,
+    "hi": 6.844919008425176
+   }
+  },
+  "scenario_sd": 1.5660151316031652
+ }
+}

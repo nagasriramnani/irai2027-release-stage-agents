@@ -1,0 +1,11 @@
+stage,mode,accuracy,SuAR,ABCR,accuracy_gate,aware_gate,disagree
+development,prompt,0.604,0.604,0.958,hold,hold,False
+development,tool,0.604,0.604,0.917,hold,hold,False
+integration,prompt,0.708,0.688,0.75,hold,hold,False
+integration,tool,0.688,0.688,1.0,hold,hold,False
+postrelease,prompt,0.833,0.833,0.219,promote,hold,True
+postrelease,tool,0.778,0.778,0.656,hold,hold,False
+preproduction,prompt,0.792,0.792,0.5,hold,hold,False
+preproduction,tool,0.646,0.604,1.0,hold,hold,False
+production,prompt,0.833,0.833,0.5,promote,hold,True
+production,tool,0.812,0.812,1.0,promote,promote,False
