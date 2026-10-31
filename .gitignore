@@ -8,3 +8,4 @@ pilot/_selfcheck/
 # LaTeX build output; main.pdf stays so notebook 07 can page-check it without Tectonic
 paper/build/*
 !paper/build/main.pdf
+runs/confirmatory/campaign.lock

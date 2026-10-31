@@ -16,7 +16,7 @@ tool-level), on a fully synthetic enterprise benchmark with six business roles. 
 ## Status (31 Oct 2026)
 | Milestone | Status |
 |---|---|
-| Protocol / pre-registration | v1.3a draft ready for co-author sign-off (one open decision: §9 power) → [protocol/PROTOCOL.md](protocol/PROTOCOL.md) |
+| Protocol / pre-registration | v1.3a signed by both authors (31 Oct 2026); **v1.4** adopted the same day before any confirmatory LLM run (six blocks, H6, SESOI classes; frozen as tag `prereg-v1.4`) → [protocol/PROTOCOL.md](protocol/PROTOCOL.md) |
 | Literature search and novelty check | Done: 136 verified references, novelty **not pre-empted** (narrow) → [literature/](literature/) |
 | Adversarial design review (v1.1) | Done: 5 lenses, 56 confirmed findings, all critical/major ones fixed (protocol §10) |
 | Adversarial pilot-artifact audit (v1.2-v1.3) | Done: 6 lenses, 49 findings (28 upheld), then two checks of the fixes (19 and 10 findings); all fixed or logged (protocol §10). Stopping rule adopted |
@@ -25,7 +25,8 @@ tool-level), on a fully synthetic enterprise benchmark with six business roles. 
 | Pilot (dev split; Qwen3 600 + 540 ablation, Llama-3.1 180) | Done (v1.3 data, v1.3a analysis); all runs re-score identically → [pilot/analysis/REPORT.md](pilot/analysis/REPORT.md), `pilot/analysis_llama/` |
 | Adversarial audit of the pilot results (v1.3a) | Done: 8 agents (one setup defect: Llama's chat template hid the tools, re-run), then a 3-lens check of the analysis changes (0 numeric mismatches) |
 | Paper draft (IEEEtran, conference template 6/27/2024) | Compiles locally with Tectonic; results filled from macros → [paper/](paper/) |
-| Confirmatory runs (3,600 + 2,160 ablation + 720 Llama) | **Not started.** Only after protocol sign-off and the power check |
+| Confirmatory blocks (v1.4) | Six frozen blocks of the 120-cell design (720 scenarios; seed rule in `benchmark/data/GENERATION_LOG.md`); reference agent run on every block before any LLM run → `runs/confirmatory/ideal_*.jsonl` |
+| Confirmatory campaign (14,400 + 144 H6 + 2,160 ablation + 4,320 Llama + 72 Llama H6) | Running with `python harness/campaign.py` (~5 days; resumable). Outcomes are not looked at until it completes (protocol §6); `python harness/campaign.py --status` shows counts only |
 
 ## Reproduce and verify, in order
 ```bash
@@ -57,6 +58,12 @@ figure's font, if Times New Roman is not installed).
 | [05_power_analysis](notebooks/05_power_analysis.ipynb) | simulation-based power for the confirmatory design |
 | [06_literature_review](notebooks/06_literature_review.ipynb) | bibliography integrity, comparison matrix, novelty verdict |
 | [07_paper_consistency_checks](notebooks/07_paper_consistency_checks.ipynb) | citations resolve, paper numbers come from the analysis, no over-claiming phrases, page/size limits |
+| [08_confirmatory_analysis](notebooks/08_confirmatory_analysis.ipynb) | campaign counts; once complete, re-scores every confirmatory run and runs the pooled, Llama and block-1 analyses |
+
+**Confirmatory campaign (protocol v1.4).** `python harness/campaign.py --reference` (scripted, seconds; already done and
+frozen), then `python harness/campaign.py` (Ollama with `qwen3:8b` and `llama3.1-tools:8b`; ~5 days on an 8 GB laptop GPU).
+After any interruption run the same command again: finished runs are skipped, and the script waits while the model server is
+down. Keep the laptop on mains power; Windows Update and Ollama auto-updates should be paused for the duration.
 
 Command-line equivalents (notebooks 03 and 04 hold the exact calls, including the reference agent and the Llama analysis;
 an existing `--out` log is resumed, so runs already in it are skipped): `python harness/run.py --selfcheck`
@@ -64,7 +71,8 @@ an existing `--out` log is resumed, so runs already in it are skipped): `python 
 · ablation: `python harness/run.py --split dev --agent ollama --reps 1 --out pilot/runs_dev_ablation_qwen3-8b.jsonl --stages
 production~prompt@development,production~metadata@development,production~snapshot@development,production~policy@development,production~prompt@integration,production~metadata@integration,production~snapshot@integration,production~connectors@integration,production~policy@integration`
 · `python harness/run.py --split dev --agent ollama --model llama3.1-tools:8b --stages production,development,postrelease --out pilot/runs_dev_llama3.1-8b.jsonl`
-· `python harness/analyze.py pilot/runs_dev_qwen3-8b.jsonl --ideal pilot/runs_dev_ideal.jsonl --ablation pilot/runs_dev_ablation_qwen3-8b.jsonl --ablation-ideal pilot/runs_dev_ablation_ideal.jsonl --confirm-ideal pilot/runs_confirmatory_ideal.jsonl --outdir pilot/analysis --power`
+· `python harness/analyze.py pilot/runs_dev_qwen3-8b.jsonl --ideal pilot/runs_dev_ideal.jsonl --ablation pilot/runs_dev_ablation_qwen3-8b.jsonl --ablation-ideal pilot/runs_dev_ablation_ideal.jsonl --confirm-ideal runs/confirmatory/ideal_confirmatory*.jsonl --power --outdir pilot/analysis`
+  (power for the v1.4 design: the frozen reference runs of all six blocks, 2 repetitions; on PowerShell list the six files)
 · paper: `tectonic -X compile paper/main.tex --outdir paper/build` (see [paper/README.md](paper/README.md))
 
 ## Repository layout
@@ -77,17 +85,21 @@ literature/            search_log.md · references.bib (136, audited) · related
                        related_work.tex / related_work_table.tex (draft section and comparison table)
 benchmark/
   generate.py          deterministic generator (all synthetic); data/<split>/{items.jsonl, sources.json, stages/*.json,
-                       fault_map.json, intended_policy.json, MANIFEST.json}
+                       fault_map.json, intended_policy.json, MANIFEST.json}; splits: dev, confirmatory (block 1),
+                       confirmatory_b2..b6 (v1.4 blocks), GENERATION_LOG.md (block seed rule)
 harness/
   env.py               tools (search_sources, read_source, submit_answer), access policy, stage prompts, component swaps
   score.py             frozen outcome definitions (SAR, SuAR, ABCR, accuracy, refusal, failure taxonomy)
   run.py               agents (Ollama; scripted oracle, naive, observable-ideal), resumable runner with retries, self-check
+  campaign.py          the confirmatory campaign (v1.4): every phase in order, resumable, counts only until complete
   analyze.py           cluster-bootstrap rates, agent-attributable contrasts + Holm, gate decisions (H5), GEE + mixed logit,
                        pass^k, ablation, resampling power, figure, LaTeX macros
 pilot/                 runs_*.jsonl (full traces + transcripts), runs_confirmatory_ideal.jsonl (scripted reference agent on the
                        confirmatory split; fixes the fault-free stratum), analysis/ and analysis_llama/ (REPORT.md, CSVs, figure,
                        macros), discarded/ (every superseded run set with the reason, kept for transparency)
-notebooks/             00-07 re-runnable notebooks, build_notebooks.py, run_inprocess.py
+runs/confirmatory/     confirmatory run logs (one per model, block and arm), frozen reference-agent logs, campaign.log;
+                       analysis*/ written by notebook 08 once the campaign is complete
+notebooks/             00-08 re-runnable notebooks, build_notebooks.py, run_inprocess.py
 paper/                 main.tex (IEEEtran conference), IEEEtran.cls + IEEEtran.bst (conference-supplied versions),
                        references.bib, generated/ (figure + results_macros.tex from 04), build/ (local PDF)
 ```

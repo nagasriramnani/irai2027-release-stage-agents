@@ -1,0 +1,14 @@
+2026-10-31 11:08:19  ideal_confirmatory: 0/2400 runs done, starting
+2026-10-31 11:08:33  ideal_confirmatory: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-10-31 11:08:33  ideal_confirmatory_b2: 0/2400 runs done, starting
+2026-10-31 11:08:46  ideal_confirmatory_b2: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-10-31 11:08:46  ideal_confirmatory_b3: 0/2400 runs done, starting
+2026-10-31 11:08:59  ideal_confirmatory_b3: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-10-31 11:08:59  ideal_confirmatory_b4: 0/2400 runs done, starting
+2026-10-31 11:09:13  ideal_confirmatory_b4: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-10-31 11:09:13  ideal_confirmatory_b5: 0/2400 runs done, starting
+2026-10-31 11:09:26  ideal_confirmatory_b5: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-10-31 11:09:26  ideal_confirmatory_b6: 0/2400 runs done, starting
+2026-10-31 11:09:39  ideal_confirmatory_b6: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-10-31 11:09:39  ideal_ablation_confirmatory: 0/2160 runs done, starting
+2026-10-31 11:09:51  ideal_ablation_confirmatory: complete, 2160/2160 runs (0 with an unresolved infrastructure error)

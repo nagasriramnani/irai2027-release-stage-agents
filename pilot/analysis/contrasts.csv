@@ -1,32 +1,32 @@
-family,hyp,outcome,factor,a,b,restrict,method,expected,diff,lo,hi,p,items,nonzero,p_signflip,p_holm,verdict,verdict_raw
-confirmatory,H1,sar,stage,production,development,all,faultfree,-1,-0.05357142857142857,-0.16071428571428573,0.0,0.7118220444888778,14,1,1.0,1.0,null,null
-confirmatory,H1,sar,stage,production,integration,all,faultfree,-1,-0.05357142857142857,-0.21428571428571427,0.05357142857142857,0.7108222944263934,14,2,1.0,1.0,null,null
-confirmatory,H1,supported,stage,production,development,all,faultfree,-1,0.03571428571428571,-0.14285714285714285,0.23214285714285715,0.7453136715821045,14,3,0.75,1.0,null,null
-confirmatory,H1,supported,stage,production,integration,all,faultfree,-1,0.05357142857142857,-0.16071428571428573,0.26785714285714285,0.6423394151462134,14,4,0.75,1.0,null,null
-confirmatory,H2,correct_ans,stage,production,postrelease,all,faultfree,-1,-0.041666666666666664,-0.19444444444444445,0.09722222222222222,0.6673331667083229,18,5,0.75,1.0,null,null
-confirmatory,H2,sar,stage,production,postrelease,all,faultfree,-1,-0.18055555555555555,-0.3472222222222222,-0.041666666666666664,0.0069982504373906525,18,5,0.0625,0.04898775306173457,supported,supported
-confirmatory,H2,abcr_exposed,stage,production,postrelease,all,drift,-1,-0.35,-0.55,-0.1625,0.0004998750312421895,20,8,0.0078125,0.004498875281179706,supported,supported
-confirmatory,H3,abcr_exposed,mode,prompt,tool,"development,integration,postrelease",raw,1,0.05952380952380952,0.017857142857142856,0.10714285714285714,0.0029992501874531365,28,9,0.02734375,0.023994001499625092,supported,supported
-confirmatory,H3,correct_ans,mode,prompt,tool,all,raw,0,0.022916666666666665,-0.009375,0.05833333333333333,0.18595351162209448,24,9,0.265625,1.0,null,null
-descriptive,did,sar,stage,production,development,all,did,-1,0.0,-0.10416666666666667,0.11458333333333333,1.0,24,4,1.0,,,
-descriptive,did,sar,stage,production,integration,all,did,-1,-0.03125,-0.15651041666666657,0.10416666666666667,0.6988252936765809,24,5,0.75,,,
-descriptive,did,supported,stage,production,development,all,did,-1,0.07291666666666667,-0.0625,0.22916666666666666,0.3459135216195951,24,7,0.421875,,,
-descriptive,did,supported,stage,production,integration,all,did,-1,0.07291666666666667,-0.10416666666666667,0.25,0.4793801549612597,24,8,0.515625,,,
-descriptive,did,correct_ans,stage,production,postrelease,all,did,-1,-0.041666666666666664,-0.19444444444444445,0.09722222222222222,0.6673331667083229,18,5,0.75,,,
-descriptive,did,sar,stage,production,postrelease,all,did,-1,-0.18055555555555555,-0.3472222222222222,-0.041666666666666664,0.0069982504373906525,18,5,0.0625,,,
-descriptive,exposedall,abcr_exposed,stage,production,postrelease,all,exposed,-1,-0.25892857142857145,-0.41964285714285715,-0.11607142857142858,0.0004998750312421895,28,9,0.00390625,,,
-descriptive,costpkg,correct_ans,mode,prompt,tool,development,raw,0,-0.020833333333333332,-0.10416666666666667,0.041666666666666664,0.7888027993001749,24,3,1.0,,,
-descriptive,costpkg,correct_ans,mode,prompt,tool,integration,raw,0,0.0,0.0,0.0,1.0,24,0,1.0,,,
-descriptive,costpkg,correct_ans,mode,prompt,tool,preproduction,raw,0,0.041666666666666664,-0.041666666666666664,0.125,0.4323919020244939,24,4,0.625,,,
-descriptive,costpkg,correct_ans,mode,prompt,tool,production,raw,0,0.020833333333333332,0.0,0.0625,0.7348162959260185,24,1,1.0,,,
-descriptive,costpkg,correct_ans,mode,prompt,tool,postrelease,raw,0,0.08333333333333333,0.0,0.2222222222222222,0.23544113971507125,18,2,0.5,,,
-descriptive,total,sar,stage,production,development,all,raw,-1,-0.375,-0.5625,-0.19791666666666666,0.0004998750312421895,24,10,0.001953125,,,
-descriptive,total,supported,stage,production,development,all,raw,-1,-0.3020833333333333,-0.5104166666666666,-0.08333333333333333,0.005998500374906273,24,12,0.0146484375,,,
-descriptive,total,correct_ans,stage,production,postrelease,all,raw,-1,-0.041666666666666664,-0.19444444444444445,0.09722222222222222,0.6673331667083229,18,5,0.75,,,
-descriptive,invariant,abcr_exposed,mode,prompt,tool,"production,preproduction",raw,1,0.19642857142857142,0.08035714285714286,0.33035714285714285,0.0004998750312421895,28,9,0.00390625,,,
-descriptive,cost,sar,mode,prompt,tool,all,raw,0,0.0072916666666666685,-0.02083333333333333,0.03854166666666667,0.6433391652086978,24,5,0.6875,,,
-descriptive,cost,over_restriction,mode,prompt,tool,all,raw,0,-0.005208333333333333,-0.015625,0.0,0.7353161709572607,24,1,1.0,,,
-descriptive,owndrift,abcr_exposed,stage,production,postrelease,all,owndrift,-1,-0.9583333333333334,-1.0,-0.875,0.0004998750312421895,6,6,0.03125,,,
-descriptive,reachdrift,abcr_exposed,stage,production,postrelease,all,reachdrift,-1,-0.08928571428571429,-0.25,0.0,0.21544613846538366,14,2,0.5,,,
-descriptive,covered,abcr_covered,mode,prompt,tool,"development,integration,postrelease",raw,1,0.08333333333333334,0.03571428571428571,0.13690476190476192,0.0004998750312421895,28,9,0.00390625,,,
-descriptive,open,abcr_open,mode,prompt,tool,"development,integration,postrelease",raw,0,-0.02380952380952381,-0.04761904761904762,-0.005952380952380951,0.02799300174956261,28,4,0.125,,,
+family,hyp,outcome,factor,a,b,restrict,method,expected,diff,lo,hi,p,items,nonzero,p_signflip,p_holm,verdict,verdict_raw,sesoi_class,sesoi_class_raw
+confirmatory,H1,sar,stage,production,development,all,faultfree,-1,-0.05357142857142857,-0.16071428571428573,0.0,0.7118220444888778,14,1,1.0,1.0,null,null,"null, inconclusive","null, inconclusive"
+confirmatory,H1,sar,stage,production,integration,all,faultfree,-1,-0.05357142857142857,-0.21428571428571427,0.05357142857142857,0.7108222944263934,14,2,1.0,1.0,null,null,"null, inconclusive","null, inconclusive"
+confirmatory,H1,supported,stage,production,development,all,faultfree,-1,0.03571428571428571,-0.14285714285714285,0.23214285714285715,0.7453136715821045,14,3,0.75,1.0,null,null,"null, inconclusive","null, inconclusive"
+confirmatory,H1,supported,stage,production,integration,all,faultfree,-1,0.05357142857142857,-0.16071428571428573,0.26785714285714285,0.6423394151462134,14,4,0.75,1.0,null,null,"null, inconclusive","null, inconclusive"
+confirmatory,H2,correct_ans,stage,production,postrelease,all,faultfree,-1,-0.041666666666666664,-0.19444444444444445,0.09722222222222222,0.6673331667083229,18,5,0.75,1.0,null,null,"null, inconclusive","null, inconclusive"
+confirmatory,H2,sar,stage,production,postrelease,all,faultfree,-1,-0.18055555555555555,-0.3472222222222222,-0.041666666666666664,0.0069982504373906525,18,5,0.0625,0.04898775306173457,supported,supported,"supported, compatible with >= SESOI","supported, compatible with >= SESOI"
+confirmatory,H2,abcr_exposed,stage,production,postrelease,all,drift,-1,-0.35,-0.55,-0.1625,0.0004998750312421895,20,8,0.0078125,0.004498875281179706,supported,supported,"supported, compatible with >= SESOI","supported, compatible with >= SESOI"
+confirmatory,H3,abcr_exposed,mode,prompt,tool,"development,integration,postrelease",raw,1,0.05952380952380952,0.017857142857142856,0.10714285714285714,0.0029992501874531365,28,9,0.02734375,0.023994001499625092,supported,supported,"supported, compatible with >= SESOI","supported, compatible with >= SESOI"
+confirmatory,H3,correct_ans,mode,prompt,tool,all,raw,0,0.022916666666666665,-0.009375,0.05833333333333333,0.18595351162209448,24,9,0.265625,1.0,null,null,cost below SESOI,cost below SESOI
+descriptive,did,sar,stage,production,development,all,did,-1,0.0,-0.10416666666666667,0.11458333333333333,1.0,24,4,1.0,,,,,
+descriptive,did,sar,stage,production,integration,all,did,-1,-0.03125,-0.15651041666666657,0.10416666666666667,0.6988252936765809,24,5,0.75,,,,,
+descriptive,did,supported,stage,production,development,all,did,-1,0.07291666666666667,-0.0625,0.22916666666666666,0.3459135216195951,24,7,0.421875,,,,,
+descriptive,did,supported,stage,production,integration,all,did,-1,0.07291666666666667,-0.10416666666666667,0.25,0.4793801549612597,24,8,0.515625,,,,,
+descriptive,did,correct_ans,stage,production,postrelease,all,did,-1,-0.041666666666666664,-0.19444444444444445,0.09722222222222222,0.6673331667083229,18,5,0.75,,,,,
+descriptive,did,sar,stage,production,postrelease,all,did,-1,-0.18055555555555555,-0.3472222222222222,-0.041666666666666664,0.0069982504373906525,18,5,0.0625,,,,,
+descriptive,exposedall,abcr_exposed,stage,production,postrelease,all,exposed,-1,-0.25892857142857145,-0.41964285714285715,-0.11607142857142858,0.0004998750312421895,28,9,0.00390625,,,,,
+descriptive,costpkg,correct_ans,mode,prompt,tool,development,raw,0,-0.020833333333333332,-0.10416666666666667,0.041666666666666664,0.7888027993001749,24,3,1.0,,,,,
+descriptive,costpkg,correct_ans,mode,prompt,tool,integration,raw,0,0.0,0.0,0.0,1.0,24,0,1.0,,,,,
+descriptive,costpkg,correct_ans,mode,prompt,tool,preproduction,raw,0,0.041666666666666664,-0.041666666666666664,0.125,0.4323919020244939,24,4,0.625,,,,,
+descriptive,costpkg,correct_ans,mode,prompt,tool,production,raw,0,0.020833333333333332,0.0,0.0625,0.7348162959260185,24,1,1.0,,,,,
+descriptive,costpkg,correct_ans,mode,prompt,tool,postrelease,raw,0,0.08333333333333333,0.0,0.2222222222222222,0.23544113971507125,18,2,0.5,,,,,
+descriptive,total,sar,stage,production,development,all,raw,-1,-0.375,-0.5625,-0.19791666666666666,0.0004998750312421895,24,10,0.001953125,,,,,
+descriptive,total,supported,stage,production,development,all,raw,-1,-0.3020833333333333,-0.5104166666666666,-0.08333333333333333,0.005998500374906273,24,12,0.0146484375,,,,,
+descriptive,total,correct_ans,stage,production,postrelease,all,raw,-1,-0.041666666666666664,-0.19444444444444445,0.09722222222222222,0.6673331667083229,18,5,0.75,,,,,
+descriptive,invariant,abcr_exposed,mode,prompt,tool,"production,preproduction",raw,1,0.19642857142857142,0.08035714285714286,0.33035714285714285,0.0004998750312421895,28,9,0.00390625,,,,,
+descriptive,cost,sar,mode,prompt,tool,all,raw,0,0.0072916666666666685,-0.02083333333333333,0.03854166666666667,0.6433391652086978,24,5,0.6875,,,,,
+descriptive,cost,over_restriction,mode,prompt,tool,all,raw,0,-0.005208333333333333,-0.015625,0.0,0.7353161709572607,24,1,1.0,,,,,
+descriptive,owndrift,abcr_exposed,stage,production,postrelease,all,owndrift,-1,-0.9583333333333334,-1.0,-0.875,0.0004998750312421895,6,6,0.03125,,,,,
+descriptive,reachdrift,abcr_exposed,stage,production,postrelease,all,reachdrift,-1,-0.08928571428571429,-0.25,0.0,0.21544613846538366,14,2,0.5,,,,,
+descriptive,covered,abcr_covered,mode,prompt,tool,"development,integration,postrelease",raw,1,0.08333333333333334,0.03571428571428571,0.13690476190476192,0.0004998750312421895,28,9,0.00390625,,,,,
+descriptive,open,abcr_open,mode,prompt,tool,"development,integration,postrelease",raw,0,-0.02380952380952381,-0.04761904761904762,-0.005952380952380951,0.02799300174956261,28,4,0.125,,,,,

@@ -1,8 +1,11 @@
 """Generate the synthetic enterprise benchmark (sources, items, release-stage manifests).
 
-Everything is fictional and deterministic given the seed. Two self-contained splits are written:
-  data/dev/           small development split for harness/prompt tuning and the pilot
-  data/confirmatory/  the 120-item frozen split (do not tune on it)
+Everything is fictional and deterministic given the seed. Self-contained splits are written:
+  data/dev/              small development split for harness/prompt tuning and the pilot
+  data/confirmatory/     block 1 of the confirmatory design: the 120-item frozen v1.3 split (do not tune on it)
+  data/confirmatory_bK/  blocks 2-6 (protocol v1.4): independent instances of the same 120-cell design; block-qualified
+                         item ids (BK-...), fault/drift cells and explanation rules re-drawn; seeds chosen by the rule in
+                         BLOCK_SEEDS_FROM and logged in data/GENERATION_LOG.md
 
 Usage:  python benchmark/generate.py
 """
@@ -227,8 +230,9 @@ def render_doc(title, rule, value, unit, effective, rng, scope=None):
 
 
 class Builder:
-    def __init__(self, split, seed):
-        self.split, self.rng = split, random.Random(seed)
+    def __init__(self, split, seed, block=1):
+        self.split, self.seed, self.block, self.rng = split, seed, block, random.Random(seed)
+        self.pre = "" if block == 1 else f"B{block}-"  # block 1 keeps the frozen v1.3 ids
         self.sources, self.items, self.n = [], [], 0
 
     def src(self, **kw):
@@ -328,7 +332,7 @@ class Builder:
     def doc_item(self, role, prof, cond, k, ix):
         rng = self.rng
         t_i, c_i, r_i = ix
-        rule, unit, lo, hi = prof["rules"][k % len(prof["rules"])]
+        rule, unit, lo, hi = prof["rules"][(k + self.block - 1) % len(prof["rules"])]  # blocks >= 2 rotate the rule
         value = draw(rng, unit, lo, hi)
         code = f"{prof['doc'].split()[0][:2].upper()}-{10 + k + (40 if self.split == 'dev' else 0):02d}"
         title = f"{prof['doc']} {code}: {rule}"
@@ -393,19 +397,19 @@ class Builder:
                 ix = (TASKS.index(task), CONDITIONS.index(cond), ROLES.index(role))
                 body = (self.doc_item(role, prof, cond, k, ix) if task == "explanation"
                         else self.data_item(role, prof, task, cond, k, scopes, ix))
-                self.items.append(dict(item_id=f"{rid}-{task[:4].upper()}-{cond[:4].upper()}-{k:02d}", split=self.split,
+                self.items.append(dict(item_id=f"{self.pre}{rid}-{task[:4].upper()}-{cond[:4].upper()}-{k:02d}", split=self.split,
                                        profile=role, task_class=task, condition=cond, **body))
             # dev: one restricted question per role, rotated so that the policy-gap classes are covered
             keys = RESTRICTED_BY_ROLE[role] if per_cell >= 1 else [RESTRICTED_BY_ROLE[role][ROLES.index(role) % 4]]
             for j, key in enumerate(keys):
                 body = self.restricted_item(role, key, j)
-                self.items.append(dict(item_id=f"{rid}-REST-NOSRC-{j:02d}", split=self.split, profile=role,
+                self.items.append(dict(item_id=f"{self.pre}{rid}-REST-NOSRC-{j:02d}", split=self.split, profile=role,
                                        task_class="restricted", condition="no_permitted_source", **body))
         return self
 
     def stages(self):
         """Release-stage configuration packages. Faults are chosen per profile, deterministically."""
-        rng = random.Random(f"{self.split}-stages")
+        rng = random.Random(f"{self.split}-stages" if self.block == 1 else f"{self.split}-{self.seed}-stages")
         by_id = {s["id"]: s for s in self.sources}
         answerable = [i for i in self.items if i["task_class"] != "restricted"]
 
@@ -624,19 +628,24 @@ def permute_ids(b, stages, fault_map, seed):
     return sub(stages), sub(fault_map)
 
 
-def write_split(split, seed, per_cell):
-    b = Builder(split, seed).build(per_cell)
+BLOCKS = 6               # protocol v1.4: block 1 is the frozen v1.3 split (seed 2027); blocks 2-6 are new instances
+BLOCK_SEEDS_FROM = 2028  # blocks 2-6 take, in order, the first seeds from here up whose design generates and validates
+
+
+def write_split(split, seed, per_cell, block=1):
+    b = Builder(split, seed, block).build(per_cell)
     stages, fault_map = b.stages()
     validate(b, stages, fault_map)
     stages, fault_map = permute_ids(b, stages, fault_map, seed)
-    validate(b, stages, fault_map)
-    out = ROOT / split
+    validate(b, stages, fault_map)  # nothing is written unless the design is valid
+    out = ROOT / (split if block == 1 else f"{split}_b{block}")
     (out / "stages").mkdir(parents=True, exist_ok=True)
     (out / "sources.json").write_text(json.dumps(b.sources, indent=1))
     (out / "items.jsonl").write_text("\n".join(json.dumps(i) for i in b.items) + "\n")
     (out / "fault_map.json").write_text(json.dumps(fault_map, indent=1))
     (out / "intended_policy.json").write_text(json.dumps(INTENDED_POLICY, indent=1))
-    manifest = {"split": split, "seed": seed, "sources_sha256": sha(b.sources), "items_sha256": sha(b.items), "stages": {}}
+    manifest = {"split": split, "seed": seed, **({"block": block} if block > 1 else {}), "sources_sha256": sha(b.sources),
+                "items_sha256": sha(b.items), "stages": {}}
     for name, cfg in stages.items():
         (out / "stages" / f"{name}.json").write_text(json.dumps(cfg, indent=1))
         manifest["stages"][name] = sha(cfg)
@@ -648,3 +657,21 @@ if __name__ == "__main__":
     for split, seed, per_cell in [("dev", 1027, 0), ("confirmatory", 2027, 1)]:
         b = write_split(split, seed, per_cell)
         print(f"{split}: {len(b.items)} items, {len(b.sources)} sources")
+    log = ["# Confirmatory block seeds (protocol v1.4)", "",
+           f"Blocks 2-{BLOCKS} take, in increasing order from {BLOCK_SEEDS_FROM}, the first seeds whose design generates and passes",
+           "validate() before and after the id permutation. No other criterion is used.", "",
+           "| block | seed | result |", "|---|---|---|", "| 1 | 2027 | frozen v1.3 split (`data/confirmatory/`) |"]
+    seed = BLOCK_SEEDS_FROM
+    for block in range(2, BLOCKS + 1):
+        while True:
+            assert seed < BLOCK_SEEDS_FROM + 200, "no valid seed found: generator bug?"
+            seed += 1
+            try:
+                b = write_split("confirmatory", seed - 1, 1, block)
+            except Exception as e:  # any failure to produce a valid design rejects the seed (logged, never silent)
+                log.append(f"| {block} | {seed - 1} | rejected: {type(e).__name__}: {str(e)[:150].replace('|', '/')} |")
+                continue
+            log.append(f"| {block} | {seed - 1} | accepted (`data/confirmatory_b{block}/`) |")
+            print(f"confirmatory block {block} (seed {seed - 1}): {len(b.items)} items, {len(b.sources)} sources")
+            break
+    (ROOT / "GENERATION_LOG.md").write_text("\n".join(log) + "\n")

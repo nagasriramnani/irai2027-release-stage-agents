@@ -1,0 +1,14 @@
+{
+ "split": "confirmatory",
+ "seed": 2032,
+ "block": 6,
+ "sources_sha256": "ef37a8d223bfe8d1a4b9003d441f9102992d71d3ca09d962d3ea5e992a03637f",
+ "items_sha256": "b938307ad477a7ec8231ddff5a278fa68fd4750ffe49a04bc107cb29ee804cfc",
+ "stages": {
+  "development": "6857cb6c5a9f76bbec1805c9617dc8024d8ca4a0b48b7f9199fb925da34424af",
+  "integration": "60114d895542e311cdf973c5f25618dd6df3903c16462e4820ba5bf26c667b84",
+  "preproduction": "10a3946b84961f5d5a23c3730740c7217ed6137b2fa5d62189ee2649d59526a5",
+  "production": "c509e572eaac2641ecdefb08eef863a78ec66d132bb8bb6b9afebb1d9a9ff017",
+  "postrelease": "6e8be55b42eccbb8e6ba7e301412f588366564ddc1dd7bc36022821ff0f89d50"
+ }
+}

@@ -10,6 +10,7 @@ import json
 import math
 import random
 import re
+import subprocess
 import sys
 import time
 import urllib.request
@@ -108,7 +109,8 @@ def ollama_agent(env, item, seed):
             name, args = unwrap(name, args)
             if name == "submit_answer":
                 cites = args.get("citations") or []
-                cites = ID.findall(cites) if isinstance(cites, str) else cites
+                # a scalar (1, true, 2.0) would crash the scorer outside the error handler and stall the queue
+                cites = cites if isinstance(cites, (list, dict)) else ID.findall(str(cites))
                 return {"answer": str(args.get("answer", "")), "citations": cites, "refused": as_bool(args.get("refused"))}, transcript
             msgs.append({"role": "tool", "content": env.call(name, args), "tool_name": name})
     return {"answer": "", "citations": [], "refused": False, "incomplete": True}, transcript
@@ -180,27 +182,63 @@ def ideal_agent(env, item, seed):
 AGENTS = {"ollama": ollama_agent, "oracle": oracle_agent, "naive": naive_agent, "ideal": ideal_agent}
 
 
-def run(split, agent, reps, out, stages=STAGES, modes=MODES, limit=None, model=None):
+def serving_info(split_dir, model):
+    """Ollama server version and the digest of the weights behind the model tag, logged with every LLM run (protocol v1.4)."""
+    base = OLLAMA.rsplit("/api/", 1)[0]
+    name = model or json.loads((split_dir / "stages" / "production.json").read_text())["model"]
+    tags = json.loads(urllib.request.urlopen(f"{base}/api/tags", timeout=10).read())["models"]
+    digest = next((m["digest"][:12] for m in tags if m["name"] == name), None)
+    assert digest, f"model {name} is not installed in Ollama"
+    return dict(version=json.loads(urllib.request.urlopen(f"{base}/api/version", timeout=10).read())["version"], digest=digest)
+
+
+def code_version():
+    """Last commit that changed the harness or benchmark (later doc-only commits leave it unchanged); '+dirty' if either
+    differs from it, untracked files included."""
+    head = subprocess.run(["git", "log", "-1", "--format=%h", "--abbrev=12", "--", "harness", "benchmark"], cwd=ROOT,
+                          capture_output=True, text=True).stdout.strip()
+    dirty = subprocess.run(["git", "status", "--porcelain", "--", "harness", "benchmark"], cwd=ROOT, capture_output=True,
+                           text=True).stdout.strip()
+    return (head or "unknown") + ("+dirty" if dirty else "")
+
+
+def run(split, agent, reps, out, stages=STAGES, modes=MODES, limit=None, model=None, only=None):
     split_dir = ROOT / "benchmark" / "data" / split
     items = [json.loads(l) for l in (split_dir / "items.jsonl").read_text().splitlines() if l.strip()][:limit]
+    if only:  # one fault_map set, e.g. the H6 arm runs only the drift_perm scenarios (protocol v1.4)
+        keep = set(json.loads((split_dir / "fault_map.json").read_text())[only])
+        items = [i for i in items if i["item_id"] in keep]
     jobs = [(it, st, m, r) for it in items for st in stages for m in modes for r in range(reps)]
     random.Random(f"{split}-{agent}-order").shuffle(jobs)  # randomized run order
     out = Path(out)
     out.parent.mkdir(parents=True, exist_ok=True)
+    lines = out.read_text().splitlines() if out.exists() else []
+    if lines and lines[-1].strip():
+        try:
+            json.loads(lines[-1])
+        except json.JSONDecodeError:  # a power cut mid-write leaves a truncated last record: drop it, that run is redone
+            lines = lines[:-1]
+            out.write_text("".join(l + "\n" for l in lines))
+    serving, code = (serving_info(split_dir, model), code_version()) if agent == "ollama" else (None, None)
     # a run is done once it has a record without an infrastructure error, or after 3 attempts (protocol §6)
     attempts, done = {}, set()
-    for l in (out.read_text().splitlines() if out.exists() else []):
+    for l in lines:
         if l.strip():
             rec = json.loads(l)
             attempts[rec["run_id"]] = attempts.get(rec["run_id"], 0) + 1
             if "error" not in rec["result"] or attempts[rec["run_id"]] >= 3:
                 done.add(rec["run_id"])
-    t0, n = time.time(), 0
+    t0, n, bad = time.time(), 0, 0
     with out.open("a") as f:
         for it, st, m, r in jobs:
             run_id = f"{it['item_id']}|{st}|{m}|r{r}"
             if run_id in done:
                 continue
+            if agent == "ollama" and bad:  # after a failed request the server may have restarted: refresh its provenance
+                try:
+                    serving = serving_info(split_dir, model)
+                except Exception:
+                    pass
             # common random numbers: paired cells (stage, mode) of one item and repetition share the seed
             seed = int(hashlib.sha256(f"{it['item_id']}|r{r}".encode()).hexdigest()[:8], 16)
             env = Env(split_dir, st, m, it["profile"], seed)
@@ -214,11 +252,16 @@ def run(split, agent, reps, out, stages=STAGES, modes=MODES, limit=None, model=N
             rec = dict(run_id=run_id, item_id=it["item_id"], profile=it["profile"], task_class=it["task_class"],
                        condition=it["condition"], format=it["format"], stage=st, mode=m, rep=r, seed=seed, agent=agent,
                        model=env.cfg["model"] if agent == "ollama" else agent, prompt_version=env.cfg["prompt_version"],
-                       result=result, trace=env.trace, transcript=transcript, seconds=round(time.time() - t, 2),
-                       attempt=attempts.get(run_id, 0) + 1, data_sha256=env.hashes, **score_run(it, env, result))
+                       result=result, trace=env.trace, transcript=transcript,
+                       seconds=round(time.time() - t, 2) if agent == "ollama" else 0.0,  # scripted logs stay byte-reproducible
+                       attempt=attempts.get(run_id, 0) + 1, data_sha256=env.hashes,
+                       **({"code": code, "serving": serving} if agent == "ollama" else {}), **score_run(it, env, result))
             f.write(json.dumps(rec) + "\n")
             f.flush()
             n += 1
+            bad = bad + 1 if "error" in result else 0
+            if bad >= 5:  # server down or GPU reset: stop instead of burning every remaining run's 3 attempts
+                sys.exit(f"stopping after 5 consecutive infrastructure errors (last: {result['error'][:200]}); re-run to resume")
             if n % 10 == 0 and agent == "ollama":
                 rate = (time.time() - t0) / n
                 print(f"{n}/{len(jobs) - len(done)} runs, {rate:.1f}s/run, ETA {rate * (len(jobs) - len(done) - n) / 60:.0f} min", flush=True)
@@ -268,12 +311,36 @@ def print_table(table):
               + f" | {t['blocked_attempts']}")
 
 
+def confirmatory_splits():
+    """Block 1 (the frozen v1.3 split) first, then blocks 2-6 (protocol v1.4)."""
+    return sorted((p.name for p in (ROOT / "benchmark" / "data").iterdir() if p.name.startswith("confirmatory")),
+                  key=lambda s: int(s.rpartition("_b")[2]) if "_b" in s else 1)
+
+
+def _synced_arm_cases(split_dir):
+    """The H6 arm changes only the labels of re-classified sources: same search results, same stated policy and deny list."""
+    items = {i["item_id"]: i for i in (json.loads(l) for l in (split_dir / "items.jsonl").read_text().splitlines() if l.strip())}
+    for iid in json.loads((split_dir / "fault_map.json").read_text())["drift_perm"]:
+        it = items[iid]
+        lag, syn = (Env(split_dir, st, "prompt", it["profile"], 7) for st in ("postrelease", "postrelease~labels"))
+        assert syn.system_prompt() == lag.system_prompt() and syn.search_ids(it["question"]) == lag.search_ids(it["question"])
+        for sid in syn.cfg["reclassified"]:
+            new, old = syn.meta(syn.sources[sid]), lag.meta(lag.sources[sid])
+            assert new["classification"] == syn.cfg["reclassified"][sid] != old["classification"] and new["owner"] != old["owner"]
+            assert {k: v for k, v in new.items() if k not in ("classification", "owner")} == \
+                   {k: v for k, v in old.items() if k not in ("classification", "owner")}
+        own = it["authoritative_sources"][0]
+        assert syn.stated_denied(own) and lag.stated_denied(own) and not lag.intended_allowed(own), iid
+
+
 def selfcheck():
     """The scorer must give the oracle perfect production scores and must catch the naive agent's violations."""
     tmp = ROOT / "pilot" / "_selfcheck"
     for p in tmp.glob("*.jsonl"):
         p.unlink()
-    for split in ("dev", "confirmatory"):
+    for split in ["dev"] + confirmatory_splits():
+        if split != "dev":
+            _synced_arm_cases(ROOT / "benchmark" / "data" / split)
         o = run(split, "oracle", 1, tmp / f"oracle_{split}.jsonl")
         rows = [json.loads(l) for l in o.read_text().splitlines()]
         prod = [r for r in rows if r["stage"] == "production"]
@@ -404,6 +471,7 @@ if __name__ == "__main__":
     ap.add_argument("--stages", default=",".join(STAGES), help="also accepts ablations, e.g. production~prompt@development")
     ap.add_argument("--modes", default=",".join(MODES))
     ap.add_argument("--out")
+    ap.add_argument("--only", help="run only one fault_map set of the split, e.g. drift_perm (the H6 arm)")
     ap.add_argument("--model", help="override the packages' model for --agent ollama, e.g. llama3.1-tools:8b "
                     "(built from harness/llama3.1-tools.Modelfile; protocol §4)")
     ap.add_argument("--selfcheck", action="store_true")
@@ -416,5 +484,5 @@ if __name__ == "__main__":
         print_table(summarize(a.summarize, tuple(a.by.split(","))))
     else:
         out = run(a.split, a.agent, a.reps, a.out or ROOT / "pilot" / f"runs_{a.split}_{a.agent}.jsonl",
-                  a.stages.split(","), a.modes.split(","), a.limit, a.model)
+                  a.stages.split(","), a.modes.split(","), a.limit, a.model, a.only)
         print_table(summarize(out))

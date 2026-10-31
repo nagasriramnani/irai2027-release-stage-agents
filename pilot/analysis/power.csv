@@ -1,10 +1,10 @@
-hyp,outcome,contrast,method,expected,pilot_items,pilot_effect,pilot_rate_a,confirm_items,runs_per_cell,power_5pt,power_10pt,pilot_sd,power_5pt_pilotsd,power_10pt_pilotsd
-H1,SAR,development - production,faultfree,-1,14,-0.054,1.0,66,6,0.99725,1.0,0.2,0.21013748644357164,0.8768499425488611
-H1,SAR,integration - production,faultfree,-1,14,-0.054,0.982,68,6,0.825,0.99775,0.28,0.08941303257935894,0.53321155155639
-H1,SuAR,development - production,faultfree,-1,14,0.036,0.857,66,6,0.99425,1.0,0.352,0.049331579243301636,0.2979331170114063
-H1,SuAR,integration - production,faultfree,-1,14,0.054,0.875,68,6,0.6195,0.986,0.418,0.03478965157211658,0.19579796169588265
-H2,Accuracy,postrelease - production,faultfree,-1,18,-0.042,0.861,84,6,0.899,1.0,0.324,0.08230628255666475,0.4971967458239892
-H2,SAR,postrelease - production,faultfree,-1,18,-0.181,1.0,84,6,0.99975,1.0,0.341,0.07220813134584306,0.4417196261081669
-H2,ABCR,postrelease - production,drift,-1,20,-0.35,0.963,41,6,0.455,0.9135,0.469,0.01692316997952382,0.0705974763453721
-H3,ABCR,tool - prompt,raw,1,28,0.06,0.798,115,9,0.71525,1.0,0.122,0.9398298837482861,0.9999999979116669
-H3,Accuracy,tool - prompt,raw,0,24,0.023,0.667,96,15,0.696,0.9995,0.086,0.9973638381755225,1.0
+hyp,outcome,contrast,method,expected,pilot_items,pilot_effect,pilot_rate_a,confirm_items,runs_per_cell,power_5pt,power_10pt,pilot_sd,power_5pt_pilotsd,power_10pt_pilotsd,power_10pt_pilotsd_ucl80,confirm_scenarios
+H1,SAR,development - production,faultfree,-1,14,-0.054,1.0,397,4,1.0,1.0,0.2,0.9851109313847545,0.9999999999994552,0.9999999382837086,720
+H1,SAR,integration - production,faultfree,-1,14,-0.054,0.982,397,4,1.0,1.0,0.28,0.7770881918058896,0.999991366025465,0.9986015381253827,720
+H1,SuAR,development - production,faultfree,-1,14,0.036,0.857,397,4,1.0,1.0,0.352,0.5186390680051121,0.9979235464273731,0.965832713012435,720
+H1,SuAR,integration - production,faultfree,-1,14,0.054,0.875,397,4,0.99925,1.0,0.418,0.3439886789386189,0.975561010236398,0.8625964310980929,720
+H2,Accuracy,postrelease - production,faultfree,-1,18,-0.042,0.861,504,4,1.0,1.0,0.324,0.7522433051498357,0.9999823270373802,0.9987864240424185,720
+H2,SAR,postrelease - production,faultfree,-1,18,-0.181,1.0,504,4,1.0,1.0,0.341,0.6939835269087518,0.9999238206209476,0.9969207216274776,720
+H2,ABCR,postrelease - production,drift,-1,20,-0.35,0.963,285,4,0.99775,1.0,0.469,0.16246229971240242,0.7893228413686038,0.6049749473202621,720
+H3,ABCR,tool - prompt,raw,1,28,0.06,0.798,679,6,1.0,1.0,0.122,0.9999999999999984,1.0,1.0,720
+H3,Accuracy,tool - prompt,raw,0,24,0.023,0.667,576,10,1.0,1.0,0.086,1.0,1.0,1.0,720

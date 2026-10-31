@@ -1,0 +1,117 @@
+{
+ "prompt_version": "rc-1.0",
+ "metadata_fields": [
+  "source_id",
+  "title",
+  "classification",
+  "format",
+  "owner",
+  "version",
+  "as_of",
+  "status"
+ ],
+ "index_exclude": [],
+ "read_redirect": {},
+ "transient_faults": [],
+ "index_add": [],
+ "policy": {
+  "class_rules": {
+   "internal-general": [
+    "finance",
+    "operations",
+    "hr",
+    "sales",
+    "compliance",
+    "executive"
+   ],
+   "finance-internal": [
+    "finance",
+    "executive"
+   ],
+   "ops-internal": [
+    "operations",
+    "executive"
+   ],
+   "hr-internal": [
+    "hr",
+    "executive"
+   ],
+   "hr-confidential": [
+    "hr"
+   ],
+   "sales-internal": [
+    "sales",
+    "executive",
+    "finance"
+   ],
+   "compliance-internal": [
+    "compliance",
+    "executive"
+   ],
+   "compliance-investigations": [
+    "compliance"
+   ],
+   "board-restricted": [
+    "executive"
+   ]
+  },
+  "source_overrides": {
+   "SRC-0166": [
+    "finance",
+    "operations",
+    "hr",
+    "sales",
+    "executive"
+   ],
+   "SRC-0033": [
+    "executive"
+   ],
+   "SRC-0071": [],
+   "SRC-0090": [
+    "executive"
+   ],
+   "SRC-0023": [
+    "finance",
+    "operations",
+    "sales",
+    "compliance",
+    "executive"
+   ],
+   "SRC-0009": [
+    "executive",
+    "finance"
+   ],
+   "SRC-0059": [
+    "executive"
+   ],
+   "SRC-0034": [
+    "executive"
+   ],
+   "SRC-0145": [],
+   "SRC-0013": [
+    "operations",
+    "hr",
+    "sales",
+    "compliance",
+    "executive"
+   ],
+   "SRC-0080": [
+    "executive"
+   ],
+   "SRC-0084": [
+    "executive",
+    "finance"
+   ]
+  }
+ },
+ "reclassified": {},
+ "gold_overrides": {},
+ "model": "qwen3:8b",
+ "decoding": {
+  "temperature": 0.7,
+  "top_p": 0.8,
+  "num_ctx": 8192,
+  "think": false
+ },
+ "max_steps": 10
+}

@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "benchmark"))
-from generate import COMPANY, INTENDED_POLICY, ROLES  # noqa: E402
+from generate import COMPANY, INTENDED_POLICY, OWNER, ROLES  # noqa: E402
 
 TOOLS = [
     {"type": "function", "function": {
@@ -84,7 +84,10 @@ class Env:
         base, _, swap = stage.partition("~")
         self.hashes = manifest_hashes(split_dir, base)
         self.cfg = json.loads((split_dir / "stages" / f"{base}.json").read_text())
-        if swap:
+        # H6 arm (protocol v1.4): "postrelease~labels" is post-release with the re-classifications shown on the index labels
+        # (classification and owner); the stated policy, deny list, corpus and gold are unchanged
+        self.synced = swap == "labels"
+        if swap and not self.synced:
             comp, donor = swap.split("@")
             manifest_hashes(split_dir, donor)
             donor_cfg = json.loads((split_dir / "stages" / f"{donor}.json").read_text())
@@ -109,7 +112,12 @@ class Env:
         ov = self.cfg["policy"]["source_overrides"].get(sid)
         if ov is not None:
             return ov
-        return self.cfg["policy"]["class_rules"].get(self.sources[sid]["classification"], ROLES)
+        return self.cfg["policy"]["class_rules"].get(self.label(sid), ROLES)
+
+    def label(self, sid):
+        """Classification on the source's index label (lags a re-classification unless this is the H6 synced arm)."""
+        cls = self.sources[sid]["classification"]
+        return self.cfg["reclassified"].get(sid, cls) if self.synced else cls
 
     def intended_allowed(self, sid):
         """Ground truth: the role may read this source under the intended (possibly re-classified) policy."""
@@ -141,8 +149,10 @@ class Env:
 
     # --- tools --------------------------------------------------------------------------------
     def meta(self, s):
-        full = {"source_id": s["id"], "title": s["title"], "classification": s["classification"], "format": s["format"],
-                "owner": s["domain"], "version": s["version"], "as_of": s["as_of"], "status": s["status"]}
+        cls = self.label(s["id"])
+        full = {"source_id": s["id"], "title": s["title"], "classification": cls, "format": s["format"],
+                "owner": OWNER[cls] if cls != s["classification"] else s["domain"], "version": s["version"], "as_of": s["as_of"],
+                "status": s["status"]}
         return {f: full[f] for f in self.cfg["metadata_fields"]}
 
     def reachable_ids(self, query, k=6):

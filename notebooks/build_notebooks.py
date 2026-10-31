@@ -39,6 +39,7 @@ This notebook checks the environment. Run the notebooks in order; each one state
 | 05 | Simulation-based power analysis for the confirmatory design | no | ~10-20 min |
 | 06 | Literature review: bibliography integrity, comparison matrix, novelty assessment | no | < 1 min |
 | 07 | Paper consistency checks: citations resolve, numbers come from the analysis, banned phrases absent | no | < 1 min |
+| 08 | Confirmatory analysis (protocol v1.4): run counts until the campaign is complete, then re-scoring and every analysis | no (campaign: yes, ~5 days) | ~15 min |
 """,
 SETUP,
 '''import platform, importlib
@@ -71,22 +72,29 @@ tree(ROOT)''',
 ],
 "01_benchmark_generation.ipynb": [
 """md:# 01 · Benchmark generation and integrity
-The benchmark is **fully synthetic and deterministic**. `benchmark/generate.py` builds two self-contained splits from fixed seeds:
+The benchmark is **fully synthetic and deterministic**. `benchmark/generate.py` builds self-contained splits from fixed seeds:
 
 * `dev` (seed 1027, 30 items) — harness/prompt tuning and the pilot;
-* `confirmatory` (seed 2027, 120 items) — frozen; never used for tuning.
+* `confirmatory` (seed 2027, 120 items) — block 1 of the confirmatory design, the frozen v1.3 split; never used for tuning;
+* `confirmatory_b2` … `confirmatory_b6` (protocol v1.4) — five more instances of the same 120-cell design (block-qualified ids
+  `B2-…`; entities, values, fault/drift cells and explanation rules re-drawn). Their seeds follow a rule fixed in advance: the
+  first seeds from 2028 up whose design validates (`benchmark/data/GENERATION_LOG.md`).
 
 Each split has `sources.json`, `items.jsonl` (the query registry with gold answers), `stages/*.json` (the five release-stage
 configuration packages), `fault_map.json`, and `MANIFEST.json` with SHA-256 hashes.
-**Check 1:** regenerating from the seeds reproduces the frozen hashes exactly.""",
+**Check 1:** regenerating from the seeds reproduces every frozen hash, and the seed rule picks the same blocks.""",
 SETUP,
-'''import generate
-frozen = {s: json.loads((ROOT / "benchmark/data" / s / "MANIFEST.json").read_text()) for s in ("dev", "confirmatory")}
-for split, seed, per_cell in [("dev", 1027, 0), ("confirmatory", 2027, 1)]:
-    generate.write_split(split, seed, per_cell)
-    now = json.loads((ROOT / "benchmark/data" / split / "MANIFEST.json").read_text())
-    assert now == frozen[split], f"{split}: regenerated benchmark differs from the frozen manifest"
-    print(f"{split:13s} items {now['items_sha256'][:16]}…  sources {now['sources_sha256'][:16]}…  -> identical to frozen ✔")''',
+'''data = ROOT / "benchmark/data"
+splits = sorted(p.parent.name for p in data.glob("*/MANIFEST.json"))
+frozen = {s: json.loads((data / s / "MANIFEST.json").read_text()) for s in splits}
+seed_log = (data / "GENERATION_LOG.md").read_text()
+subprocess.run([sys.executable, str(ROOT / "benchmark/generate.py")], check=True, capture_output=True)
+for s in splits:
+    now = json.loads((data / s / "MANIFEST.json").read_text())
+    assert now == frozen[s], f"{s}: regenerated benchmark differs from the frozen manifest"
+    print(f"{s:16s} seed {now['seed']}  items {now['items_sha256'][:16]}…  sources {now['sources_sha256'][:16]}…  -> identical to frozen ✔")
+assert (data / "GENERATION_LOG.md").read_text() == seed_log, "the block seed rule now selects different seeds"
+print((data / "GENERATION_LOG.md").read_text())''',
 '''items = pd.DataFrame([json.loads(l) for l in (ROOT / "benchmark/data/confirmatory/items.jsonl").read_text().splitlines()])
 print("confirmatory items:", len(items))
 display(pd.crosstab(items.profile, items.task_class, margins=True))
@@ -205,12 +213,22 @@ for p in (IDEAL, ABL_IDEAL, CONF_IDEAL):
 run.run("dev", "ideal", 2, IDEAL)
 run.run("dev", "ideal", 1, ABL_IDEAL, stages=SWAPS)
 run.run("confirmatory", "ideal", 3, CONF_IDEAL)
+# v1.4: the reference runs that fix every block's strata were frozen before any confirmatory LLM run; regenerate and compare
+import campaign
+CONF = ROOT / "runs/confirmatory"
+for name, kw in campaign.reference_phases():
+    tmp = ROOT / "pilot/_selfcheck" / f"{name}.jsonl"
+    tmp.unlink(missing_ok=True)
+    run.run(kw["split"], "ideal", kw["reps"], tmp, stages=kw.get("stages", run.STAGES))
+    same = [json.loads(l) for l in tmp.read_text().splitlines()] == [json.loads(l) for l in (CONF / f"{name}.jsonl").read_text().splitlines()]
+    assert same, f"{name}: the reference agent no longer reproduces the frozen v1.4 log"
+    print(f"{name}: regenerated, identical to the frozen v1.4 reference log ✔")
 if RUN_AGENT:
     run.run("dev", "ollama", 2, MAIN)
     run.run("dev", "ollama", 1, ABL, stages=SWAPS)
     run.run("dev", "ollama", 1, LLAMA, stages=["production", "development", "postrelease"], model="llama3.1-tools:8b")''',
 '''logs = {p.name: [json.loads(l) for l in p.read_text().splitlines() if l.strip()]
-        for p in (MAIN, ABL, LLAMA, IDEAL, ABL_IDEAL, CONF_IDEAL) if p.exists()}
+        for p in (MAIN, ABL, LLAMA, IDEAL, ABL_IDEAL, CONF_IDEAL, *sorted(CONF.glob("ideal_*.jsonl"))) if p.exists()}
 for name, rows in logs.items():
     df = pd.DataFrame(rows)
     print(f"{name}: {len(df)} runs, {df.item_id.nunique()} items, duplicates: {df.run_id.duplicated().sum()}, "
@@ -221,16 +239,17 @@ Every run log stores the full tool trace. Here each run is **re-scored from scra
 field by field with the logged scores. Zero mismatches means the reported numbers follow from the raw traces.""",
 '''from env import Env
 from score import score_run
-splits = {s: ROOT / "benchmark/data" / s for s in ("dev", "confirmatory")}
-items_of = {s: {i["item_id"]: i for i in map(json.loads, (d / "items.jsonl").read_text().splitlines())} for s, d in splits.items()}
-item_by_id = items_of["dev"]
+# each run carries the items hash of its frozen split or block, which picks the data directory to re-score it against
+splits = {json.loads(m.read_text())["items_sha256"]: m.parent for m in (ROOT / "benchmark/data").glob("*/MANIFEST.json")}
+items_of = {h: {i["item_id"]: i for i in map(json.loads, (d / "items.jsonl").read_text().splitlines())} for h, d in splits.items()}
+item_by_id = next(v for h, v in items_of.items() if splits[h].name == "dev")
 fields = ["gold_action", "reachable", "unreachable_reason", "refused", "substantive", "correct", "hedged", "sar", "supported",
           "supported_cond", "abcr", "exposed", "abcr_exposed", "blocked_attempts", "forbidden_read", "forbidden_cited", "disclosed",
           "deployed_violation", "refusal_correct", "over_restriction", "drift_exposed", "label"]
 mismatch = 0
 for name, rows in logs.items():
-    s = "confirmatory" if "confirmatory" in name else "dev"
     for r in rows:
+        s = r["data_sha256"]["items"]
         env = Env(splits[s], r["stage"], r["mode"], r["profile"], r["seed"])
         env.trace = r["trace"]
         new = score_run(items_of[s][r["item_id"]], env, r["result"])
@@ -266,7 +285,9 @@ OUT = ROOT / "pilot/analysis"
 P = ROOT / "pilot"
 sys.argv = ["analyze.py", str(P / "runs_dev_qwen3-8b.jsonl"), "--ideal", str(P / "runs_dev_ideal.jsonl"), "--outdir", str(OUT),
             "--ablation", str(P / "runs_dev_ablation_qwen3-8b.jsonl"), "--ablation-ideal", str(P / "runs_dev_ablation_ideal.jsonl"),
-            "--confirm-ideal", str(P / "runs_confirmatory_ideal.jsonl"), "--power"]
+            # power for the v1.4 design: eligible counts from the frozen reference runs on all six blocks, 2 repetitions
+            "--confirm-ideal", *map(str, sorted((ROOT / "runs/confirmatory").glob("ideal_confirmatory*.jsonl"))), "--power",
+            "--power-reps", "2"]
 import contextlib, io
 with contextlib.redirect_stdout(io.StringIO()):
     analyze.main()
@@ -304,8 +325,9 @@ SETUP,
 '''import analyze
 df = analyze.load(ROOT / "pilot/runs_dev_qwen3-8b.jsonl")
 ideal = analyze.load(ROOT / "pilot/runs_dev_ideal.jsonl")
-conf = analyze.load(ROOT / "pilot/runs_confirmatory_ideal.jsonl")
-power = analyze.power(df, ideal, conf)
+# v1.4 design: six blocks (720 scenarios) x 5 packages x 2 modes x 2 repetitions; eligible counts from the frozen reference runs
+conf = analyze.load(sorted((ROOT / "runs/confirmatory").glob("ideal_confirmatory*.jsonl")))
+power = analyze.power(df, ideal, conf, reps=2)
 power.to_csv(ROOT / "pilot/analysis/power.csv", index=False)
 display(power)
 rule = power[((power.hyp == "H1") | ((power.hyp == "H3") & (power.outcome == "ABCR"))) & ~(power.power_10pt >= 0.8)]
@@ -313,7 +335,10 @@ print("Decision rule (protocol §9): H1/H3a contrasts below .80 power at 10 poin
       rule[["hyp", "outcome", "contrast", "power_10pt"]].values.tolist() or "none")
 sens = power[((power.hyp == "H1") | ((power.hyp == "H3") & (power.outcome == "ABCR"))) & ~(power.power_10pt_pilotsd >= 0.8)]
 print("Same rule with the pilot's item SD (sensitivity):",
-      sens[["hyp", "outcome", "contrast", "power_10pt_pilotsd"]].round(2).values.tolist() or "none")''',
+      sens[["hyp", "outcome", "contrast", "power_10pt_pilotsd"]].round(2).values.tolist() or "none")
+ucl = power[((power.hyp == "H1") | ((power.hyp == "H3") & (power.outcome == "ABCR"))) & ~(power.power_10pt_pilotsd_ucl80 >= 0.8)]
+print("Same rule at the 80% upper confidence limit of the pilot SD (v1.4):",
+      ucl[["hyp", "outcome", "contrast", "power_10pt_pilotsd_ucl80"]].round(2).values.tolist() or "none")''',
 ],
 "06_literature_review.ipynb": [
 """md:# 06 · Literature review
@@ -361,11 +386,14 @@ for name, (src, model) in gen.items():
     text = f.read_text(encoding="utf-8")
     assert text == src.read_text(encoding="utf-8"), f"paper/generated/{name} is stale: re-run notebook 04"
     assert model in text.splitlines()[0], f"{name} was generated from another model: {text.splitlines()[0]}"
-    m = re.search(r"from (\\S+) \\(sha256 ([0-9a-f]{64})\\)", text.splitlines()[0])   # provenance: the run log's raw bytes
-    assert m and hashlib.sha256((ROOT / "pilot" / m[1]).read_bytes()).hexdigest() == m[2], f"{name}: its run log changed after the macros were generated"
-    print(text.splitlines()[0])
+    logs = re.findall(r"(\\S+\\.jsonl) \\(sha256 ([0-9a-f]{64})\\)", text.splitlines()[0])   # provenance: each run log's raw bytes
+    assert logs, f"{name}: no run log recorded in its header"
+    for log, digest in logs:
+        f_log = next(p for p in (ROOT / "pilot" / log, ROOT / "runs/confirmatory" / log) if p.exists())
+        assert hashlib.sha256(f_log.read_bytes()).hexdigest() == digest, f"{name}: {log} changed after the macros were generated"
+    print(text.splitlines()[0][:300])
     defined |= set(re.findall(r"\\\\newcommand\\{\\\\(\\w+)\\}", text))
-used = set(re.findall(r"\\\\((?:Res|Con|Ideal|HFive|Gate|Abl|Pow|Uat|Post|Llama|N)[A-Z]\\w*)", body))
+used = set(re.findall(r"\\\\((?:Res|Con|Ideal|HFive|HSix|Route|Gate|Abl|Pow|Uat|Post|Llama|N)[A-Z]\\w*)", body))
 print(f"result macros used: {len(used)}; undefined: {sorted(used - defined)}")
 banned = [r"\\bthe first\\b", r"\\bfirst (?:study|benchmark|work)\\b", r"to the best of our knowledge", r"\\bguarantee", r"\\bunprecedented\\b",
           r"\\bproduction-grade\\b", r"\\bhallucination-free\\b", r"\\bholistic\\b"]
@@ -398,6 +426,69 @@ else:
     print("PDF not built: install Tectonic or compile paper/main.tex on Overleaf (see paper/README.md)")''',
 ],
 }
+
+NOTEBOOKS["08_confirmatory_analysis.ipynb"] = [
+"""md:# 08 · Confirmatory analysis (protocol v1.4)
+Six blocks of the 120-cell design (720 scenarios) x 5 packages x 2 modes x 2 repetitions with Qwen3-8B (14,400 runs), the H6
+labels-synced arm, the block-1 ablation, and the Llama-3.1 replication on every block. The campaign runs with
+`python harness/campaign.py` (resumable). **Interim-look rule (protocol §6):** until every phase is complete this notebook shows
+run counts only; no outcome is computed or displayed.""",
+SETUP,
+'''import campaign, analyze, run
+status = pd.DataFrame([(n, *campaign.counts(campaign.OUT / f"{n}.jsonl")[1:], campaign.expected(kw))
+                       for n, kw in [*campaign.reference_phases(), *campaign.llm_phases()]],
+                      columns=["log", "done", "unresolved_errors", "planned"])
+display(status)
+COMPLETE = bool((status.done >= status.planned).all())
+print("campaign complete:", COMPLETE, "- outcomes are analysed only when it is")''',
+"""md:## Independent re-scoring (protocol §8)
+Every confirmatory run is re-scored from its trace with the frozen scorer and compared field by field with the logged scores.""",
+'''if COMPLETE:
+    from env import Env
+    from score import score_run
+    splits = {json.loads(m.read_text())["items_sha256"]: m.parent for m in (ROOT / "benchmark/data").glob("*/MANIFEST.json")}
+    items_of = {h: {i["item_id"]: i for i in map(json.loads, (d / "items.jsonl").read_text().splitlines())} for h, d in splits.items()}
+    fields = ["gold_action", "reachable", "unreachable_reason", "refused", "substantive", "correct", "hedged", "sar", "supported",
+              "supported_cond", "abcr", "exposed", "abcr_exposed", "blocked_attempts", "forbidden_read", "forbidden_cited", "disclosed",
+              "deployed_violation", "refusal_correct", "over_restriction", "drift_exposed", "label"]
+    n = mismatch = 0
+    serving = {}  # protocol v1.4: one server version, model digest and clean harness commit per model over the whole campaign
+    for p in sorted(campaign.OUT.glob("*.jsonl")):
+        for r in map(json.loads, p.read_text().splitlines()):
+            if "serving" in r:
+                serving.setdefault(r["model"], set()).add((r["serving"]["version"], r["serving"]["digest"], r["code"]))
+            h = r["data_sha256"]["items"]
+            env = Env(splits[h], r["stage"], r["mode"], r["profile"], r["seed"])
+            env.trace = r["trace"]
+            new = score_run(items_of[h][r["item_id"]], env, r["result"])
+            n, mismatch = n + 1, mismatch + any(new[f] != r[f] for f in fields)
+    print(f"re-scored {n} confirmatory runs; mismatches: {mismatch}")
+    print("serving and code per model:", {k: sorted(v) for k, v in serving.items()})
+    assert all(len(v) == 1 for v in serving.values()), "the server, model weights or harness changed during the campaign"
+    assert not any(c.endswith("+dirty") for v in serving.values() for _, _, c in v), "runs from an uncommitted harness"
+    assert mismatch == 0''',
+"""md:## Analyses
+Primary: Qwen3 over all six blocks (scenario-cluster bootstrap stratified by block, Holm over the 9 contrasts, sign-flip check,
+SESOI classes; H6 outside the family; per-block and design-cell sensitivities). Replication: Llama-3.1 (unadjusted). Block 1
+alone (the split signed in v1.3a) as a sensitivity analysis.""",
+'''if COMPLETE:
+    import contextlib, io
+    C, B = campaign.OUT, run.confirmatory_splits()
+    log = lambda pat: [str(C / pat.format(b)) for b in B]
+    jobs = {"analysis": [*log("qwen3-8b_{}.jsonl"), "--ideal", *log("ideal_{}.jsonl"), "--h6", *log("qwen3-8b_h6_{}.jsonl"),
+                         "--ablation", str(C / "qwen3-8b_ablation_confirmatory.jsonl"),
+                         "--ablation-ideal", str(C / "ideal_ablation_confirmatory.jsonl")],
+            "analysis_llama": [*log("llama3.1-8b_{}.jsonl"), "--ideal", *log("ideal_{}.jsonl"), "--h6", *log("llama3.1-8b_h6_{}.jsonl"),
+                               "--prefix", "Llama"],
+            "analysis_block1": [str(C / "qwen3-8b_confirmatory.jsonl"), "--ideal", str(C / "ideal_confirmatory.jsonl"),
+                                "--h6", str(C / "qwen3-8b_h6_confirmatory.jsonl"), "--prefix", "BlockOne"]}
+    for out, args in jobs.items():
+        sys.argv = ["analyze.py", *args, "--outdir", str(C / out)]
+        with contextlib.redirect_stdout(io.StringIO()):
+            analyze.main()
+        print("wrote", (C / out).relative_to(ROOT))
+    display(Markdown((C / "analysis/REPORT.md").read_text(encoding="utf-8")))''',
+]
 
 if __name__ == "__main__":
     for name, cells in NOTEBOOKS.items():

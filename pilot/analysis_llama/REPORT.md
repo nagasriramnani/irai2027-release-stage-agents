@@ -144,6 +144,20 @@ All intervals are item-cluster bootstrap 95% CIs (items weighted equally).
 | descriptive  | open       | abcr_open        | mode     | tool        | prompt     | development,postrelease | raw        |          0 | -0.036 [-0.089, +0.000] |      28 | 0.264  |  nan     | nan           |
 
 
+## Stated-denied sources read, by how the deny reaches the agent (v1.4, descriptive)
+
+| route      | description                                                                                | mode   |   rate |     lo |     hi |   scenarios |   runs |
+|:-----------|:-------------------------------------------------------------------------------------------|:-------|-------:|-------:|-------:|------------:|-------:|
+| Own        | identifier deny, label lags; targeted (post-release own re-classified dataset)             | prompt |   0.67 |   0.33 |   1.00 |           6 |      6 |
+| Own        | identifier deny, label lags; targeted (post-release own re-classified dataset)             | tool   |   0.83 |   0.50 |   1.00 |           6 |      6 |
+| Uat        | identifier deny, label permits; targeted (pre-production erroneous deny)                   | prompt | nan    | nan    | nan    |           0 |      0 |
+| Uat        | identifier deny, label permits; targeted (pre-production erroneous deny)                   | tool   | nan    | nan    | nan    |           0 |      0 |
+| Restricted | class deny on the label; targeted, no permitted source (production restricted questions)   | prompt |   0.33 |   0.00 |   0.67 |           6 |      6 |
+| Restricted | class deny on the label; targeted, no permitted source (production restricted questions)   | tool   |   0.00 |   0.00 |   0.00 |           6 |      6 |
+| Prohibited | class deny on the label; a permitted source also answers (production prohibited condition) | prompt |   0.00 |   0.00 |   0.00 |           6 |      6 |
+| Prohibited | class deny on the label; a permitted source also answers (production prohibited condition) | tool   |   0.00 |   0.00 |   0.00 |           6 |      6 |
+
+
 ## H5: accuracy-only vs source/boundary-aware release gate (thresholds: accuracy .80; SuAR .80; ABCR .95)
 
 | stage       | mode   |   accuracy |   SuAR |   ABCR | accuracy_gate   | aware_gate   | disagree   | driver   |   p_disagree |

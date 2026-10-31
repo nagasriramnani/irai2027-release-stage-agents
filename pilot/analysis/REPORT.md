@@ -164,6 +164,20 @@ All intervals are item-cluster bootstrap 95% CIs (items weighted equally).
 | descriptive  | open       | abcr_open        | mode     | tool        | prompt     | development,integration,postrelease | raw        |          0 | -0.024 [-0.048, -0.006] |      28 | 0.028  | nan      | nan       |
 
 
+## Stated-denied sources read, by how the deny reaches the agent (v1.4, descriptive)
+
+| route      | description                                                                                | mode   |   rate |   lo |   hi |   scenarios |   runs |
+|:-----------|:-------------------------------------------------------------------------------------------|:-------|-------:|-----:|-----:|------------:|-------:|
+| Own        | identifier deny, label lags; targeted (post-release own re-classified dataset)             | prompt |   1.00 | 1.00 | 1.00 |           6 |     12 |
+| Own        | identifier deny, label lags; targeted (post-release own re-classified dataset)             | tool   |   1.00 | 1.00 | 1.00 |           6 |     12 |
+| Uat        | identifier deny, label permits; targeted (pre-production erroneous deny)                   | prompt |   1.00 | 1.00 | 1.00 |           6 |     12 |
+| Uat        | identifier deny, label permits; targeted (pre-production erroneous deny)                   | tool   |   0.00 | 0.00 | 0.00 |           6 |     12 |
+| Restricted | class deny on the label; targeted, no permitted source (production restricted questions)   | prompt |   0.67 | 0.33 | 1.00 |           6 |     12 |
+| Restricted | class deny on the label; targeted, no permitted source (production restricted questions)   | tool   |   0.00 | 0.00 | 0.00 |           6 |     12 |
+| Prohibited | class deny on the label; a permitted source also answers (production prohibited condition) | prompt |   0.08 | 0.00 | 0.25 |           6 |     12 |
+| Prohibited | class deny on the label; a permitted source also answers (production prohibited condition) | tool   |   0.00 | 0.00 | 0.00 |           6 |     12 |
+
+
 ## H5: accuracy-only vs source/boundary-aware release gate (thresholds: accuracy .80; SuAR .80; ABCR .95)
 
 | stage         | mode   |   accuracy |   SuAR |   ABCR | accuracy_gate   | aware_gate   | disagree   | driver   |   p_disagree |
@@ -334,14 +348,14 @@ assistant turns 2227; tool calls recovered from plain text 220; runs never calli
 
 ## Directional resampling power at the smallest effects of interest (0.05, 0.1) (one-sample t at alpha = .05/9, 4000 draws; confirm_items = eligible items in the confirmatory split). power_*: preregistered homogeneous-effect simulation; power_*_pilotsd: noncentral t with the pilot's SD of item differences (sensitivity, v1.3a)
 
-| hyp   | outcome   | contrast                 | method    |   expected |   pilot_items |   pilot_effect |   pilot_rate_a |   confirm_items |   runs_per_cell |   power_5pt |   power_10pt |   pilot_sd |   power_5pt_pilotsd |   power_10pt_pilotsd |
-|:------|:----------|:-------------------------|:----------|-----------:|--------------:|---------------:|---------------:|----------------:|----------------:|------------:|-------------:|-----------:|--------------------:|---------------------:|
-| H1    | SAR       | development - production | faultfree |         -1 |            14 |         -0.054 |          1     |              66 |               6 |     0.99725 |      1       |      0.2   |           0.210137  |            0.87685   |
-| H1    | SAR       | integration - production | faultfree |         -1 |            14 |         -0.054 |          0.982 |              68 |               6 |     0.825   |      0.99775 |      0.28  |           0.089413  |            0.533212  |
-| H1    | SuAR      | development - production | faultfree |         -1 |            14 |          0.036 |          0.857 |              66 |               6 |     0.99425 |      1       |      0.352 |           0.0493316 |            0.297933  |
-| H1    | SuAR      | integration - production | faultfree |         -1 |            14 |          0.054 |          0.875 |              68 |               6 |     0.6195  |      0.986   |      0.418 |           0.0347897 |            0.195798  |
-| H2    | Accuracy  | postrelease - production | faultfree |         -1 |            18 |         -0.042 |          0.861 |              84 |               6 |     0.899   |      1       |      0.324 |           0.0823063 |            0.497197  |
-| H2    | SAR       | postrelease - production | faultfree |         -1 |            18 |         -0.181 |          1     |              84 |               6 |     0.99975 |      1       |      0.341 |           0.0722081 |            0.44172   |
-| H2    | ABCR      | postrelease - production | drift     |         -1 |            20 |         -0.35  |          0.963 |              41 |               6 |     0.455   |      0.9135  |      0.469 |           0.0169232 |            0.0705975 |
-| H3    | ABCR      | tool - prompt            | raw       |          1 |            28 |          0.06  |          0.798 |             115 |               9 |     0.71525 |      1       |      0.122 |           0.93983   |            1         |
-| H3    | Accuracy  | tool - prompt            | raw       |          0 |            24 |          0.023 |          0.667 |              96 |              15 |     0.696   |      0.9995  |      0.086 |           0.997364  |            1         |
+| hyp   | outcome   | contrast                 | method    |   expected |   pilot_items |   pilot_effect |   pilot_rate_a |   confirm_items |   runs_per_cell |   power_5pt |   power_10pt |   pilot_sd |   power_5pt_pilotsd |   power_10pt_pilotsd |   power_10pt_pilotsd_ucl80 |   confirm_scenarios |
+|:------|:----------|:-------------------------|:----------|-----------:|--------------:|---------------:|---------------:|----------------:|----------------:|------------:|-------------:|-----------:|--------------------:|---------------------:|---------------------------:|--------------------:|
+| H1    | SAR       | development - production | faultfree |         -1 |            14 |         -0.054 |          1     |             397 |               4 |     1       |            1 |      0.2   |            0.985111 |             1        |                   1        |                 720 |
+| H1    | SAR       | integration - production | faultfree |         -1 |            14 |         -0.054 |          0.982 |             397 |               4 |     1       |            1 |      0.28  |            0.777088 |             0.999991 |                   0.998602 |                 720 |
+| H1    | SuAR      | development - production | faultfree |         -1 |            14 |          0.036 |          0.857 |             397 |               4 |     1       |            1 |      0.352 |            0.518639 |             0.997924 |                   0.965833 |                 720 |
+| H1    | SuAR      | integration - production | faultfree |         -1 |            14 |          0.054 |          0.875 |             397 |               4 |     0.99925 |            1 |      0.418 |            0.343989 |             0.975561 |                   0.862596 |                 720 |
+| H2    | Accuracy  | postrelease - production | faultfree |         -1 |            18 |         -0.042 |          0.861 |             504 |               4 |     1       |            1 |      0.324 |            0.752243 |             0.999982 |                   0.998786 |                 720 |
+| H2    | SAR       | postrelease - production | faultfree |         -1 |            18 |         -0.181 |          1     |             504 |               4 |     1       |            1 |      0.341 |            0.693984 |             0.999924 |                   0.996921 |                 720 |
+| H2    | ABCR      | postrelease - production | drift     |         -1 |            20 |         -0.35  |          0.963 |             285 |               4 |     0.99775 |            1 |      0.469 |            0.162462 |             0.789323 |                   0.604975 |                 720 |
+| H3    | ABCR      | tool - prompt            | raw       |          1 |            28 |          0.06  |          0.798 |             679 |               6 |     1       |            1 |      0.122 |            1        |             1        |                   1        |                 720 |
+| H3    | Accuracy  | tool - prompt            | raw       |          0 |            24 |          0.023 |          0.667 |             576 |              10 |     1       |            1 |      0.086 |            1        |             1        |                   1        |                 720 |
