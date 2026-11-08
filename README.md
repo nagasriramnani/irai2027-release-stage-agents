@@ -26,7 +26,8 @@ tool-level), on a fully synthetic enterprise benchmark with six business roles. 
 | Adversarial audit of the pilot results (v1.3a) | Done: 8 agents (one setup defect: Llama's chat template hid the tools, re-run), then a 3-lens check of the analysis changes (0 numeric mismatches) |
 | Paper draft (IEEEtran, conference template 6/27/2024) | Compiles locally with Tectonic; results filled from macros → [paper/](paper/) |
 | Confirmatory blocks (v1.4) | Six frozen blocks of the 120-cell design (720 scenarios; seed rule in `benchmark/data/GENERATION_LOG.md`); reference agent run on every block before any LLM run → `runs/confirmatory/ideal_*.jsonl` |
-| Confirmatory campaign (14,400 + 144 H6 + 2,160 ablation + 4,320 Llama + 72 Llama H6) | Running with `python harness/campaign.py` (~5 days; resumable). Outcomes are not looked at until it completes (protocol §6); `python harness/campaign.py --status` shows counts only |
+| Confirmatory campaign (14,400 + 144 H6 + 2,160 ablation + 4,320 Llama + 72 Llama H6) | Done 8 Nov 2026 (21,096 runs; 1 excluded under §6); analysed in notebook 08, post hoc in notebook 09 → `runs/confirmatory/analysis*/` |
+| Human audit of the scorer (§8) | Sample drawn 8 Nov 2026 before any coding (720 runs + 72 re-codes); coding by R. Kochetti pending → [human_audit/README.md](human_audit/README.md) |
 
 ## Reproduce and verify, in order
 ```bash
@@ -94,6 +95,9 @@ harness/
   campaign.py          the confirmatory campaign (v1.4): every phase in order, resumable, counts only until complete
   analyze.py           cluster-bootstrap rates, agent-attributable contrasts + Holm, gate decisions (H5), GEE + mixed logit,
                        pass^k, ablation, resampling power, figure, LaTeX macros
+  posthoc.py           post-hoc analyses of the confirmatory results (labelled post hoc; macros prefix Ph; notebook 09)
+  audit.py             human audit (§8): seeded sample and blinded coding sheets (draw), kappa vs the scorer (compare)
+human_audit/           coding guide (README.md), case booklets and code sheets for rounds 1 and 2, key/ (not opened while coding)
 pilot/                 runs_*.jsonl (full traces + transcripts), runs_confirmatory_ideal.jsonl (scripted reference agent on the
                        confirmatory split; fixes the fault-free stratum), analysis/ and analysis_llama/ (REPORT.md, CSVs, figure,
                        macros), discarded/ (every superseded run set with the reason, kept for transparency)
