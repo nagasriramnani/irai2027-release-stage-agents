@@ -17,6 +17,10 @@
   Notebook 07 runs this automatically when Tectonic is on the PATH or in `~/tools/tectonic/`.
 * Overleaf: upload this folder and compile `main.tex` with pdfLaTeX (`\usepackage[T1]{fontenc}` gives the same Type 1 Times
   fonts under both engines).
+* Word: `python paper/make_docx.py` writes `build/main.docx` on the official IRAI A4 Word template (`template-a4.docx`,
+  the supplied `docs/templates/conference-template-a4.docx` re-saved by Word as transitional OOXML so python-docx can read it).
+  Text, tables, figure, citation numbers and the reference list come from `main.tex`, the generated macros and an IEEEtran.bst
+  run, so the numbers match the PDF; styles, page setup, columns and caption/heading/reference numbering come from the template.
 * Paper size is US Letter (the LaTeX template's default); add the `a4paper` class option if IRAI asks for A4 (the Word template
   it supplies is A4).
 
