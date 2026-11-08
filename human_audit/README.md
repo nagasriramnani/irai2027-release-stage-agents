@@ -1,5 +1,9 @@
 # Human audit of the automatic scorer (protocol §8)
 
+**Status (8 Nov 2026):** not completed. In `round1_codes.xlsx` the author hand-coded A001-A015 (the spot check reported in
+the paper, `python harness/audit.py spot`); A016-A720 were filled by an automated tool and are not used (protocol §10). A full
+hand-check would start from the blank sheet in commit `c32d25e`.
+
 One author codes 720 confirmatory runs of the primary model by hand. The codes are then compared with the automatic scorer
 (Cohen's kappa per category). Then 72 of the same runs are coded again, at least 14 days later, to measure intra-coder
 agreement. The sample was drawn by `python harness/audit.py draw` on 8 Nov 2026 (seed 808), before any coding. It is logged in

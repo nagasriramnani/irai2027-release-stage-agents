@@ -380,7 +380,8 @@ C = ROOT / "runs/confirmatory"
 gen = {"results_macros.tex": (C / "analysis/results_macros.tex", "qwen3:8b"),
        "results_macros_llama.tex": (C / "analysis_llama/results_macros.tex", "llama3.1-tools:8b"),
        "results_macros_block1.tex": (C / "analysis_block1/results_macros.tex", "qwen3:8b"),
-       "posthoc_macros.tex": (C / "analysis_posthoc/posthoc_macros.tex", "post hoc")}
+       "posthoc_macros.tex": (C / "analysis_posthoc/posthoc_macros.tex", "post hoc"),
+       "spot_macros.tex": (ROOT / "human_audit/results/spot_macros.tex", "author spot check")}
 assert (ROOT / "paper/generated/fig_stage_mode.pdf").read_bytes() == (C / "analysis/fig_stage_mode.pdf").read_bytes(), \\
     "paper/generated/fig_stage_mode.pdf is stale: copy runs/confirmatory/analysis/fig_stage_mode.pdf"
 defined = set()
@@ -397,7 +398,7 @@ for name, (src, model) in gen.items():
         assert hashlib.sha256(f_log.read_bytes()).hexdigest() == digest, f"{name}: {log} changed after the macros were generated"
     print(text.splitlines()[0][:300])
     defined |= set(re.findall(r"\\\\newcommand\\{\\\\(\\w+)\\}", text))
-used = set(re.findall(r"\\\\((?:Res|Con|Ideal|HFive|HSix|Route|Gate|Abl|Pow|Uat|Post|Llama|BlockOne|Ph|N)[A-Z]\\w*)", body))
+used = set(re.findall(r"\\\\((?:Res|Con|Ideal|HFive|HSix|Route|Gate|Abl|Pow|Uat|Post|Llama|BlockOne|Ph|Aud|N)[A-Z]\\w*)", body))
 print(f"result macros used: {len(used)}; undefined: {sorted(used - defined)}")
 banned = [r"\\bthe first\\b", r"\\bfirst (?:study|benchmark|work)\\b", r"to the best of our knowledge", r"\\bguarantee", r"\\bunprecedented\\b",
           r"\\bproduction-grade\\b", r"\\bhallucination-free\\b", r"\\bholistic\\b"]

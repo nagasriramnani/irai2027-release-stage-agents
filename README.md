@@ -27,7 +27,7 @@ tool-level), on a fully synthetic enterprise benchmark with six business roles. 
 | Paper draft (IEEEtran, conference template 6/27/2024) | Compiles locally with Tectonic; results filled from macros → [paper/](paper/) |
 | Confirmatory blocks (v1.4) | Six frozen blocks of the 120-cell design (720 scenarios; seed rule in `benchmark/data/GENERATION_LOG.md`); reference agent run on every block before any LLM run → `runs/confirmatory/ideal_*.jsonl` |
 | Confirmatory campaign (14,400 + 144 H6 + 2,160 ablation + 4,320 Llama + 72 Llama H6) | Done 8 Nov 2026 (21,096 runs; 1 excluded under §6); analysed in notebook 08, post hoc in notebook 09 → `runs/confirmatory/analysis*/` |
-| Human audit of the scorer (§8) | Sample drawn 8 Nov 2026 before any coding (720 runs + 72 re-codes); coding by R. Kochetti pending → [human_audit/README.md](human_audit/README.md) |
+| Human audit of the scorer (§8) | Sample drawn 8 Nov 2026 before any coding (720 runs + 72 re-codes). Not completed: the author hand-coded 15 runs (spot check, reported in the paper); the other rows were tool-filled and are not used (protocol §10) → [human_audit/README.md](human_audit/README.md) |
 
 ## Reproduce and verify, in order
 ```bash
