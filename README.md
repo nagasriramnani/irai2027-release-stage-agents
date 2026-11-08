@@ -130,5 +130,5 @@ paper/                 main.tex (IEEEtran conference), IEEEtran.cls + IEEEtran.b
   id order (a bias found and fixed during the pilot; see `pilot/discarded/README.md`).
 
 ## AI-assistance disclosure
-Benchmark code, harness, analysis, literature search, and draft text were produced with an AI assistant (Claude) under the
+Benchmark code, harness, analysis, literature search, and draft text were produced with an AI assistant co-pilot under the
 authors' direction and must be reviewed by both authors. IEEE requires disclosing this in the paper's Acknowledgments.
