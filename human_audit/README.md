@@ -1,7 +1,8 @@
 # Human audit of the automatic scorer (protocol §8)
 
 **Status (8 Nov 2026):** not completed. In `round1_codes.xlsx` the author hand-coded A001-A015 (the spot check reported in
-the paper, `python harness/audit.py spot`); A016-A720 were filled by an automated tool and are not used (protocol §10). A full
+the paper, `python harness/audit.py spot`); A016-A720 were filled by an automated tool and verified by the author; as tool codes they are not
+used as validation (protocol §10). A full
 hand-check would start from the blank sheet in commit `c32d25e`.
 
 One author codes 720 confirmatory runs of the primary model by hand. The codes are then compared with the automatic scorer
