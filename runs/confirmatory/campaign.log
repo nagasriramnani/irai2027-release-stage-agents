@@ -12,3 +12,133 @@
 2026-10-31 11:09:39  ideal_confirmatory_b6: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
 2026-10-31 11:09:39  ideal_ablation_confirmatory: 0/2160 runs done, starting
 2026-10-31 11:09:51  ideal_ablation_confirmatory: complete, 2160/2160 runs (0 with an unresolved infrastructure error)
+2026-10-31 12:06:30  qwen3-8b_confirmatory: 0/2400 runs done, starting
+2026-10-31 13:36:53  qwen3-8b_confirmatory: 210/2400 runs done, starting
+2026-11-01 10:07:37  qwen3-8b_confirmatory: 2368/2400 runs done, starting
+2026-11-01 10:17:15  qwen3-8b_confirmatory: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-01 10:17:17  qwen3-8b_h6_confirmatory: 0/24 runs done, starting
+2026-11-01 10:27:35  qwen3-8b_h6_confirmatory: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-01 10:27:37  qwen3-8b_confirmatory_b2: 0/2400 runs done, starting
+2026-11-02 04:01:17  qwen3-8b_confirmatory_b2: 2399/2400 runs done, starting
+2026-11-02 04:11:36  qwen3-8b_confirmatory_b2: 2399/2400 runs done, starting
+2026-11-02 04:21:54  qwen3-8b_confirmatory_b2: complete, 2400/2400 runs (1 with an unresolved infrastructure error)
+2026-11-02 04:21:56  qwen3-8b_h6_confirmatory_b2: 0/24 runs done, starting
+2026-11-02 04:29:06  qwen3-8b_h6_confirmatory_b2: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-02 04:29:08  qwen3-8b_confirmatory_b3: 0/2400 runs done, starting
+2026-11-02 13:21:56  qwen3-8b_confirmatory: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-02 13:21:56  qwen3-8b_h6_confirmatory: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-02 13:21:56  qwen3-8b_confirmatory_b2: complete, 2400/2400 runs (1 with an unresolved infrastructure error)
+2026-11-02 13:21:56  qwen3-8b_h6_confirmatory_b2: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-02 13:21:58  qwen3-8b_confirmatory_b3: 1359/2400 runs done, starting
+2026-11-02 18:31:50  qwen3-8b_confirmatory_b3: 2399/2400 runs done, starting
+2026-11-02 18:32:07  qwen3-8b_confirmatory_b3: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-02 18:32:09  qwen3-8b_h6_confirmatory_b3: 0/24 runs done, starting
+2026-11-02 18:37:12  qwen3-8b_h6_confirmatory_b3: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-02 18:37:14  qwen3-8b_confirmatory_b4: 0/2400 runs done, starting
+2026-11-03 02:22:29  qwen3-8b_confirmatory_b4: 2399/2400 runs done, starting
+2026-11-03 02:22:43  qwen3-8b_confirmatory_b4: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-03 02:22:45  qwen3-8b_h6_confirmatory_b4: 0/24 runs done, starting
+2026-11-03 02:27:05  qwen3-8b_h6_confirmatory_b4: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-03 02:27:07  qwen3-8b_confirmatory_b5: 0/2400 runs done, starting
+2026-11-03 10:11:27  qwen3-8b_confirmatory_b5: 2399/2400 runs done, starting
+2026-11-03 10:11:46  qwen3-8b_confirmatory_b5: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-03 10:11:48  qwen3-8b_h6_confirmatory_b5: 0/24 runs done, starting
+2026-11-03 10:16:31  qwen3-8b_h6_confirmatory_b5: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-03 10:16:33  qwen3-8b_confirmatory_b6: 0/2400 runs done, starting
+2026-11-03 17:59:40  qwen3-8b_confirmatory_b6: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-03 17:59:42  qwen3-8b_h6_confirmatory_b6: 0/24 runs done, starting
+2026-11-03 18:04:02  qwen3-8b_h6_confirmatory_b6: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-03 18:04:04  qwen3-8b_ablation_confirmatory: 0/2160 runs done, starting
+2026-11-04 10:11:48  qwen3-8b_confirmatory: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-04 10:11:48  qwen3-8b_h6_confirmatory: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-04 10:11:48  qwen3-8b_confirmatory_b2: complete, 2400/2400 runs (1 with an unresolved infrastructure error)
+2026-11-04 10:11:48  qwen3-8b_h6_confirmatory_b2: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-04 10:11:48  qwen3-8b_confirmatory_b3: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-04 10:11:48  qwen3-8b_h6_confirmatory_b3: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-04 10:11:49  qwen3-8b_confirmatory_b4: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-04 10:11:49  qwen3-8b_h6_confirmatory_b4: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-04 10:11:49  qwen3-8b_confirmatory_b5: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-04 10:11:49  qwen3-8b_h6_confirmatory_b5: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-04 10:11:49  qwen3-8b_confirmatory_b6: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-04 10:11:49  qwen3-8b_h6_confirmatory_b6: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-04 10:11:53  qwen3-8b_ablation_confirmatory: Ollama not reachable, waiting 5 min
+2026-11-04 10:12:41  qwen3-8b_confirmatory: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-04 10:12:41  qwen3-8b_h6_confirmatory: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-04 10:12:41  qwen3-8b_confirmatory_b2: complete, 2400/2400 runs (1 with an unresolved infrastructure error)
+2026-11-04 10:12:41  qwen3-8b_h6_confirmatory_b2: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-04 10:12:41  qwen3-8b_confirmatory_b3: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-04 10:12:41  qwen3-8b_h6_confirmatory_b3: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-04 10:12:41  qwen3-8b_confirmatory_b4: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-04 10:12:41  qwen3-8b_h6_confirmatory_b4: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-04 10:12:41  qwen3-8b_confirmatory_b5: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-04 10:12:41  qwen3-8b_h6_confirmatory_b5: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-04 10:12:41  qwen3-8b_confirmatory_b6: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-04 10:12:41  qwen3-8b_h6_confirmatory_b6: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-04 10:12:44  qwen3-8b_ablation_confirmatory: 182/2160 runs done, starting
+2026-11-04 10:13:15  qwen3-8b_ablation_confirmatory: stopped (stopping after 5 consecutive infrastructure errors (last: <HTTPError 500: 'Internal Server Error'>); re-run to resume); retrying in 5 min
+2026-11-04 10:18:17  qwen3-8b_ablation_confirmatory: 182/2160 runs done, starting
+2026-11-04 10:18:48  qwen3-8b_ablation_confirmatory: two stops in a row with no successful run while the server answers (stopping after 5 consecutive infrastructure errors (last: <HTTPError 500: 'Internal Server Error'>); re-run to resume); campaign halted for inspection; re-run this command once inference works
+2026-11-07 01:28:54  qwen3-8b_confirmatory: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-07 01:28:54  qwen3-8b_h6_confirmatory: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-07 01:28:54  qwen3-8b_confirmatory_b2: complete, 2400/2400 runs (1 with an unresolved infrastructure error)
+2026-11-07 01:28:54  qwen3-8b_h6_confirmatory_b2: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-07 01:28:54  qwen3-8b_confirmatory_b3: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-07 01:28:54  qwen3-8b_h6_confirmatory_b3: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-07 01:28:55  qwen3-8b_confirmatory_b4: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-07 01:28:55  qwen3-8b_h6_confirmatory_b4: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-07 01:28:55  qwen3-8b_confirmatory_b5: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-07 01:28:55  qwen3-8b_h6_confirmatory_b5: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-07 01:28:55  qwen3-8b_confirmatory_b6: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-07 01:28:55  qwen3-8b_h6_confirmatory_b6: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-07 01:28:57  qwen3-8b_ablation_confirmatory: 182/2160 runs done, starting
+2026-11-07 07:29:49  qwen3-8b_confirmatory: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-07 07:29:49  qwen3-8b_h6_confirmatory: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-07 07:29:49  qwen3-8b_confirmatory_b2: complete, 2400/2400 runs (1 with an unresolved infrastructure error)
+2026-11-07 07:29:49  qwen3-8b_h6_confirmatory_b2: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-07 07:29:49  qwen3-8b_confirmatory_b3: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-07 07:29:49  qwen3-8b_h6_confirmatory_b3: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-07 07:29:50  qwen3-8b_confirmatory_b4: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-07 07:29:50  qwen3-8b_h6_confirmatory_b4: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-07 07:29:50  qwen3-8b_confirmatory_b5: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-07 07:29:50  qwen3-8b_h6_confirmatory_b5: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-07 07:29:50  qwen3-8b_confirmatory_b6: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-07 07:29:50  qwen3-8b_h6_confirmatory_b6: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-07 07:29:52  qwen3-8b_ablation_confirmatory: 1004/2160 runs done, starting
+2026-11-07 11:48:57  qwen3-8b_confirmatory: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-07 11:48:57  qwen3-8b_h6_confirmatory: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-07 11:48:58  qwen3-8b_confirmatory_b2: complete, 2400/2400 runs (1 with an unresolved infrastructure error)
+2026-11-07 11:48:58  qwen3-8b_h6_confirmatory_b2: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-07 11:48:58  qwen3-8b_confirmatory_b3: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-07 11:48:58  qwen3-8b_h6_confirmatory_b3: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-07 11:48:58  qwen3-8b_confirmatory_b4: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-07 11:48:58  qwen3-8b_h6_confirmatory_b4: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-07 11:48:58  qwen3-8b_confirmatory_b5: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-07 11:48:58  qwen3-8b_h6_confirmatory_b5: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-07 11:48:59  qwen3-8b_confirmatory_b6: complete, 2400/2400 runs (0 with an unresolved infrastructure error)
+2026-11-07 11:48:59  qwen3-8b_h6_confirmatory_b6: complete, 24/24 runs (0 with an unresolved infrastructure error)
+2026-11-07 11:49:01  qwen3-8b_ablation_confirmatory: 1694/2160 runs done, starting
+2026-11-07 14:16:08  qwen3-8b_ablation_confirmatory: complete, 2160/2160 runs (0 with an unresolved infrastructure error)
+2026-11-07 14:16:12  llama3.1-8b_confirmatory: 0/720 runs done, starting
+2026-11-07 16:31:32  llama3.1-8b_confirmatory: complete, 720/720 runs (0 with an unresolved infrastructure error)
+2026-11-07 16:31:34  llama3.1-8b_h6_confirmatory: 0/12 runs done, starting
+2026-11-07 16:33:27  llama3.1-8b_h6_confirmatory: complete, 12/12 runs (0 with an unresolved infrastructure error)
+2026-11-07 16:33:29  llama3.1-8b_confirmatory_b2: 0/720 runs done, starting
+2026-11-07 18:45:27  llama3.1-8b_confirmatory_b2: complete, 720/720 runs (0 with an unresolved infrastructure error)
+2026-11-07 18:45:29  llama3.1-8b_h6_confirmatory_b2: 0/12 runs done, starting
+2026-11-07 18:47:24  llama3.1-8b_h6_confirmatory_b2: complete, 12/12 runs (0 with an unresolved infrastructure error)
+2026-11-07 18:47:26  llama3.1-8b_confirmatory_b3: 0/720 runs done, starting
+2026-11-07 20:49:37  llama3.1-8b_confirmatory_b3: complete, 720/720 runs (0 with an unresolved infrastructure error)
+2026-11-07 20:49:39  llama3.1-8b_h6_confirmatory_b3: 0/12 runs done, starting
+2026-11-07 20:51:41  llama3.1-8b_h6_confirmatory_b3: complete, 12/12 runs (0 with an unresolved infrastructure error)
+2026-11-07 20:51:43  llama3.1-8b_confirmatory_b4: 0/720 runs done, starting
+2026-11-07 22:48:02  llama3.1-8b_confirmatory_b4: complete, 720/720 runs (0 with an unresolved infrastructure error)
+2026-11-07 22:48:04  llama3.1-8b_h6_confirmatory_b4: 0/12 runs done, starting
+2026-11-07 22:50:02  llama3.1-8b_h6_confirmatory_b4: complete, 12/12 runs (0 with an unresolved infrastructure error)
+2026-11-07 22:50:04  llama3.1-8b_confirmatory_b5: 0/720 runs done, starting
+2026-11-08 00:48:03  llama3.1-8b_confirmatory_b5: complete, 720/720 runs (0 with an unresolved infrastructure error)
+2026-11-08 00:48:06  llama3.1-8b_h6_confirmatory_b5: 0/12 runs done, starting
+2026-11-08 00:50:14  llama3.1-8b_h6_confirmatory_b5: complete, 12/12 runs (0 with an unresolved infrastructure error)
+2026-11-08 00:50:16  llama3.1-8b_confirmatory_b6: 0/720 runs done, starting
+2026-11-08 02:48:26  llama3.1-8b_confirmatory_b6: complete, 720/720 runs (0 with an unresolved infrastructure error)
+2026-11-08 02:48:28  llama3.1-8b_h6_confirmatory_b6: 0/12 runs done, starting
+2026-11-08 02:50:41  llama3.1-8b_h6_confirmatory_b6: complete, 12/12 runs (0 with an unresolved infrastructure error)
