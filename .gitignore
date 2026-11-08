@@ -10,3 +10,5 @@ paper/build/*
 !paper/build/main.pdf
 !paper/build/main.docx
 runs/confirmatory/campaign.lock
+# Office lock files (a document is open)
+~$*

@@ -392,6 +392,37 @@ def sec_k(q):
     put(S, "PhCellHOneSuarDevP", f"{float(r['p_holm']):.3f}", f"verdict {r['verdict']} (analysis/contrasts_by_cell.csv)",
         "H1c (SuAR, development - production) with design cells instead of scenarios as clusters: Holm-adjusted p, from the "
         "pre-specified design-cell sensitivity of harness/analyze.py.")
+    c = pd.read_csv(RUNS / "analysis" / "contrasts.csv", keep_default_na=False)
+    d = c[(c.family == "confirmatory") & (c.expected.astype(int) != 0) & (c.verdict == "supported")]
+    words = "no one two three four five six seven eight nine ten".split()
+    for name, key, what in (("PhNDirSmall", "smaller than SESOI", "whose 95% interval lies entirely below the SESOI"),
+                            ("PhNDirCompat", "compatible with >= SESOI", "whose 95% interval reaches the SESOI")):
+        k = int(d.sesoi_class.str.contains(key, regex=False).sum())
+        for suffix, val in (("", cnt(k)), ("Word", words[k])):
+            put(S, name + suffix, val, f"of {len(d)} supported directional contrasts (analysis/contrasts.csv sesoi_class)",
+                f"Qwen3 directional confirmatory contrasts (H1-H3a) supported with the pre-specified sign {what} (0.10): "
+                "statistical support versus practical size, from the pre-specified SESOI classes" + (" (as a word)." if suffix else "."))
+    cc = pd.read_csv(RUNS / "analysis" / "contrasts_by_cell.csv", keep_default_na=False)  # design-cell sensitivity
+    cc = cc[cc.hyp.isin(["H1", "H2", "H3"]) & (cc.expected.astype(int) != 0)]
+    small = sum(A.sesoi_class(float(r.lo), float(r.hi), int(r.expected), r.verdict) == "supported, smaller than SESOI"
+                for r in cc.itertuples())
+    for suffix, val in (("", cnt(small)), ("Word", words[small])):
+        put(S, "PhCellNDirSmall" + suffix, val, f"of {len(cc)} directional contrasts (analysis/contrasts_by_cell.csv)",
+            "With the 120 design scenarios instead of the block scenarios as clusters (the pre-specified design-cell sensitivity): "
+            "directional contrasts still supported whose 95% interval lies entirely below the SESOI, classified with "
+            "analyze.sesoi_class" + (" (as a word)." if suffix else "."))
+
+
+# --- L. scripted oracle: the upper bound each package allows (scripted, no LLM; run after the confirmatory results) -------
+def sec_l(o):
+    S = "L. Scripted oracle as an upper bound per package"
+    for st, g in A.ok(o).groupby("stage"):
+        r, _, _, n = A.cluster_rate(g, "sar")
+        put(S, f"PhOracleSar{A.SHORT[st]}", prop(r), f"{st}, both modes, {n} scenarios, {len(g):,} runs",
+            "SAR (item-cluster mean over answer-gold runs, as the \\Ideal... macros) of run.py's scripted oracle, which knows the "
+            "gold action and the authoritative source(s), reads them directly (retrying a connector fault) and refuses when they "
+            "are not indexed: what the package's injected faults leave to any agent. Run post hoc on all six confirmatory blocks "
+            "(runs/confirmatory/oracle_*.jsonl, one deterministic repetition).")
 
 
 def main():
@@ -401,12 +432,12 @@ def main():
     out = Path(a.outdir)
     out.mkdir(parents=True, exist_ok=True)
     files = {"q": logs("qwen3-8b"), "qh": logs("qwen3-8b_h6"), "i": logs("ideal"), "l": logs("llama3.1-8b"),
-             "lh": logs("llama3.1-8b_h6")}
+             "lh": logs("llama3.1-8b_h6"), "o": logs("oracle")}
     q, l = A.annotate(A.load(files["q"])), A.annotate(A.load(files["l"]))
-    qh, lh, ideal = A.load(files["qh"]), A.load(files["lh"]), A.load(files["i"])
+    qh, lh, ideal, oracle = A.load(files["qh"]), A.load(files["lh"]), A.load(files["i"]), A.load(files["o"])
     iq = ideal[ideal["rep"].isin(set(q["rep"]))]  # seed-matched reference agent, as analyze.main
     for f, args in ((sec_a, (q, l)), (sec_b, (q,)), (sec_c, (q, l)), (sec_d, (q,)), (sec_e, (q, iq)), (sec_f, (q, iq)), (sec_g, (q,)),
-                    (sec_h, (q, qh, l, lh)), (sec_i, (q, l)), (sec_j, (q, l)), (sec_k, (q,))):
+                    (sec_h, (q, qh, l, lh)), (sec_i, (q, l)), (sec_j, (q, l)), (sec_k, (q,)), (sec_l, (oracle,))):
         f(*args)
 
     names = [r[1] for r in ROWS]

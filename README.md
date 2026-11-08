@@ -2,7 +2,7 @@
 
 **Working title:** *Release-Stage Effects on AI Agent Answer Reliability Across Business Simulation Profiles: Source
 Appropriateness, Answer Support, and Access-Boundary Compliance*
-**Authors:** Ram Kochetti, Prof. Hussain Tazar · **Target:** IEEE IRAI 2027 (6 pages, deadline 30 Jun 2027; see
+**Authors:** Naga Sri Ram Kochetti, Prof. Hussain Tazar · **Target:** IEEE IRAI 2027 (6 pages, deadline 30 Jun 2027; see
 [docs/CONFERENCE_REQUIREMENTS.md](docs/CONFERENCE_REQUIREMENTS.md))
 
 We study how a tool-using LLM agent's answers change across five release-stage configuration packages (development,

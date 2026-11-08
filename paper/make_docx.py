@@ -476,6 +476,10 @@ def build():
                     num.append(num.makeelement(qn(tag), {qn("w:val"): "0"}))
                 fp._p.get_or_add_pPr().insert(1, num)
                 fp.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+            else:  # a little space between a table without a note and the text below it
+                gap = doc.add_paragraph(style="Normal")
+                gap.paragraph_format.space_before = gap.paragraph_format.space_after = Pt(0)
+                gap.add_run().font.size = Pt(6)
             if wide:
                 end_section(doc, sect(s_two, 1))
         elif kind == "figure":
