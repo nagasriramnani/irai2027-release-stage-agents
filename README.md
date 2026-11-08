@@ -132,3 +132,14 @@ paper/                 main.tex (IEEEtran conference), IEEEtran.cls + IEEEtran.b
 ## AI-assistance disclosure
 Benchmark code, harness, analysis, literature search, and draft text were produced with an AI assistant co-pilot under the
 authors' direction and must be reviewed by both authors. IEEE requires disclosing this in the paper's Acknowledgments.
+
+## License
+* **Code: [MIT](LICENSE).** `harness/`, `benchmark/generate.py`, `notebooks/` (the builder, the runner and the code cells)
+  and `paper/make_docx.py`.
+* **Data, results and text: [CC BY 4.0](LICENSE-CC-BY-4.0.md).** `benchmark/data/`, `runs/`, `pilot/`, `human_audit/`,
+  `protocol/`, `literature/`, `docs/` (except `docs/templates/`), the manuscript and its generated files in `paper/`
+  (`main.tex`, `references.bib`, `generated/`, `build/`), and this README. Please credit the authors when you reuse them.
+* **Third-party files keep their own terms:** the IEEE templates in `docs/templates/` and `paper/template-a4.docx`, and
+  `paper/IEEEtran.cls` and `paper/IEEEtran.bst` (LaTeX Project Public License).
+* If IRAI 2027 accepts the paper, the published version is covered by the IEEE copyright form; the versions here remain
+  under CC BY 4.0, as IEEE's preprint policy allows.
