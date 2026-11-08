@@ -376,15 +376,19 @@ cited = {k.strip() for g in re.findall(r"\\\\cite\\w*\\{([^}]*)\\}", body) for k
 missing = sorted(cited - bibkeys)
 print(f"cited keys: {len(cited)}; missing from references.bib: {missing}")
 # the paper's macro files must be byte-identical to the analysis output, and name the intended runs and model
-gen = {"results_macros.tex": (ROOT / "pilot/analysis/results_macros.tex", "qwen3:8b"),
-       "results_macros_llama.tex": (ROOT / "pilot/analysis_llama/results_macros.tex", "llama3.1-tools:8b")}
+C = ROOT / "runs/confirmatory"
+gen = {"results_macros.tex": (C / "analysis/results_macros.tex", "qwen3:8b"),
+       "results_macros_llama.tex": (C / "analysis_llama/results_macros.tex", "llama3.1-tools:8b"),
+       "results_macros_block1.tex": (C / "analysis_block1/results_macros.tex", "qwen3:8b"),
+       "posthoc_macros.tex": (C / "analysis_posthoc/posthoc_macros.tex", "post hoc")}
+assert (ROOT / "paper/generated/fig_stage_mode.pdf").read_bytes() == (C / "analysis/fig_stage_mode.pdf").read_bytes(), \\
+    "paper/generated/fig_stage_mode.pdf is stale: copy runs/confirmatory/analysis/fig_stage_mode.pdf"
 defined = set()
 for name, (src, model) in gen.items():
     f = ROOT / "paper/generated" / name
-    if not f.exists():
-        continue
+    assert f.exists(), f"paper/generated/{name} missing: copy it from {src.relative_to(ROOT)}"
     text = f.read_text(encoding="utf-8")
-    assert text == src.read_text(encoding="utf-8"), f"paper/generated/{name} is stale: re-run notebook 04"
+    assert text == src.read_text(encoding="utf-8"), f"paper/generated/{name} is stale: re-run notebooks 08 and 09 and copy it"
     assert model in text.splitlines()[0], f"{name} was generated from another model: {text.splitlines()[0]}"
     logs = re.findall(r"(\\S+\\.jsonl) \\(sha256 ([0-9a-f]{64})\\)", text.splitlines()[0])   # provenance: each run log's raw bytes
     assert logs, f"{name}: no run log recorded in its header"
@@ -393,7 +397,7 @@ for name, (src, model) in gen.items():
         assert hashlib.sha256(f_log.read_bytes()).hexdigest() == digest, f"{name}: {log} changed after the macros were generated"
     print(text.splitlines()[0][:300])
     defined |= set(re.findall(r"\\\\newcommand\\{\\\\(\\w+)\\}", text))
-used = set(re.findall(r"\\\\((?:Res|Con|Ideal|HFive|HSix|Route|Gate|Abl|Pow|Uat|Post|Llama|N)[A-Z]\\w*)", body))
+used = set(re.findall(r"\\\\((?:Res|Con|Ideal|HFive|HSix|Route|Gate|Abl|Pow|Uat|Post|Llama|BlockOne|Ph|N)[A-Z]\\w*)", body))
 print(f"result macros used: {len(used)}; undefined: {sorted(used - defined)}")
 banned = [r"\\bthe first\\b", r"\\bfirst (?:study|benchmark|work)\\b", r"to the best of our knowledge", r"\\bguarantee", r"\\bunprecedented\\b",
           r"\\bproduction-grade\\b", r"\\bhallucination-free\\b", r"\\bholistic\\b"]
@@ -490,7 +494,27 @@ alone (the split signed in v1.3a) as a sensitivity analysis.""",
     display(Markdown((C / "analysis/REPORT.md").read_text(encoding="utf-8")))''',
 ]
 
+NOTEBOOKS["09_posthoc_analysis.ipynb"] = [
+"""md:# 09 · Post hoc, exploratory analyses
+**Post hoc and exploratory.** These quantities were chosen after the confirmatory results of notebook 08 had been seen (an
+internal audit of those results). They are not in the protocol, are outside the Holm family and support no confirmatory claim.
+`harness/posthoc.py` recomputes each one from the raw run logs and the frozen benchmark data, reusing `harness/analyze.py`
+unchanged (same loader, item-cluster bootstrap with 4,000 resamples stratified by block, same seeds), and writes
+`runs/confirmatory/analysis_posthoc/posthoc_macros.tex` (\\\\Ph... macros) and `POSTHOC.md` (definitions, n, how computed).""",
+SETUP,
+'''import contextlib, io
+import posthoc
+C = ROOT / "runs" / "confirmatory"
+sys.argv = ["posthoc.py", "--outdir", str(C / "analysis_posthoc")]
+with contextlib.redirect_stdout(io.StringIO()):
+    posthoc.main()
+print("wrote", (C / "analysis_posthoc").relative_to(ROOT))
+display(Markdown((C / "analysis_posthoc/POSTHOC.md").read_text(encoding="utf-8")))''',
+]
+
 if __name__ == "__main__":
-    for name, cells in NOTEBOOKS.items():
-        nbf.write(nb(cells), HERE / name)
+    import sys
+    # python notebooks/build_notebooks.py [name.ipynb ...]: build only the named notebooks (default: all)
+    for name in sys.argv[1:] or NOTEBOOKS:
+        nbf.write(nb(NOTEBOOKS[name]), HERE / name)
         print("wrote", name)
