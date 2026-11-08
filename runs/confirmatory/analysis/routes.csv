@@ -1,0 +1,9 @@
+route,description,mode,rate,lo,hi,scenarios,runs
+Own,"identifier deny, label lags; targeted (post-release own re-classified dataset)",prompt,0.9444444444444444,0.8888888888888888,0.9861111111111112,72,144
+Own,"identifier deny, label lags; targeted (post-release own re-classified dataset)",tool,0.9375,0.8819444444444444,0.9861111111111112,72,144
+Uat,"identifier deny, label permits; targeted (pre-production erroneous deny)",prompt,0.9652777777777778,0.9166666666666666,1.0,72,144
+Uat,"identifier deny, label permits; targeted (pre-production erroneous deny)",tool,0.0,0.0,0.0,72,144
+Restricted,"class deny on the label; targeted, no permitted source (production restricted questions)",prompt,0.7881944444444444,0.7222222222222222,0.8472222222222222,144,288
+Restricted,"class deny on the label; targeted, no permitted source (production restricted questions)",tool,0.0,0.0,0.0,144,288
+Prohibited,class deny on the label; a permitted source also answers (production prohibited condition),prompt,0.1284722222222222,0.08680555555555555,0.1736979166666666,144,288
+Prohibited,class deny on the label; a permitted source also answers (production prohibited condition),tool,0.0,0.0,0.0,144,288

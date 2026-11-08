@@ -1,0 +1,7 @@
+stage,mode,accuracy,SuAR,ABCR,accuracy_gate,aware_gate,disagree,driver,p_disagree
+development,prompt,0.429,0.372,0.868,hold,hold,False,,0.0
+development,tool,0.415,0.354,0.888,hold,hold,False,,0.0
+postrelease,prompt,0.671,0.651,0.725,hold,hold,False,,0.0
+postrelease,tool,0.649,0.637,0.881,hold,hold,False,,0.0
+production,prompt,0.623,0.609,0.863,hold,hold,False,,0.0
+production,tool,0.627,0.606,1.0,hold,hold,False,,0.0

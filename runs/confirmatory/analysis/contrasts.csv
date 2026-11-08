@@ -1,0 +1,32 @@
+family,hyp,outcome,factor,a,b,restrict,method,expected,diff,lo,hi,p,items,nonzero,p_signflip,p_holm,verdict,verdict_raw,sesoi_class,sesoi_class_raw
+confirmatory,H1,sar,stage,production,development,all,faultfree,-1,-0.05037783375314862,-0.07682619647355164,-0.02392947103274559,0.0004998750312421895,397,93,0.000195,0.004498875281179706,supported,supported,"supported, smaller than SESOI","supported, smaller than SESOI"
+confirmatory,H1,sar,stage,production,integration,all,faultfree,-1,-0.09005037783375315,-0.12027707808564232,-0.060453400503778336,0.0004998750312421895,397,121,0.0,0.004498875281179706,supported,supported,"supported, compatible with >= SESOI","supported, compatible with >= SESOI"
+confirmatory,H1,supported,stage,production,development,all,faultfree,-1,-0.036523929471032744,-0.06863979848866499,-0.004392317380352588,0.0284928767808048,397,130,0.030375,0.0284928767808048,supported,supported,"supported, smaller than SESOI","supported, smaller than SESOI"
+confirmatory,H1,supported,stage,production,integration,all,faultfree,-1,-0.06234256926952141,-0.09571788413098237,-0.028337531486146095,0.0004998750312421895,397,145,0.000365,0.004498875281179706,supported,supported,"supported, smaller than SESOI","supported, smaller than SESOI"
+confirmatory,H2,correct_ans,stage,production,postrelease,all,faultfree,-1,-0.040674603174603176,-0.0625,-0.01984126984126984,0.0014996250937265683,504,116,0.00032,0.004498875281179706,supported,supported,"supported, smaller than SESOI","supported, smaller than SESOI"
+confirmatory,H2,sar,stage,production,postrelease,all,faultfree,-1,-0.06696428571428571,-0.08779761904761904,-0.046130952380952384,0.0004998750312421895,504,89,0.0,0.004498875281179706,supported,supported,"supported, smaller than SESOI","supported, smaller than SESOI"
+confirmatory,H2,abcr_exposed,stage,production,postrelease,all,drift,-1,-0.25526315789473686,-0.3026535087719298,-0.20789473684210527,0.0004998750312421895,285,90,0.0,0.004498875281179706,supported,supported,"supported, compatible with >= SESOI","supported, compatible with >= SESOI"
+confirmatory,H3,abcr_exposed,mode,prompt,tool,"development,integration,postrelease",raw,1,0.0822287677957781,0.070446735395189,0.09474717722140402,0.0004998750312421895,679,186,0.0,0.004498875281179706,supported,supported,"supported, smaller than SESOI","supported, smaller than SESOI"
+confirmatory,H3,correct_ans,mode,prompt,tool,all,raw,0,0.01917920524691358,0.010802469135802469,0.028039279513888897,0.0004998750312421895,576,172,2e-05,0.004498875281179706,difference,difference,cost below SESOI,cost below SESOI
+descriptive,did,sar,stage,production,development,all,did,-1,-0.030381944444444444,-0.051215277777777776,-0.009982638888888888,0.004498875281179705,576,127,0.00493,,,,,
+descriptive,did,sar,stage,production,integration,all,did,-1,-0.06901041666666667,-0.0915798611111111,-0.046875,0.0004998750312421895,576,150,0.0,,,,,
+descriptive,did,supported,stage,production,development,all,did,-1,0.009548611111111112,-0.017361111111111112,0.037760416666666664,0.4843789052736816,576,186,0.515555,,,,,
+descriptive,did,supported,stage,production,integration,all,did,-1,-0.025173611111111112,-0.052083333333333336,0.0030381944444444445,0.07998000499875031,576,196,0.08036,,,,,
+descriptive,did,correct_ans,stage,production,postrelease,all,did,-1,-0.040674603174603176,-0.0625,-0.01984126984126984,0.0014996250937265683,504,116,0.00032,,,,,
+descriptive,did,sar,stage,production,postrelease,all,did,-1,-0.06696428571428571,-0.08779761904761904,-0.046130952380952384,0.0004998750312421895,504,89,0.0,,,,,
+descriptive,exposedall,abcr_exposed,stage,production,postrelease,all,exposed,-1,-0.12155963302752294,-0.14602446483180428,-0.09824159021406728,0.0004998750312421895,654,131,0.0,,,,,
+descriptive,costpkg,correct_ans,mode,prompt,tool,development,raw,0,-0.004340277777777778,-0.017361111111111112,0.008680555555555556,0.604348912771807,576,47,0.621775,,,,,
+descriptive,costpkg,correct_ans,mode,prompt,tool,integration,raw,0,0.021701388888888888,0.006076388888888889,0.03732638888888889,0.006498375406148463,576,54,0.00897,,,,,
+descriptive,costpkg,correct_ans,mode,prompt,tool,preproduction,raw,0,0.03732638888888889,0.018229166666666668,0.05642361111111111,0.0004998750312421895,576,77,0.00014,,,,,
+descriptive,costpkg,correct_ans,mode,prompt,tool,production,raw,0,0.005208333333333333,-0.011284722222222222,0.021701388888888888,0.5733566608347913,576,70,0.6063,,,,,
+descriptive,costpkg,correct_ans,mode,prompt,tool,postrelease,raw,0,0.03571428571428571,0.018849206349206348,0.054563492063492064,0.0004998750312421895,504,59,8.5e-05,,,,,
+descriptive,total,sar,stage,production,development,all,raw,-1,-0.3012152777777778,-0.3385416666666667,-0.2643229166666667,0.0004998750312421895,576,271,0.0,,,,,
+descriptive,total,supported,stage,production,development,all,raw,-1,-0.2612847222222222,-0.2994791666666667,-0.22265625,0.0004998750312421895,576,297,0.0,,,,,
+descriptive,total,correct_ans,stage,production,postrelease,all,raw,-1,-0.040674603174603176,-0.0625,-0.01984126984126984,0.0014996250937265683,504,116,0.00032,,,,,
+descriptive,invariant,abcr_exposed,mode,prompt,tool,"production,preproduction",raw,1,0.21234939759036145,0.1844879518072289,0.24209337349397592,0.0004998750312421895,664,179,0.0,,,,,
+descriptive,cost,sar,mode,prompt,tool,all,raw,0,0.025347222222222222,0.016708984374999996,0.034765624999999994,0.0004998750312421895,576,126,0.0,,,,,
+descriptive,cost,over_restriction,mode,prompt,tool,all,raw,0,0.000491898148148148,-0.0017364728009259256,0.002560763888888889,0.6493376655836041,576,24,0.685415,,,,,
+descriptive,owndrift,abcr_exposed,stage,production,postrelease,all,owndrift,-1,-0.9027777777777778,-0.9548611111111112,-0.84375,0.0004998750312421895,72,69,0.0,,,,,
+descriptive,reachdrift,abcr_exposed,stage,production,postrelease,all,reachdrift,-1,-0.036384976525821594,-0.05868544600938967,-0.017605633802816902,0.0004998750312421895,213,21,0.000285,,,,,
+descriptive,covered,abcr_covered,mode,prompt,tool,"development,integration,postrelease",raw,1,0.08664702994599903,0.07560137457044673,0.09891998036327934,0.0004998750312421895,679,186,0.0,,,,,
+descriptive,open,abcr_open,mode,prompt,tool,"development,integration,postrelease",raw,0,-0.003190967108492882,-0.007854688267059401,0.0012272950417280314,0.160959760059985,679,43,0.21001,,,,,

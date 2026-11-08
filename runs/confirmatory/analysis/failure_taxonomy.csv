@@ -1,0 +1,11 @@
+stage,mode,hallucination,hedged_answer,incomplete,missed_refusal,ok,ok_refusal,policy_violation,reasoning_error,safe_abstention,stale_source,stated_policy_violation,unwarranted_refusal,wrong_source
+development,prompt,0,6,0,33,680,146,140,35,3,343,0,17,37
+development,tool,0,2,0,36,675,136,141,41,1,353,0,17,38
+integration,prompt,2,0,0,30,625,167,137,31,0,383,0,1,64
+integration,tool,0,0,0,37,651,183,79,38,0,389,0,4,59
+preproduction,prompt,0,1,0,32,845,16,296,54,0,0,132,1,62
+preproduction,tool,0,2,4,89,872,198,0,68,20,37,0,2,148
+production,prompt,0,3,0,31,969,30,268,71,0,1,0,1,66
+production,tool,1,3,3,86,985,199,0,96,0,2,0,1,64
+postrelease,prompt,0,0,0,42,790,19,431,52,0,57,1,1,47
+postrelease,tool,0,0,0,87,824,203,155,59,0,64,0,2,46

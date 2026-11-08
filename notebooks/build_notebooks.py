@@ -455,7 +455,7 @@ Every confirmatory run is re-scored from its trace with the frozen scorer and co
     serving = {}  # protocol v1.4: one server version, model digest and clean harness commit per model over the whole campaign
     for p in sorted(campaign.OUT.glob("*.jsonl")):
         for r in map(json.loads, p.read_text().splitlines()):
-            if "serving" in r:
+            if "serving" in r and "error" not in r["result"]:  # completed records only; failed attempts carry no data (§6)
                 serving.setdefault(r["model"], set()).add((r["serving"]["version"], r["serving"]["digest"], r["code"]))
             h = r["data_sha256"]["items"]
             env = Env(splits[h], r["stage"], r["mode"], r["profile"], r["seed"])

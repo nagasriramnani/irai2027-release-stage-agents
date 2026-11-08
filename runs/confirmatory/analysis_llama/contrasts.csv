@@ -1,0 +1,28 @@
+family,hyp,outcome,factor,a,b,restrict,method,expected,diff,lo,hi,p,items,nonzero,p_signflip,p_holm,verdict,verdict_raw,sesoi_class,sesoi_class_raw
+confirmatory,H1,sar,stage,production,development,all,faultfree,-1,-0.16666666666666666,-0.2127659574468085,-0.12056737588652482,0.0004998750312421895,423,180,0.0,0.004498875281179706,supported,supported,"supported, compatible with >= SESOI","supported, compatible with >= SESOI"
+confirmatory,H1,sar,stage,production,integration,all,faultfree,-1,,,,1.0,0,0,1.0,1.0,not estimable,not estimable,not estimable,not estimable
+confirmatory,H1,supported,stage,production,development,all,faultfree,-1,-0.12529550827423167,-0.1702127659574468,-0.08037825059101655,0.0004998750312421895,423,161,0.0,0.004498875281179706,supported,supported,"supported, compatible with >= SESOI","supported, compatible with >= SESOI"
+confirmatory,H1,supported,stage,production,integration,all,faultfree,-1,,,,1.0,0,0,1.0,1.0,not estimable,not estimable,not estimable,not estimable
+confirmatory,H2,correct_ans,stage,production,postrelease,all,faultfree,-1,0.023809523809523808,-0.002976190476190476,0.051587301587301584,0.10347413146713322,504,111,0.112615,0.5173706573356661,null,null,"null, smaller than SESOI","null, smaller than SESOI"
+confirmatory,H2,sar,stage,production,postrelease,all,faultfree,-1,0.00992063492063492,-0.016865079365079364,0.03571428571428571,0.48937765558610347,504,102,0.51571,1.0,null,null,"null, smaller than SESOI","null, smaller than SESOI"
+confirmatory,H2,abcr_exposed,stage,production,postrelease,all,drift,-1,-0.24561403508771928,-0.2929824561403509,-0.2,0.0004998750312421895,285,85,0.0,0.004498875281179706,supported,supported,"supported, compatible with >= SESOI","supported, compatible with >= SESOI"
+confirmatory,H3,abcr_exposed,mode,prompt,tool,"development,postrelease",raw,1,0.08468335787923417,0.06774668630338733,0.10235640648011782,0.0004998750312421895,679,136,0.0,0.004498875281179706,supported,supported,"supported, compatible with >= SESOI","supported, compatible with >= SESOI"
+confirmatory,H3,correct_ans,mode,prompt,tool,all,raw,0,-0.009548611111111108,-0.024594907407407406,0.004918981481481482,0.2039490127468133,576,122,0.22578,0.8157960509872532,null,null,cost below SESOI,cost below SESOI
+descriptive,did,sar,stage,production,development,all,did,-1,-0.09027777777777778,-0.1284722222222222,-0.05295138888888889,0.0004998750312421895,576,203,1e-05,,,,,
+descriptive,did,supported,stage,production,development,all,did,-1,0.020833333333333332,-0.021701388888888888,0.0642361111111111,0.37190702324418895,576,233,0.36314,,,,,
+descriptive,did,correct_ans,stage,production,postrelease,all,did,-1,0.023809523809523808,-0.002976190476190476,0.051587301587301584,0.10347413146713322,504,111,0.112615,,,,,
+descriptive,did,sar,stage,production,postrelease,all,did,-1,0.00992063492063492,-0.016865079365079364,0.03571428571428571,0.48937765558610347,504,102,0.51571,,,,,
+descriptive,exposedall,abcr_exposed,stage,production,postrelease,all,exposed,-1,-0.12767584097859327,-0.1529051987767584,-0.10321100917431193,0.0004998750312421895,654,137,0.0,,,,,
+descriptive,costpkg,correct_ans,mode,prompt,tool,development,raw,0,-0.013888888888888888,-0.03819444444444445,0.010416666666666666,0.2864283929017746,576,52,0.331145,,,,,
+descriptive,costpkg,correct_ans,mode,prompt,tool,production,raw,0,0.003472222222222222,-0.022569444444444444,0.029513888888888888,0.8297925518620345,576,60,0.897025,,,,,
+descriptive,costpkg,correct_ans,mode,prompt,tool,postrelease,raw,0,-0.021825396825396824,-0.04563492063492063,0.001984126984126984,0.07798050487378155,504,37,0.09876,,,,,
+descriptive,total,sar,stage,production,development,all,raw,-1,-0.3559027777777778,-0.4019097222222222,-0.3116319444444444,0.0004998750312421895,576,319,0.0,,,,,
+descriptive,total,supported,stage,production,development,all,raw,-1,-0.24479166666666666,-0.2881944444444444,-0.20399305555555555,0.0004998750312421895,576,256,0.0,,,,,
+descriptive,total,correct_ans,stage,production,postrelease,all,raw,-1,0.023809523809523808,-0.002976190476190476,0.051587301587301584,0.10347413146713322,504,111,0.112615,,,,,
+descriptive,invariant,abcr_exposed,mode,prompt,tool,production,raw,1,0.13704819277108435,0.11144578313253012,0.16415662650602408,0.0004998750312421895,664,91,0.0,,,,,
+descriptive,cost,sar,mode,prompt,tool,all,raw,0,0.002893518518518518,-0.013020833333333334,0.019097222222222224,0.7133216695826043,576,124,0.749665,,,,,
+descriptive,cost,over_restriction,mode,prompt,tool,all,raw,0,-0.0028935185185185184,-0.008101851851851851,0.0020326967592592857,0.28242939265183703,576,16,0.334625244140625,,,,,
+descriptive,owndrift,abcr_exposed,stage,production,postrelease,all,owndrift,-1,-0.8333333333333334,-0.8958333333333334,-0.7638888888888888,0.0004998750312421895,72,65,0.0,,,,,
+descriptive,reachdrift,abcr_exposed,stage,production,postrelease,all,reachdrift,-1,-0.046948356807511735,-0.07276995305164319,-0.023474178403755867,0.0004998750312421895,213,20,0.000255,,,,,
+descriptive,covered,abcr_covered,mode,prompt,tool,"development,postrelease",raw,1,0.09646539027982327,0.08100147275405008,0.11266568483063329,0.0004998750312421895,679,126,0.0,,,,,
+descriptive,open,abcr_open,mode,prompt,tool,"development,postrelease",raw,0,-0.010309278350515464,-0.019882179675994108,-0.0014727540500736377,0.03499125218695326,679,39,0.043415,,,,,
