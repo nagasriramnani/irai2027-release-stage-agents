@@ -13,7 +13,7 @@ tool-level), on a fully synthetic enterprise benchmark with six business roles. 
 > Everything here is synthetic and local: fictional company, people, and values; local models via Ollama (`qwen3:8b`, plus
 > `llama3.1-tools:8b` for the replication); no employer systems, no real data, and no cloud resources.
 
-## Status (31 Oct 2026)
+## Status 
 | Milestone | Status |
 |---|---|
 | Protocol / pre-registration | v1.3a signed by both authors (31 Oct 2026); **v1.4** adopted the same day before any confirmatory LLM run (six blocks, H6, SESOI classes; frozen as tag `prereg-v1.4`) → [protocol/PROTOCOL.md](protocol/PROTOCOL.md) |
